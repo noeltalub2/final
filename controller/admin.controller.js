@@ -257,38 +257,42 @@ const editEquipment = async (req, res) => {
 	});
 };
 const postEditEquipment = (req, res) => {
-    const {
-        id,
-        name,
-        amount,
-        quantity,
-        description,
-        vendorName,
-        vendorAddress,
-        vendorPhoneNumber,
-    } = req.body;
+	const {
+		id,
+		name,
+		amount,
+		quantity,
+		description,
+		vendorName,
+		vendorAddress,
+		vendorPhoneNumber,
+	} = req.body;
 
-    const data = {
-        name,
-        amount,
-        quantity,
-        description,
-        vendor: vendorName,
-        address: vendorAddress,
-        phonenumber: vendorPhoneNumber,
-        // date: date(), // If you want to update the date as well, uncomment this line
-    };
+	const data = {
+		name,
+		amount,
+		quantity,
+		description,
+		vendor: vendorName,
+		address: vendorAddress,
+		phonenumber: vendorPhoneNumber,
+		// date: date(), // If you want to update the date as well, uncomment this line
+	};
 
-    db.query("UPDATE equipment SET ? WHERE id = ?", [data, id], (err, result) => {
-        if (err) {
-            console.log(err);
-            req.flash("error", "Error updating equipment");
-            res.redirect(`/admin/edit_equipment/${id}`);
-        } else {
-            req.flash("success_msg", "Successfully updated equipment");
-			res.redirect(`/admin/edit_equipment/${id}`);
-        }
-    });
+	db.query(
+		"UPDATE equipment SET ? WHERE id = ?",
+		[data, id],
+		(err, result) => {
+			if (err) {
+				console.log(err);
+				req.flash("error", "Error updating equipment");
+				res.redirect(`/admin/edit_equipment/${id}`);
+			} else {
+				req.flash("success_msg", "Successfully updated equipment");
+				res.redirect(`/admin/edit_equipment/${id}`);
+			}
+		}
+	);
 };
 
 const deleteEquipment = async (req, res) => {
@@ -311,6 +315,26 @@ const deleteEquipment = async (req, res) => {
 		});
 	}
 };
+
+const getAttendance = async (req, res) => {
+	const clients = await zeroParam(
+		"SELECT client.id, client.fullname, client.phonenumber, membership.membership_service, membership.membership_plan, attendance.time_in, attendance.time_out, attendance.date, attendance.status, attendance.logs FROM membership INNER JOIN client ON client.id = membership.client_id LEFT JOIN attendance ON attendance.client_id = client.id WHERE membership.membership_status = 'Activated' AND membership.payment_status = 'Paid';"
+	);
+	console.log(clients);
+	res.render("Admin/attendance", {
+		title: "Manage Attendance",
+		clients,
+	});
+};
+
+const postTimeIn = (req,res) => {
+
+}
+
+const postTimeOut = (req,res) => {
+
+}
+
 const getLogout = (req, res) => {
 	res.clearCookie("token_admin");
 	res.redirect("/admin/signin");
@@ -329,5 +353,8 @@ module.exports = {
 	editEquipment,
 	postEditEquipment,
 	deleteEquipment,
+	getAttendance,
+	postTimeIn,
+	postTimeOut,
 	getLogout,
 };

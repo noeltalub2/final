@@ -1,0 +1,137 @@
+<%-include ("../Includes/Admin/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Admin/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/equipment">
+                            <i class="bi bi-gear"></i>
+                            <span>Manage Equipment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/attendance">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Manange Attendance</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Manage Attendance</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <div class="card ">
+                            <div class="card-body">
+                                <h5 class="card-title ">Attendance List</h5>
+
+
+                                <div class="table-responsive-md">
+                                    <table class="table table-bordered" id="clientTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Fullname</th>
+                                                <th scope="col">Phone Number</th>
+                                                <th scope="col">Service</th>
+                                                <th scope="col">Plan</th>
+                                                <th scope="col" class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% clients.forEach(function(client, index) { %>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <%= index + 1 %>
+                                                    </th>
+                                                    <td>
+                                                        <%= client.fullname %>
+                                                    </td>
+                                                    <td>
+                                                        <%= client.phonenumber %>
+                                                    </td>
+                                                    <td>
+                                                        <%= client.membership_service %>
+                                                    </td>
+                                                    <td>
+                                                        <%= client.membership_plan %> month/s
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <% if (client.time_in===null || client.status===null) { %>
+
+
+                                                            <a href="/admin/time-in/<%= client.id%>"
+                                                                class="btn btn-dark btn-sm" type="submit">Check
+                                                                In</a>
+                                                            </form>
+                                                            <% } else if (client.time_in !==null) { %>
+                                                                <a href="/admin/time-out/<%= client.id%>"
+                                                                    class="btn btn-danger">Time Out</a>
+                                                                <% } %>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                </section>
+
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Admin/script.ejs")%>
+                <script>
+
+                    $(document).ready(function () {
+                        $('#clientTable').DataTable();
+                    });
+
+
+
+
+
+                </script>
+    </body>
+
+    </html>

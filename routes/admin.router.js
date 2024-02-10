@@ -23,6 +23,11 @@ router.get("/edit_equipment/:id", adminController.editEquipment);
 router.post("/edit_equipment/", adminController.postEditEquipment);
 
 router.post("/del_equipment", adminController.deleteEquipment);
+
+router.get("/attendance", adminController.getAttendance);
+router.post("/time-in/:id", adminController.postTimeIn);
+router.post("/time-out/:id", adminController.postTimeOut);
+
 // router.get("/task", requireAuth, adminController.getTask);
 // router.get("/add_task", requireAuth, adminController.addTask);
 // router.post("/add_task", requireAuth, adminController.postAddTask);
