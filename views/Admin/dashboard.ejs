@@ -1,13 +1,13 @@
-<%-include ("../Includes/Trainer/head.ejs")%>
+<%-include ("../Includes/Admin/head.ejs")%>
 
   <body>
-    <%-include ("../Includes/Trainer/header.ejs")%>
+    <%-include ("../Includes/Admin/header.ejs")%>
       <!-- ======= Sidebar ======= -->
       <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
 
           <li class="nav-item">
-            <a class="nav-link " href="/trainer/dashboard">
+            <a class="nav-link " href="/admin/dashboard">
               <i class="bi bi-grid-fill"></i>
               <span>Dashboard</span>
             </a>
@@ -15,13 +15,13 @@
           <!-- End Dashboard Nav -->
           </li><!-- End Components Nav -->
           <li class="nav-item">
-            <a class="nav-link collapsed" href="/trainer/client">
+            <a class="nav-link collapsed" href="/admin/client">
               <i class="bi bi-people-fill"></i>
               <span>Clients</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link collapsed" href="/trainer/task">
+            <a class="nav-link collapsed" href="/admin/task">
               <i class="bi bi-list-task"></i>
               <span>Tasks</span>
             </a>
@@ -30,7 +30,7 @@
 
 
           <li class="nav-item">
-            <a class="nav-link collapsed" href="/trainer/profile">
+            <a class="nav-link collapsed" href="/admin/profile">
               <i class="bi bi-person-lines-fill"></i>
               <span>Profile</span>
             </a>
@@ -43,7 +43,7 @@
           <h1>Dashboard</h1>
           <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="/trainer/dashboard">Home</a></li>
+              <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </nav>
@@ -114,7 +114,7 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <h5 class="card-title">Today's Task</h5>
-                    <a href="/trainer/task" class="link-dark" style="font-size: 0.8rem;">See All</a>
+                    <a href="/admin/task" class="link-dark" style="font-size: 0.8rem;">See All</a>
                   </div>
 
                   <div class="table-responsive-md">
@@ -179,7 +179,7 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <h5 class="card-title">Recent Joined Clients</h5>
-                    <a href="/trainer/client" class="link-dark" style="font-size: 0.8rem;">See All</a>
+                    <a href="/admin/client" class="link-dark" style="font-size: 0.8rem;">See All</a>
                   </div>
 
                   <div class="table-responsive-md">
@@ -233,7 +233,7 @@
 
       </main>
       <!-- End #main -->
-      <%-include ("../Includes/Trainer/script.ejs")%>
+      <%-include ("../Includes/Admin/script.ejs")%>
         <script>
 
         </script>

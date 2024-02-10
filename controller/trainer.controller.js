@@ -31,7 +31,7 @@ const postLogin = (req, res) => {
 		db.query(findUser, [username], async (err, result) => {
 			if (err) {
 				req.flash("error_msg", "Authentication failed.");
-				res.redirect("/t/signin");
+				res.redirect("/trainer/signin");
 			} else {
 				if (result.length > 0) {
 					const match_password = await bcrypt.compare(

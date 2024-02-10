@@ -49,10 +49,12 @@ app.use((req, res, next) => {
 const clientRouter = require("./routes/client.router.js");
 const indexRouter = require("./routes/index.router.js");
 const trainerRouter = require("./routes/trainer.router.js")
+const adminRouter = require("./routes/admin.router.js")
 
 
 app.use("/", clientRouter); // Assuming this is for client-related routes
 app.use("/trainer",trainerRouter)
+app.use("/admin",adminRouter)
 app.use("/", indexRouter);
 
 app.use(indexRouter);
