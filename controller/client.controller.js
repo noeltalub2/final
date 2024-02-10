@@ -40,7 +40,9 @@ const postLogin = (req, res) => {
 					);
 					if (match_password) {
 						const generateToken = createTokenClient(result[0].id);
-						res.cookie("token_client", generateToken, { httpOnly: true });
+						res.cookie("token_client", generateToken, {
+							httpOnly: true,
+						});
 						res.redirect("/dashboard");
 					} else {
 						req.flash(
@@ -134,7 +136,18 @@ const getDashboard = async (req, res) => {
 
 	const attendance = (
 		await queryParam(
-			`SELECT attendance.attendance_id,attendance.client_id, attendance.time_in,attendance.time_out,attendance.date, COUNT(task.status) as 'task_count' FROM attendance INNER JOIN task ON task.client_id = attendance.client_id WHERE task.status = 'Done' AND attendance.date = '${date()}' AND attendance.client_id = ?;`,
+			`SELECT 
+			attendance.attendance_id,
+			attendance.client_id,
+			attendance.time_in,
+			attendance.time_out,
+			attendance.date,
+			COUNT(task.status) AS 'task_count'
+		FROM attendance
+		LEFT JOIN task ON task.client_id = attendance.client_id AND task.status = 'Done' AND attendance.date = task.date
+		WHERE attendance.date = '${date()}' AND attendance.client_id = ?
+		GROUP BY attendance.attendance_id, attendance.client_id, attendance.time_in, attendance.time_out, attendance.date;
+		`,
 			[client_id]
 		)
 	)[0];
@@ -179,7 +192,6 @@ const getTask = async (req, res) => {
 		"SELECT * FROM task WHERE client_id = ? AND (status = 'Done' OR status = 'Canceled') ORDER BY log_date DESC, log_time DESC;",
 		[client_id]
 	);
-
 
 	res.render("Client/task", {
 		title: "Client Task",
@@ -287,10 +299,10 @@ const postTaskCanceled = async (req, res) => {
 const getAttendance = async (req, res) => {
 	const client_id = res.locals.id;
 	const attendanceData = await queryParam(
-		"SELECT attendance.attendance_id,attendance.client_id, attendance.time_in,attendance.time_out,attendance.date, COUNT(task.status) as 'task_count' FROM attendance INNER JOIN task ON task.client_id = attendance.client_id WHERE task.status = 'Done' AND attendance.client_id = ? AND attendance.date = task.date;",
+		"SELECT attendance.attendance_id, attendance.client_id, attendance.time_in, attendance.time_out, attendance.date, COUNT(task.status) AS 'task_count' FROM attendance LEFT JOIN task ON task.client_id = attendance.client_id AND task.status = 'Done' AND attendance.date = task.date WHERE attendance.client_id = ? GROUP BY attendance.attendance_id, attendance.client_id, attendance.time_in, attendance.time_out, attendance.date;;",
 		[client_id]
 	);
-
+	console.log(attendanceData);
 	res.render("Client/attendance", {
 		title: "Client Attendance",
 		attendanceData,

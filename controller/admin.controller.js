@@ -320,20 +320,55 @@ const getAttendance = async (req, res) => {
 	const clients = await zeroParam(
 		"SELECT client.id, client.fullname, client.phonenumber, membership.membership_service, membership.membership_plan, attendance.time_in, attendance.time_out, attendance.date, attendance.status, attendance.logs FROM membership INNER JOIN client ON client.id = membership.client_id LEFT JOIN attendance ON attendance.client_id = client.id WHERE membership.membership_status = 'Activated' AND membership.payment_status = 'Paid';"
 	);
-	console.log(clients);
+
 	res.render("Admin/attendance", {
 		title: "Manage Attendance",
 		clients,
 	});
 };
 
-const postTimeIn = (req,res) => {
+const postTimeIn = (req, res) => {
+	const clientId = req.params.id;
+	const currentTime = time();
 
-}
+	// Insert or update the record based on the unique key (client_id)
+	db.query(
+		"INSERT INTO attendance (client_id, time_in, date, status) VALUES (?, ?,?,?)",
+		[clientId, currentTime, date(), 1],
+		(err, result) => {
+			if (err) {
+				console.log(err);
+				req.flash("error", "Error updating time in");
+				res.redirect("/admin/attendance");
+			} else {
+				req.flash("success_msg", "Successfully checked in");
+				res.redirect("/admin/attendance");
+			}
+		}
+	);
+};
 
-const postTimeOut = (req,res) => {
+const postTimeOut = (req, res) => {
+	const clientId = req.params.id;
+	const currentTime = time();
 
-}
+	// Update the existing record based on the unique key (client_id)
+	db.query(
+		"UPDATE attendance SET time_out = ?, status = ? WHERE client_id = ? AND date = ?",
+		[currentTime, 2, clientId, date()],
+		(err, result) => {
+			if (err) {
+				console.log(err);
+				req.flash("error", "Error updating time out");
+				res.redirect("/admin/attendance");
+			} else {
+				req.flash("success_msg", "Successfully checked out");
+				res.redirect("/admin/attendance");
+			}
+		}
+	);
+};
+
 
 const getLogout = (req, res) => {
 	res.clearCookie("token_admin");

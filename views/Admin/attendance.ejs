@@ -55,63 +55,59 @@
                 </div>
                 <section class="section profile">
                     <div class="row">
-                        <div class="card ">
-                            <div class="card-body">
-                                <h5 class="card-title ">Attendance List</h5>
+                        <%-include ("../Includes/message.ejs")%>
+                            <div class="card ">
+                                <div class="card-body">
+                                    <h5 class="card-title ">Attendance List</h5>
 
 
-                                <div class="table-responsive-md">
-                                    <table class="table table-bordered" id="clientTable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Fullname</th>
-                                                <th scope="col">Phone Number</th>
-                                                <th scope="col">Service</th>
-                                                <th scope="col">Plan</th>
-                                                <th scope="col" class="text-center">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% clients.forEach(function(client, index) { %>
+                                    <div class="table-responsive-md">
+                                        <table class="table table-bordered" id="clientTable">
+                                            <thead>
                                                 <tr>
-                                                    <th scope="row">
-                                                        <%= index + 1 %>
-                                                    </th>
-                                                    <td>
-                                                        <%= client.fullname %>
-                                                    </td>
-                                                    <td>
-                                                        <%= client.phonenumber %>
-                                                    </td>
-                                                    <td>
-                                                        <%= client.membership_service %>
-                                                    </td>
-                                                    <td>
-                                                        <%= client.membership_plan %> month/s
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <% if (client.time_in===null || client.status===null) { %>
-
-
-                                                            <a href="/admin/time-in/<%= client.id%>"
-                                                                class="btn btn-dark btn-sm" type="submit">Check
-                                                                In</a>
-                                                            </form>
-                                                            <% } else if (client.time_in !==null) { %>
-                                                                <a href="/admin/time-out/<%= client.id%>"
-                                                                    class="btn btn-danger">Time Out</a>
-                                                                <% } %>
-                                                    </td>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Fullname</th>
+                                                    <th scope="col">Phone Number</th>
+                                                    <th scope="col">Service</th>
+                                                    <th scope="col">Plan</th>
+                                                    <th scope="col" class="text-center">Action</th>
                                                 </tr>
-                                                <% }); %>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <% clients.forEach(function(client, index) { %>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <%= index + 1 %>
+                                                        </th>
+                                                        <td>
+                                                            <%= client.fullname %>
+                                                        </td>
+                                                        <td>
+                                                            <%= client.phonenumber %>
+                                                        </td>
+                                                        <td>
+                                                            <%= client.membership_service %>
+                                                        </td>
+                                                        <td>
+                                                            <%= client.membership_plan %> month/s
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <% if (client.time_in === null) { %>
+                                                                <a href="/admin/time-in/<%= client.id %>" class="btn btn-dark btn-sm">Check In</a>
+                                                            <% } else if (client.time_in !== null && client.time_out === null) { %>
+                                                                <a href="/admin/time-out/<%= client.id %>" class="btn btn-outline-danger btn-sm">Time Out</a>
+                                                            <% } %>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
 
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                     </div>
 
