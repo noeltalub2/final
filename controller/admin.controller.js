@@ -204,6 +204,93 @@ const getEquipment = async (req, res) => {
 	});
 };
 
+const addEquipment = (req, res) => {
+	res.render("Admin/add_equipment", {
+		title: "Add Equipment",
+	});
+};
+
+const postAddEquipment = (req, res) => {
+	const {
+		name,
+		amount,
+		quantity,
+		description,
+		vendorName,
+		vendorAddress,
+		vendorPhoneNumber,
+	} = req.body;
+
+	const data = {
+		name,
+		amount,
+		quantity,
+		description,
+		vendor: vendorName,
+		address: vendorAddress,
+		phonenumber: vendorPhoneNumber,
+		date: date(),
+	};
+
+	db.query("INSERT INTO equipment SET ?", data, (err, result) => {
+		if (err) {
+			console.log(err);
+			req.flash("error", "Error inserting equipment");
+			res.redirect("/admin/add_equipment");
+		} else {
+			req.flash("success_msg", "Successfully added equipment");
+			res.redirect("/admin/add_equipment");
+		}
+	});
+};
+
+const editEquipment = async (req, res) => {
+	const equipmentId = req.params.id;
+
+	const equipment = (
+		await queryParam("SELECT * FROM equipment WHERE id = ?", [equipmentId])
+	)[0];
+
+	res.render("Admin/edit_equipment", {
+		title: "Add Equipment",
+		equipment,
+	});
+};
+const postEditEquipment = (req, res) => {
+    const {
+        id,
+        name,
+        amount,
+        quantity,
+        description,
+        vendorName,
+        vendorAddress,
+        vendorPhoneNumber,
+    } = req.body;
+
+    const data = {
+        name,
+        amount,
+        quantity,
+        description,
+        vendor: vendorName,
+        address: vendorAddress,
+        phonenumber: vendorPhoneNumber,
+        // date: date(), // If you want to update the date as well, uncomment this line
+    };
+
+    db.query("UPDATE equipment SET ? WHERE id = ?", [data, id], (err, result) => {
+        if (err) {
+            console.log(err);
+            req.flash("error", "Error updating equipment");
+            res.redirect(`/admin/edit_equipment/${id}`);
+        } else {
+            req.flash("success_msg", "Successfully updated equipment");
+			res.redirect(`/admin/edit_equipment/${id}`);
+        }
+    });
+};
+
 const deleteEquipment = async (req, res) => {
 	const equipmentId = req.body.equipmentId;
 
@@ -237,6 +324,10 @@ module.exports = {
 	updateProfile,
 	deleteClient,
 	getEquipment,
+	addEquipment,
+	postAddEquipment,
+	editEquipment,
+	postEditEquipment,
 	deleteEquipment,
 	getLogout,
 };

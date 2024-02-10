@@ -1,0 +1,136 @@
+<%-include ("../Includes/Admin/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Admin/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/equipment">
+                            <i class="bi bi-gear"></i>
+                            <span>Manage Equipment</span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Add Equipment</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Add Equipment</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <%-include ("../Includes/message.ejs")%>
+
+                        <div class="card ">
+                            <div class="card-body">
+                           
+                                <h5 class="card-title">Equipment Details</h5>
+                                <form method="post" class="needs-validation" novalidate>
+
+                                    <div class="row mb-3">
+                                        <label for="name" class="col-md-4 col-lg-3 col-form-label">Name</label>
+                                        <div class="col-md-8 col-lg-6">
+                                            <input name="name" type="text" class="form-control" id="name" required>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="row mb-3">
+                                        <label for="amount" class="col-md-4 col-lg-3 col-form-label">Amount</label>
+                                        <div class="col-md-8 col-lg-6">
+                                            <input name="amount" type="number" class="form-control" id="amount"  required>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="row mb-3">
+                                        <label for="quantity" class="col-md-4 col-lg-3 col-form-label">Quantity</label>
+                                        <div class="col-md-8 col-lg-6">
+                                            <input name="quantity" type="number" class="form-control" id="quantity" required>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="row mb-3">
+                                        <label for="description" class="col-md-4 col-lg-3 col-form-label">Description</label>
+                                        <div class="col-md-8 col-lg-6">
+                                            <input name="description" type="text" class="form-control" id="description" required>
+                                        </div>
+                                    </div>
+                                
+                                    <h5 class="card-title">Vendor Details</h5>
+                                
+                                    <div class="row mb-3">
+                                        <label for="vendorName" class="col-md-4 col-lg-3 col-form-label">Vendor Name</label>
+                                        <div class="col-md-8 col-lg-6">
+                                            <input name="vendorName" type="text" class="form-control" id="vendorName" required>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="row mb-3">
+                                        <label for="vendorAddress" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                        <div class="col-md-8 col-lg-6">
+                                            <input name="vendorAddress" type="text" class="form-control" id="vendorAddress" required>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="row mb-3">
+                                        <label for="vendorPhoneNumber" class="col-md-4 col-lg-3 col-form-label">Phonenumber</label>
+                                        <div class="col-md-8 col-lg-6">
+                                            <input name="vendorPhoneNumber" type="text" min="11" max="11" class="form-control" id="vendorPhoneNumber" required>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-dark me-1">Submit</button>
+                                        <a href="/admin/equipment" class="btn btn-outline-dark">Cancel</a>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Admin/script.ejs")%>
+                <script>
+
+
+
+
+                </script>
+    </body>
+
+    </html>
