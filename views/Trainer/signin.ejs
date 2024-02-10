@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="shortcut icon" href="/img/logo.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/020dbcd45c.js" crossorigin="anonymous"></script>
+    <title>Trainer's Login | King's Gym</title>
+</head>
+
+<body>
+    <div class="preloader">
+        <img src="../img/logo.png" alt="loader" class="lds-ripple img-fluid" />
+    </div>
+    <div id="main-wrapper">
+        <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
+            <div class="position-relative z-index-5">
+                <div class="row">
+                    <div class="col-xl-7 col-xxl-8">
+
+                        <div class="d-none d-xl-flex align-items-center justify-content-center"
+                            style="height: calc(100vh - 80px);">
+                            <img src="../img/bg.jpg" width="1500">
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-xxl-4">
+                        <div class="min-vh-100 bg-body row justify-content-center align-items-center p-4">
+                            <div class=" col-sm-8 col-md-5 col-xl-10 px-4">
+                                <div class="logo-block text-center mb-2"> <img src="../img/logo.png" alt="" height="90">
+                                </div>
+                                <h2 class="mb-1 fs-7 fw-bolder">Trainer Login</h2>
+                                <p class="mb-6">Login to your details</p>
+                                <%-include ("../Includes/message.ejs")%>
+                                    <form class="needs-validation" method="post" novalidate>
+                                        <div class="mb-3">
+                                            <label for="inputUsername"
+                                                class="form-label form-label-custom">Username</label>
+                                            <input type="text" class="form-control" id=" inputUsername" required
+                                                name="username">
+                                            <div class="invalid-feedback">
+                                                Required
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="inputPassword"
+                                                class="form-label form-label-custom">Password</label>
+                                            <input type="password" class="form-control" id="inputPassword" required
+                                                name="password">
+                                            <div class="invalid-feedback">
+                                                Required
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-dark w-100 py-8 mb-4 rounded-2">Sign
+                                            In</button>
+
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <p class="mb-0 fw-medium">Are you a client?</p>
+                                            <a class="text-dark fw-medium ms-2" href="/">Sign In</a>
+                                        </div>
+
+
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/js/validator.js"></script>
+    <script>
+        $(function () {
+            "use strict";
+
+            $(".preloader").fadeOut();
+
+
+        });
+    </script>
+</body>
+
+</html>

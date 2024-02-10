@@ -1,0 +1,558 @@
+<%-include ("../Includes/Client/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Client/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/task">
+                            <i class="bi bi-list-task"></i>
+                            <span>Task</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/attendance">
+                            <i class="bi bi-table"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/announcement">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Announcement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Profile</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Profile</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <div class="col-xl-4">
+
+                            <div class="card">
+                                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                                    <img src="/img/avatar.png" alt="Profile" class="rounded-circle">
+                                    <h2 class="mb-2">
+                                        <%=profileData.fullname%>
+                                    </h2>
+
+                                    <p class="mb-0">Height: <%=profileData.height%> cm</p>
+                                    <p>Weight: <%=profileData.weight%> kl</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-8">
+                            <%-include ("../Includes/message.ejs")%>
+                                <div class="card">
+                                    <div class="card-body pt-3">
+                                        <!-- Bordered Tabs -->
+                                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab"
+                                                    data-bs-target="#profile-overview">Overview</button>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab"
+                                                    data-bs-target="#profile-edit">Edit Profile</button>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab"
+                                                    data-bs-target="#profile-membership">Membership</button>
+                                            </li>
+
+
+                                        </ul>
+                                        <div class="tab-content pt-2">
+
+                                            <div class="tab-pane fade show active profile-overview"
+                                                id="profile-overview">
+
+                                                <h5 class="card-title">Profile Details</h5>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.fullname%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Age</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.age%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Gender</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.gender%>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Address</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.address%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.phonenumber%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Email</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.email%>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="tab-pane fade profile-edit" id="profile-edit">
+
+                                                <h5 class="card-title">Edit Information Details</h5>
+                                                <!-- Profile Edit Form -->
+                                                <form method="post" class="needs-validation" novalidate>
+
+
+                                                    <div class="row mb-3">
+                                                        <label for="fullName"
+                                                            class="col-md-4 col-lg-3 col-form-label">Full
+                                                            Name</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="fullName" type="text" class="form-control"
+                                                                id="fullName" value="<%=profileData.fullname%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="ageInput"
+                                                            class="col-md-4 col-lg-3 col-form-label">Age</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="age" type="number" class="form-control"
+                                                                id="ageInput" value="<%=profileData.age%>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for="genderInput"
+                                                            class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <select name="gender" id="genderInput" class="form-control"
+                                                                required>
+                                                                <option value="" disabled <%=profileData.gender===""
+                                                                    ? 'selected' : '' %>>Select Gender</option>
+                                                                <option value="Male" <%=profileData.gender==="Male"
+                                                                    ? 'selected' : '' %>>Male</option>
+                                                                <option value="Female" <%=profileData.gender==="Female"
+                                                                    ? 'selected' : '' %>>Female</option>
+                                                                <option value="Other" <%=profileData.gender==="Other"
+                                                                    ? 'selected' : '' %>>Other</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row mb-3">
+                                                        <label for="emailInput"
+                                                            class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="email" type="email" class="form-control"
+                                                                id="compaemailInputy" value="<%=profileData.email%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="inputPhonenumber"
+                                                            class="col-md-4 col-lg-3 col-form-label">Phone
+                                                            Number</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="phonenumber" type="tel" class="form-control"
+                                                                minlength="11" maxlength="11" id="inputPhonenumber"
+                                                                value="<%=profileData.phonenumber%>" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="inputAddress"
+                                                            class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="address" type="text" class="form-control"
+                                                                id="inputAddress" value="<%=profileData.address%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row mb-3">
+                                                        <label for="inputheight"
+                                                            class="col-md-4 col-lg-3 col-form-label">Height (cm)</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="height" type="number" class="form-control"
+                                                                id="inputheight" value="<%=profileData.height%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="inputweight"
+                                                            class="col-md-4 col-lg-3 col-form-label">Weight (kl)</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="weight" type="number" class="form-control"
+                                                                id="inputweight" value="<%=profileData.weight%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-primary">Save
+                                                            Changes</button>
+                                                    </div>
+                                                </form><!-- End Profile Edit Form -->
+
+                                            </div>
+
+                                            <div class="tab-pane fade " id="profile-membership">
+                                                <% if (membershipData.count===0) { %>
+                                                    <h5 class="card-title">Membership Plans</h5>
+                                                    <form method="post" action="/membership" novalidate
+                                                        class="needs-validation">
+                                                        <div class="mb-3">
+                                                            <label for="selectService" class="form-label fw-bold">Select
+                                                                Service</label>
+                                                            <select name="membership_service" required
+                                                                class="form-select" id="selectService">
+
+                                                                <option value="Powerlifting" selected>Powerlifting
+                                                                </option>
+                                                                <option value="Body Building">Body Building</option>
+                                                                <option value="Cardio">Cardio</option>
+                                                            </select>
+                                                            <div class="invalid-feedback">Please select a service.</div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="selectPlan" class="form-label fw-bold">Select
+                                                                Plan</label>
+                                                            <select name="membership_plan" required class="form-select"
+                                                                id="selectPlan">
+
+                                                                <option value="1" selected>One Month</option>
+                                                                <option value="3">Three Months</option>
+                                                                <option value="6">Six Months</option>
+                                                                <option value="12">Twelve Months</option>
+                                                            </select>
+                                                            <div class="invalid-feedback">Please select a plan.</div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="selectTrainer" class="form-label fw-bold">Select
+                                                                Trainer</label>
+                                                            <select name="trainer_id" required class="form-select"
+                                                                id="selectTrainer">
+                                                                <% trainers.forEach(function(trainer, index) { %>
+                                                                    <option value="<%= trainer.trainer_id %>"
+                                                                        <%=index===0 ? 'selected' : '' %>><%=
+                                                                            trainer.fullname %>
+                                                                    </option>
+                                                                    <% }); %>
+                                                            </select>
+
+                                                            <div class="invalid-feedback">Please select a trainer.</div>
+                                                        </div>
+
+                                                        <button class="btn btn-dark" type="submit">Subscribe
+                                                            Plan</button>
+                                                    </form>
+
+                                                    <%} else {%>
+                                                        <div class="card ">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Membership Status</h5>
+                                                                <% if
+                                                                    (membershipData.membership_status==='Waiting for Activation'
+                                                                    ) { %>
+                                                                    <!-- Show waiting for activation section -->
+                                                                    <div class="waiting-activation">
+                                                                        <p class="membership-type mb-0 fw-bold">
+                                                                            <i
+                                                                                class="bi bi-clock-fill text-warning me-2"></i>
+                                                                            <%=membershipData.membership_service%>
+                                                                                Membership
+                                                                        </p>
+                                                                        <p class="membership-type mb-0">
+                                                                            <span class="text-muted">Trainer:</span>
+                                                                            <%=membershipData.trainer_name%>
+
+                                                                        </p>
+                                                                        <p class="membership-status mb-0">Awaiting
+                                                                            Payment
+                                                                            Confirmation</p>
+                                                                        <p class="membership-price mb-2">Price: PHP
+                                                                            <%=membershipData.total_amount%>
+                                                                                for <%=membershipData.membership_plan%>
+                                                                                    months
+                                                                        </p>
+                                                                        <small class="text-muted">Kindly make the
+                                                                            payment
+                                                                            directly
+                                                                            to the administrator. Thank you.</small>
+
+                                                                        <div class="mt-3">
+                                                                            <button class="btn btn-dark btn-sm me-2"
+                                                                                onclick="cancelMembership('<%=membershipData.membership_id%>','<%=membershipData.client_id%>')">Cancel
+                                                                                Membership</button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <% } else if
+                                                                        (membershipData.membership_status==='Activated'
+                                                                        ) { %>
+                                                                        <!-- Show activated section -->
+
+                                                                        <div class="activated">
+                                                                            <p class="membership-type mb-0 fw-bold">
+                                                                                <i
+                                                                                    class="bi bi-check-circle-fill text-success me-2"></i>
+                                                                                <%=membershipData.membership_service%>
+                                                                                    Membership
+                                                                            </p>
+                                                                            <p class="membership-type mb-0">
+                                                                                <span class="text-muted">Trainer:</span>
+                                                                                <%=membershipData.trainer_name%>
+
+                                                                            </p>
+                                                                            <p class="membership-details mb-2">
+                                                                                <span class="text-muted">Start
+                                                                                    Date:</span>
+                                                                                <%= new
+                                                                                    Date(membershipData.status_change_date).toLocaleDateString('en-US',
+                                                                                    { month: 'long' , day: 'numeric' ,
+                                                                                    year: 'numeric' }) %><br>
+
+                                                                                    <span class="text-muted">End
+                                                                                        Date:</span>
+                                                                                    <%= new
+                                                                                        Date(membershipData.date_expiration).toLocaleDateString('en-US',
+                                                                                        { month: 'long' , day: 'numeric'
+                                                                                        , year: 'numeric' }) %><br>
+
+                                                                                        <span class="text-muted">Cost:
+                                                                                        </span>PHP
+                                                                                        <%=membershipData.total_amount%>
+                                                                                            for
+                                                                                            <%=membershipData.membership_plan%>
+                                                                                                months
+                                                                            </p>
+
+                                                                            <small class="text-muted">Your
+                                                                                <%=membershipData.membership_service%>
+                                                                                    membership is
+                                                                                    currently
+                                                                                    active. Enjoy!
+                                                                            </small>
+
+                                                                            <div class="mt-3">
+                                                                                <button class="btn btn-dark btn-sm me-2"
+                                                                                    onclick="cancelMembership('<%=membershipData.membership_id%>','<%=membershipData.client_id%>')">Cancel
+                                                                                    Membership</button>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <% } %>
+                                                                            <hr>
+                                                                            <h5 class="card-title">Membership History
+                                                                            </h5>
+                                                                            <div class="table-responsive-md">
+                                                                                <table class="table table-bordered"
+                                                                                    id="membershipHistoryData">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th scope="col">#</th>
+                                                                                            <th scope="col">Date</th>
+                                                                                            <th scope="col">Service/Plan
+                                                                                            </th>
+                                                                                            <th scope="col">Trainer</th>
+                                                                                            <th scope="col">Amount
+                                                                                            </th>
+                                                                                            <th scope="col">Status</th>
+
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+
+                                                                                        <%
+                                                                                            membershipHistoryData.forEach((membership,index)=>
+                                                                                            { %>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <%=index + 1%>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <%=membership.join_date%>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <%=membership.membership_service%>
+                                                                                                        for
+                                                                                                        <%=membership.membership_plan%>
+                                                                                                            months
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    
+                                                                                                    <%=membership.trainer_name%>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    PHP
+                                                                                                    <%=membership.total_amount%>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <% if
+                                                                                                        (membership.membership_status==='Cancelled'
+                                                                                                        ) { %>
+                                                                                                        <span
+                                                                                                            class="text-danger">
+                                                                                                            <%= membership.membership_status
+                                                                                                                %>
+                                                                                                        </span>
+                                                                                                        <% } else if
+                                                                                                            (membership.membership_status==='Expired'
+                                                                                                            ) { %>
+                                                                                                            <span
+                                                                                                                class="text-success">
+                                                                                                                <%= membership.membership_status
+                                                                                                                    %>
+                                                                                                            </span>
+                                                                                                            <% } else {
+                                                                                                                %>
+                                                                                                                <%= membership.membership_status
+                                                                                                                    %>
+                                                                                                                    <% }
+                                                                                                                        %>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <% }); %>
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <%}%>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                        </div>
+
+                    </div>
+                    </div>
+                </section>
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Client/script.ejs")%>
+                <script>
+                    $(document).ready(function () {
+                        $('#membershipHistoryData').DataTable({
+                            "lengthMenu": [5, 10, 25, 50],
+                            "pageLength": 5
+                        });
+                    });
+
+
+                    function cancelMembership(membershipId, clientId) {
+                        console.log(membershipId)
+                        Swal.fire({
+                            title: "Cancel Membership",
+                            text: `Do you want to cancel your membership?`,
+                            icon: "error",
+                            showCancelButton: true,
+                            confirmButtonText: "Done", // Set the text for the confirmation button
+                            cancelButtonText: "Cancel",  // Set the text for the cancel button
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch("/cancel_membership", {
+                                    method: "POST",
+                                    body: JSON.stringify({ membershipId, clientId }),
+                                    headers: { "Content-Type": "application/json" },
+                                })
+                                    .then((res) => res.json())
+                                    .then((response) => {
+                                        if (response.status === "success") {
+                                            Swal.fire(
+                                                'Success!',
+                                                `${response.message}`,
+                                                'success'
+                                            ).then(function () {
+                                                window.location.href = '/profile';
+                                            });
+                                        }
+                                        if (response.status === "error") {
+                                            Swal.fire(
+                                                'Error',
+                                                `${response.message}`,
+                                                'error'
+                                            ).then(function () {
+                                                window.location.href = '/profile';
+                                            });
+                                        }
+                                    });
+                            } else if (result.isDismissed) {
+                                // User clicked the "Cancel" button or outside the dialog
+                                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+                            }
+                        });
+                    }
+
+
+                </script>
+    </body>
+
+    </html>

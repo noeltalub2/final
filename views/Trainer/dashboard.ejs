@@ -1,0 +1,242 @@
+<%-include ("../Includes/Trainer/head.ejs")%>
+
+  <body>
+    <%-include ("../Includes/Trainer/header.ejs")%>
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link " href="/trainer/dashboard">
+              <i class="bi bi-grid-fill"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/trainer/client">
+              <i class="bi bi-people-fill"></i>
+              <span>Clients</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/trainer/task">
+              <i class="bi bi-list-task"></i>
+              <span>Tasks</span>
+            </a>
+          </li>
+
+
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/trainer/profile">
+              <i class="bi bi-person-lines-fill"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End Sidebar-->
+      <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Dashboard</h1>
+          <nav style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/trainer/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <section class="section profile">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">Active Clients <span>| Total</span></h5>
+
+                      <div class="d-flex align-items-center">
+
+                        <h5> <i class="bi bi-person-check-fill me-2"></i></i>
+                          <%=active_client%>
+                        </h5>
+
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">Task Created <span>| All time</span></h5>
+
+                      <div class="d-flex align-items-center">
+
+                        <h5> <i class="bi bi-plus-circle-dotted me-2"></i></i>
+                          <%=task_created%>
+                        </h5>
+
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">Task Completion <span>| All Time</span></h5>
+
+                      <div class="d-flex align-items-center">
+
+                        <h5><i class="bi bi-gear-wide-connected me-2"></i>
+                          <%=rate%>%
+                        </h5>
+
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Today's Task</h5>
+                    <a href="/trainer/task" class="link-dark" style="font-size: 0.8rem;">See All</a>
+                  </div>
+
+                  <div class="table-responsive-md">
+                    <table class="table table-bordered" id="taskTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Fullname</th>
+                          <th scope="col">Task</th>
+                          <th scope="col">Status</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% tasks.forEach(function(task, index) { %>
+                          <tr>
+                            <th scope="row">
+                              <%= index + 1 %>
+                            </th>
+                            <td>
+                              <%= new Date(task.date ).toLocaleDateString('en-US', { month: 'long' , day: 'numeric'
+                                , year: 'numeric' }) %>
+                            </td>
+                            <td>
+                              <%= task.client_name %>
+                            </td>
+                            <td>
+                              <%= task.description %>
+                            </td>
+                            <td class="text-center">
+                              <% if (task.status==='Cancelled' ) { %>
+                                <span class="badge bg-danger ">
+                                  <%= task.status %>
+                                </span>
+                                <% } else if (task.status==='Done' ) { %>
+                                  <span class="badge bg-success">
+                                    <%= task.status %>
+                                  </span>
+                                  <% } else if (task.status==='In Progress' ) { %>
+                                    <span class="badge bg-warning text-dark">
+                                      <%= task.status %>
+                                    </span>
+                                    <% } else { %>
+                                      <span class="badge bg-secondary">
+                                        <%= task.status %>
+                                      </span>
+                                      <% } %>
+                            </td>
+
+
+                          </tr>
+                          <% }); %>
+
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Recent Joined Clients</h5>
+                    <a href="/trainer/client" class="link-dark" style="font-size: 0.8rem;">See All</a>
+                  </div>
+
+                  <div class="table-responsive-md">
+                    <table class="table table-bordered" id="taskTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Fullname</th>
+                          <th scope="col">Membership Service</th>
+                          <th scope="col">Membership Plan</th>
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% clients.forEach(function(client, index) { %>
+                          <tr>
+                            <th scope="row">
+                              <%= index + 1 %>
+                            </th>
+                            <td>
+                              <!-- Assuming client has a 'date' property -->
+                              <%= new Date(client.join_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+                            </td>
+                            <td>
+                              <%= client.client_name %>
+                            </td>
+                            <td>
+                              <%= client.membership_service %>
+                            </td>
+                            <td>
+                              <%= client.membership_plan %> Month/s
+                            </td>
+                          
+                          
+                          </tr>
+                        <% }); %>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+        </section>
+
+      </main>
+      <!-- End #main -->
+      <%-include ("../Includes/Trainer/script.ejs")%>
+        <script>
+
+        </script>
+  </body>
+
+  </html>

@@ -1,0 +1,143 @@
+<%-include ("../Includes/Client/head.ejs")%>
+
+  <body>
+    <%-include ("../Includes/Client/header.ejs")%>
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/dashboard">
+              <i class="bi bi-grid-fill"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/task">
+              <i class="bi bi-list-task"></i>
+              <span>Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="/attendance">
+              <i class="bi bi-table"></i>
+              <span>Attendance</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/announcement">
+              <i class="bi bi-megaphone"></i>
+              <span>Announcement</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/profile">
+              <i class="bi bi-person-lines-fill"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End Sidebar-->
+      <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Attendance</h1>
+          <nav style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Attendance</li>
+            </ol>
+          </nav>
+        </div>
+        <section class="section profile">
+          <div class="row">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">All Attendance</h5>
+                <div class="table-responsive-md">
+                  <table class="table table-bordered" id="attendanceTable" style="width: 100%;">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Check-In Time</th>
+                        <th scope="col">Check-Out Time</th>
+                        <th scope="col">Time Spent</th>
+                        <th scope="col">Task Made</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% attendanceData.forEach(function(attendance,index) { %>
+                        <tr>
+                          <th scope="row">
+                            <%= index + 1 %>
+                          </th>
+                          <td>
+                            <%= attendance.date %>
+                          </td>
+                          <td>
+                            <%= attendance.time_in %>
+                          </td>
+                          <td>
+                            <%= attendance.time_out %>
+                          </td>
+                          <td>
+                            <%= (()=> {
+                              const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
+                              const timeOutDate = attendance.time_out ? new Date(`${attendance.date}
+                              ${attendance.time_out}`) : new Date();
+                              const timeDiffMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
+                              const hours = Math.floor(timeDiffMinutes / 60);
+                              const minutes = timeDiffMinutes % 60;
+                              return timeDiffMinutes >= 60 ? `${hours} hours ${minutes} minutes` : `${timeDiffMinutes}
+                              minutes`;
+                              })() %>
+                          </td>
+
+                          <td class="fw-bold">
+                            <%= attendance.task_count %>
+                          </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+      <!-- End #main -->
+      <%-include ("../Includes/Client/script.ejs")%>
+        <script>
+          $(document).ready(function () {
+            $('#attendanceTable').DataTable();
+          });
+
+
+
+          function calculateTimeSpent(timeIn, timeOut) {
+            const timeInDate = new Date(`2000-01-01 ${timeIn}`);
+            const timeOutDate = timeOut ? new Date(`2000-01-01 ${timeOut}`) : new Date();
+            const timeSpentMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
+            return timeSpentMinutes;
+          }
+
+          function getCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
+          }
+
+
+        </script>
+  </body>
+
+  </html>

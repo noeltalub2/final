@@ -1,0 +1,210 @@
+<%-include ("../Includes/Trainer/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Trainer/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/trainer/task">
+                            <i class="bi bi-list-task"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Task Management</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/trainer/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Task Management</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+
+                    <div class="row">
+                        <div class="card ">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="">
+                                        <h5 class="card-title mb-4">Client Tasks</h5>
+                                    </div>
+                                    <div class="">
+                                        <a href="/trainer/add_task" class="btn btn-dark">
+                                            Create Task
+                                        </a>
+                                    </div>
+                                </div>
+
+
+                                <div class="table-responsive-md">
+                                    <table class="table table-bordered" id="taskTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Fullname</th>
+                                                <th scope="col">Task</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% tasks.forEach(function(task, index) { %>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <%= index + 1 %>
+                                                    </th>
+                                                    <td>
+                                                        <%= new Date(task.join_date ).toLocaleDateString('en-US', {
+                                                            month: 'long' , day: 'numeric' , year: 'numeric' }) %>
+                                                    </td>
+                                                    <td>
+                                                        <%= task.client_name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= task.description %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <% if (task.status==='Cancelled' ) { %>
+                                                            <span class="badge bg-danger ">
+                                                                <%= task.status %>
+                                                            </span>
+                                                            <% } else if (task.status==='Done' ) { %>
+                                                                <span class="badge bg-success">
+                                                                    <%= task.status %>
+                                                                </span>
+                                                                <% } else if (task.status==='In Progress' ) { %>
+                                                                    <span class="badge bg-warning text-dark">
+                                                                        <%= task.status %>
+                                                                    </span>
+                                                                    <% } else { %>
+                                                                        <span class="badge bg-secondary">
+                                                                            <%= task.status %>
+                                                                        </span>
+                                                                        <% } %>
+                                                    </td>
+
+                                                    <td class="text-center">
+
+                                                        <div class="text-center">
+                                                            <div class="dropdown"> <a class="text-secondary" href="#"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false"> <i
+                                                                        class="bi bi-three-dots"></i> </a>
+                                                                <ul class="dropdown-menu ">
+                                                                    <li> <a class="dropdown-item"
+                                                                            href="/trainer/edit_task/<%=task.task_id%>"><i
+                                                                                class="bi bi-pencil-square me-1"></i>
+                                                                            Edit</a></li>
+                                                                    <li> <button class="dropdown-item text-danger"
+                                                                            onclick="deleteTask('<%=task.task_id%>')"><i
+                                                                                class="bi bi-x-circle"></i>
+                                                                            Delete</button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Trainer/script.ejs")%>
+
+                <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+                <script>
+
+
+                    $(document).ready(function () {
+                        $('#taskTable').DataTable();
+                    });
+
+
+                    function deleteTask(taskId) {
+                        Swal.fire({
+                            title: "Delete Task",
+                            text: `Are you sure you want to delete this task? This action cannot be undone.`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Confirm", // Set the text for the confirmation button
+                            cancelButtonText: "Cancel",  // Set the text for the cancel button
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch("/trainer/del_task", {
+                                    method: "POST",
+                                    body: JSON.stringify({ taskId }),
+                                    headers: { "Content-Type": "application/json" },
+                                })
+                                    .then((res) => res.json())
+                                    .then((response) => {
+                                        if (response.status === "success") {
+                                            Swal.fire(
+                                                'Success!',
+                                                `${response.message}`,
+                                                'success'
+                                            ).then(function () {
+                                                window.location.href = '/trainer/task';
+                                            });
+                                        }
+                                        if (response.status === "error") {
+                                            Swal.fire(
+                                                'Error',
+                                                `${response.message}`,
+                                                'error'
+                                            ).then(function () {
+                                                window.location.href = '/trainer/task';
+                                            });
+                                        }
+                                    });
+                            } else if (result.isDismissed) {
+                                // User clicked the "Cancel" button or outside the dialog
+                                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+                            }
+                        });
+                    }
+
+                </script>
+    </body>
+
+    </html>

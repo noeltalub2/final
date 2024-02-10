@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="shortcut icon" href="/img/logo.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/020dbcd45c.js" crossorigin="anonymous"></script>
+    <title>Register | King's Gym</title>
+</head>
+
+<body>
+    <div class="preloader">
+        <img src="../img/logo.png" alt="loader" class="lds-ripple img-fluid" />
+    </div>
+    <div id="main-wrapper">
+        <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
+            <div class="position-relative z-index-5">
+                <div class="row">
+                    <div class="col-xl-7 col-xxl-8">
+
+                        <div class="d-none d-xl-flex align-items-center justify-content-center"
+                            style="height: calc(100vh - 80px);">
+                            <img src="../img/bg.jpg" alt="" class="" width="1500">
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-xxl-4">
+                        <div
+                            class="authentication-login min-vh-100 bg-body row justify-content-center align-items-center p-4">
+                            <div class="col-sm-8 col-md-5 col-xl-10 px-4">
+                                <div class="logo-block text-center mb-2"> <img src="../img/logo.png" alt="" height="90">
+                                </div>
+                                <h2 class="mb-1 fs-7 fw-bolder">Join King's Gym Now!</h2>
+                                <p class="mb-6">Sign up for exclusive benefits and personalized fitness experiences.</p>
+                                <%-include ("../Includes/message.ejs")%>
+                                    <form method="post" class="needs-validation" novalidate>
+                                        <div class="mb-2">
+                                            <label for="inputFullname" class="form-label form-label-custom">Name</label>
+                                            <input type="text" class="form-control" id="inputFullname"
+                                                aria-describedby="textHelp" required minlength="3" name="fullname">
+                                            <div class="invalid-feedback">
+                                                Required
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="exampleInputEmail1" class="form-label form-label-custom">Email
+                                                address</label>
+                                            <input type="email" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" required name="email">
+                                            <div class="invalid-feedback">
+                                                Required
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <label for="inputPhonenumber" class="form-label form-label-custom">Phone
+                                                Number</label>
+                                            <input type="tel" class="form-control" id="inputPhonenumber"
+                                                name="phonenumber" required minlength="11" maxlength="11">
+                                            <div class="invalid-feedback">
+                                                Required
+                                            </div>
+
+
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="inputUsername"
+                                                class="form-label form-label-custom">Username</label>
+                                            <input type="text" class="form-control" id="inputUsername" name="username"
+                                                required minlength="3">
+                                            <div class="invalid-feedback">
+                                                Required
+                                            </div>
+
+                                        </div>
+
+
+
+
+                                        <div class="mb-3">
+                                            <label for="inputPassword"
+                                                class="form-label form-label-custom">Password</label>
+                                            <input type="password" class="form-control" id="yourPassword"
+                                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required name="password">
+                                            <div class="invalid-feedback">
+                                                Required
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirmPassword" class="form-label form-label-custom">Confirm
+                                                Password</label>
+                                            <input type="password" name="confirmPassword" class="form-control"
+                                                id="confirmPassword" required>
+                                            <div class="invalid-feedback" id="confirmPasswordInvalid"> Required</div>
+                                        </div>
+
+
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" name="terms" type="checkbox" value=""
+                                                    id="acceptTerms" required>
+                                                <label class="form-check-label" for="acceptTerms">I agree and accept the
+                                                    <!-- Button trigger modal -->
+                                                    <a type="button" class="link-dark" data-bs-toggle="modal"
+                                                        data-bs-target="#privacyAct">
+                                                        Data Privacy Act of 2012
+                                                    </a>
+
+                                                </label>
+                                            </div>
+                                            <div class="modal fade" id="privacyAct" tabindex="-1"
+                                                aria-labelledby="privacyActLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="privacyActLabel">
+                                                                Data Privacy Act of 2012</h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <small class="text-muted mb-3">
+                                                                    By submitting this form, you agree to the collection and processing of your personal data in accordance with the policies of King's Gym Management System. This consent does not preclude the existence of other criteria for lawful processing of personal data and does not waive any rights under relevant data protection laws.
+                                                                </small>
+                                                            
+                                                                <p>
+                                                                    I undertake to abide by the lawful processing of personal data as mandated by the provisions of the Data Privacy Act, its implementing rules and regulations, as well as the policies of King's Gym Management System. This includes compliance with the gym's internal policies and any other applicable regulations.
+                                                                </p>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark w-100 py-8 mb-4 rounded-2">Sign
+                                            Up</button>
+                                        <div class="d-flex align-items-center">
+                                            <p class="mb-0 text-dark">Already have an account?</p>
+                                            <a class="text-dark fw-medium ms-2" href="/">Sign In</a>
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/js/validator.js"></script>
+    <script>
+        $(function () {
+            "use strict";
+
+            $(".preloader").fadeOut();
+
+
+        });
+    </script>
+    <script>
+        const passwordInput = document.querySelector('#yourPassword');
+        const confirmPasswordInput = document.querySelector('#confirmPassword');
+        const passwordError = document.querySelector('#passwordInvalid');
+        const confirmPasswordError = document.querySelector('#confirmPasswordInvalid');
+
+        confirmPasswordInput.addEventListener('input', (event) => {
+            const confirmPassword = event.target.value;
+            const password = passwordInput.value;
+
+            console.log(confirmPassword)
+            console.log(password)
+
+            if (confirmPassword !== password) {
+                confirmPasswordInput.setCustomValidity('Passwords do not match');
+                confirmPasswordError.innerText = 'Passwords do not match';
+                confirmPasswordError.classList.add('d-block');
+                confirmPasswordInput.classList.add('is-invalid');
+            } else {
+                confirmPasswordInput.setCustomValidity('');
+                confirmPasswordError.innerText = 'Please confirm your password.';
+                confirmPasswordError.classList.remove('d-block');
+                confirmPasswordInput.classList.remove('is-invalid');
+            }
+        });
+    </script>
+</body>
+
+</html>

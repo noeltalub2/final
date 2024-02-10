@@ -1,0 +1,255 @@
+<%-include ("../Includes/Trainer/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Trainer/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/task">
+                            <i class="bi bi-list-task"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="/trainer/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Profile</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/trainer/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Profile</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <div class="col-xl-4">
+
+                            <div class="card">
+                                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                                    <img src="/img/avatar.png" alt="Profile" class="rounded-circle">
+                                    <h2 class="mb-2">
+                                        <%=profileData.fullname%>
+                                    </h2>
+
+                                    <p class="mb-0 fw-bold text-muted">Verified Trainer</p>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-8">
+                            <%-include ("../Includes/message.ejs")%>
+                                <div class="card">
+                                    <div class="card-body pt-3">
+                                        <!-- Bordered Tabs -->
+                                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab"
+                                                    data-bs-target="#profile-overview">Overview</button>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab"
+                                                    data-bs-target="#profile-edit">Edit Profile</button>
+                                            </li>
+
+
+                                        </ul>
+                                        <div class="tab-content pt-2">
+
+                                            <div class="tab-pane fade show active profile-overview"
+                                                id="profile-overview">
+
+                                                <h5 class="card-title">Profile Details</h5>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.fullname%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Age</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.age%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Gender</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.gender%>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Address</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.address%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.phonenumber%>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-4 label">Email</div>
+                                                    <div class="col-lg-9 col-md-8">
+                                                        <%=profileData.email%>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="tab-pane fade profile-edit" id="profile-edit">
+
+                                                <h5 class="card-title">Edit Information Details</h5>
+                                                <!-- Profile Edit Form -->
+                                                <form method="post" class="needs-validation" novalidate>
+
+
+                                                    <div class="row mb-3">
+                                                        <label for="fullName"
+                                                            class="col-md-4 col-lg-3 col-form-label">Full
+                                                            Name</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="fullName" type="text" class="form-control"
+                                                                id="fullName" value="<%=profileData.fullname%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="ageInput"
+                                                            class="col-md-4 col-lg-3 col-form-label">Age</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="age" type="number" class="form-control"
+                                                                id="ageInput" value="<%=profileData.age%>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for="genderInput"
+                                                            class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <select name="gender" id="genderInput" class="form-control"
+                                                                required>
+                                                                <option value="" disabled <%=profileData.gender===""
+                                                                    ? 'selected' : '' %>>Select Gender</option>
+                                                                <option value="Male" <%=profileData.gender==="Male"
+                                                                    ? 'selected' : '' %>>Male</option>
+                                                                <option value="Female" <%=profileData.gender==="Female"
+                                                                    ? 'selected' : '' %>>Female</option>
+                                                                <option value="Other" <%=profileData.gender==="Other"
+                                                                    ? 'selected' : '' %>>Other</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row mb-3">
+                                                        <label for="emailInput"
+                                                            class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="email" type="email" class="form-control"
+                                                                id="compaemailInputy" value="<%=profileData.email%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="inputPhonenumber"
+                                                            class="col-md-4 col-lg-3 col-form-label">Phone
+                                                            Number</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="phonenumber" type="tel" class="form-control"
+                                                                minlength="11" maxlength="11" id="inputPhonenumber"
+                                                                value="<%=profileData.phonenumber%>" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-3">
+                                                        <label for="inputAddress"
+                                                            class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="address" type="text" class="form-control"
+                                                                id="inputAddress" value="<%=profileData.address%>"
+                                                                required>
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-dark">Save
+                                                            Changes</button>
+                                                    </div>
+                                                </form><!-- End Profile Edit Form -->
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                        </div>
+
+                    </div>
+                    </div>
+                </section>
+
+            </main>
+            </div>
+
+            </section>
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Trainer/script.ejs")%>
+                <script>
+
+                </script>
+    </body>
+
+    </html>

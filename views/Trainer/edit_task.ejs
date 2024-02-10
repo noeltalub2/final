@@ -1,0 +1,131 @@
+<%-include ("../Includes/Trainer/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Trainer/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/trainer/task">
+                            <i class="bi bi-list-task"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Task Management</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/trainer/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Task Management</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+
+                    <div class="row">
+                        <%-include ("../Includes/message.ejs")%>
+                            <div class="card ">
+                                <div class="card-body">
+                                    <div class="row profile-edit">
+                                        <div class="col-lg-7">
+                                            <h5 class="card-title">Edit Task Details</h5>
+                                            <form method="post" action="/trainer/edit_task" class="needs-validation" novalidate>
+                                                <input type="hidden" value="<%=task.task_id%>" name="task_id">
+                                                <div class="row mb-3">
+                                                    <label for="taskDescription" class="col-md-4 col-lg-3 col-form-label">Task Description</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <input name="description" type="text" class="form-control" id="taskDescription" value="<%= task.description %>" required>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="row mb-3">
+                                                    <label for="taskStatus" class="col-md-4 col-lg-3 col-form-label">Task Status</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <select name="status" id="taskStatus" class="form-control" required>
+                                                            <option value="Cancelled" <%= task.status === "Cancelled" ? 'selected' : '' %>>Cancelled</option>
+                                                            <option value="Done" <%= task.status === "Done" ? 'selected' : '' %>>Done</option>
+                                                            <option value="In Progress" <%= task.status === "In Progress" ? 'selected' : '' %>>In Progress</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="row mb-3">
+                                                    <label for="taskDate" class="col-md-4 col-lg-3 col-form-label">Task Date</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <% 
+                                                            const logDateParts = task.date.split('/');
+                                                            const formattedLogDate = `${logDateParts[2]}-${logDateParts[0].padStart(2, '0')}-${logDateParts[1].padStart(2, '0')}`;
+                                                        %>
+                                                        <input name="taskdate" type="date" min="<%= new Date().toISOString().split('T')[0] %>" class="form-control" id="taskDate" value="<%= formattedLogDate %>" required>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mb-3">
+                                                    <label for="tasktime" class="col-md-4 col-lg-3 col-form-label">Task Time</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <% 
+                                                            const logTimeParts = task.time.split(' ')[0].split(':');
+                                                            const formattedLogTime = `${logTimeParts[0].padStart(2, '0')}:${logTimeParts[1]}`;
+                                                        %>
+                                                        <input name="tasktime" type="time" class="form-control" id="taskTime" value="<%= formattedLogTime %>" required>
+                                                    </div>
+                                                </div>
+                                                
+                                            
+                                                <div class="text-center">
+                                                    <button type="submit" class="btn btn-dark me-1">Save Changes</button>
+                                                    <a href="/trainer/task" class="btn btn-outline-dark">Cancel</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                 
+                                    
+
+                                </div>
+
+                            </div>
+
+                    </div>
+
+                </section>
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Trainer/script.ejs")%>
+
+
+
+
+
+    </body>
+
+    </html>

@@ -1,0 +1,408 @@
+<%-include ("../Includes/Client/head.ejs")%>
+
+  <body>
+    <%-include ("../Includes/Client/header.ejs")%>
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link " href="/dashboard">
+              <i class="bi bi-grid-fill"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/task">
+              <i class="bi bi-list-task"></i>
+              <span>Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/attendance">
+              <i class="bi bi-table"></i>
+              <span>Attendance</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/announcement">
+              <i class="bi bi-megaphone"></i>
+              <span>Announcement</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/profile">
+              <i class="bi bi-person-lines-fill"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End Sidebar-->
+      <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Dashboard</h1>
+          <nav style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+        <section class="section profile">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="row">
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card">
+                    <div class="card-body">
+                      <h5 class="card-title">Workout <span>| Today</span></h5>
+
+                      <div class="d-flex align-items-center">
+
+                        <h5> <i class="bi bi-clock-history me-2"></i>
+                          <td>
+                          <td>
+                            <%= (()=> {
+                              const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
+                              const timeOutDate = attendance.time_out ? new Date(`${attendance.date}
+                              ${attendance.time_out}`) : new Date();
+                              const timeDiffMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
+                              if (isNaN(timeDiffMinutes)) {
+                              return '0 minutes'; // Return zero if timeDiffMinutes is NaN
+                              } else {
+                              const hours = Math.floor(timeDiffMinutes / 60);
+                              const minutes = timeDiffMinutes % 60;
+                              return timeDiffMinutes >= 60 ? `${hours} hours ${minutes} minutes` : `${timeDiffMinutes}
+                              minutes`;
+                              }
+                              })() %>
+
+                          </td>
+
+                          </td>
+                        </h5>
+
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">Task Done <span>| All time</span></h5>
+
+                      <div class="d-flex align-items-center">
+
+                        <h5> <i class="bi bi-list-task me-2"></i></i>
+                          <%=task_done.count%>
+                        </h5>
+
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">Body Info <span>| Current</span></h5>
+
+                      <div class="d-flex align-items-center">
+
+                        <h5><i class="bi bi-rulers me-2"></i>
+                          <%=client_info.height%> cm | 56 kl
+                        </h5>
+
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Today's Task</h5>
+                    <a href="/task" class="link-dark" style="font-size: 0.8rem;">See All</a>
+                  </div>
+
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <% current_tasks.forEach((task,index)=> { %>
+                        <tr>
+                          <th scope="row">
+                            <%= index + 1 %>
+                          </th>
+
+                          <td>
+                            <%= task.description %>
+                          </td>
+                          <td>
+                            <span class="badge border-warning border-1 text-warning">
+                              <%= task.status %>
+                            </span>
+
+                          </td>
+                          <td>
+                            <!-- Add your action button or link here -->
+                            <div class="text-center">
+                              <div class="dropdown"> <a class="text-secondary" href="#" data-bs-toggle="dropdown"
+                                  aria-expanded="false"> <i class="bi bi-three-dots"></i> </a>
+                                <ul class="dropdown-menu ">
+                                  <li> <button class="dropdown-item"
+                                      onclick="taskDone('<%=task.task_id%>','<%=task.client_id%>')"><i
+                                        class="bi bi-check2-circle"></i> Done</button></li>
+                                  <li> <button class="dropdown-item text-danger"
+                                      onclick="taskCancel('<%=task.task_id%>','<%=task.client_id%>')"><i
+                                        class="bi bi-x-circle"></i> Cancel</button>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        <% }); %>
+
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-lg-4">
+              <div class="col-lg-12">
+                <div class="card ">
+                  <div class="card-body">
+                    <h5 class="card-title">Membership Status</h5>
+                    <% if (membershipData.membership_status==='Waiting for Activation' ) { %>
+                      <!-- Show waiting for activation section -->
+                      <div class="waiting-activation">
+                        <p class="membership-type mb-0 fw-bold">
+                          <i class="bi bi-clock-fill text-warning me-2"></i>
+                          <%=membershipData.membership_service%>
+                            Membership
+                        </p>
+                        <p class="membership-status mb-0">Awaiting
+                          Payment
+                          Confirmation</p>
+
+                        <small class="text-muted">Kindly make the
+                          payment
+                          directly
+                          to the administrator. Thank you.</small>
+                        <div class="mt-3">
+                          <a class="btn btn-dark btn-sm me-2" href="/profile">Details</a>
+                        </div>
+
+                      </div>
+
+                      <% } else if (membershipData.membership_status==='Activated' ) { %>
+                        <!-- Show activated section -->
+
+                        <div class="activated">
+                          <p class="membership-type mb-0 fw-bold">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <%=membershipData.membership_service%>
+                              Membership
+                          </p>
+                          <p class="membership-details mb-0">
+                            Trainer:
+                            <%=membershipData.trainer_name%>
+
+                          </p>
+                          <p class="membership-details mb-0">
+                            Plan:
+                            <%=membershipData.membership_plan%>
+                              Month/s
+                          </p>
+
+                          <small class="text-muted">
+                            Start Date:
+                            <%= new Date(membershipData.status_change_date).toLocaleDateString('en-US', { month: 'long'
+                              , day: 'numeric' , year: 'numeric' }) %><br>Expire In: <%= new
+                                Date(membershipData.date_expiration).toLocaleDateString('en-US', { month: 'long' ,
+                                day: 'numeric' , year: 'numeric' }) %><br>
+                          </small>
+
+                          <div class="mt-3">
+                            <a class="btn btn-dark btn-sm me-2" href="/profile">Details</a>
+
+                          </div>
+
+                        </div>
+
+                        <% } else {%>
+                          <div class="no-membership">
+                            <p class="membership-type mb-0 fw-bold">
+                              <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                              <%=membershipData.membership_service%>
+                                You don't have an active membership.
+                            </p>
+
+                            <div class="mt-3">
+                              <a class="btn btn-dark btn-sm me-2" href="/profile">Become a member?</a>
+                            </div>
+                          </div>
+
+                          <%}%>
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h5 class="card-title">Recent Announcement</h5>
+                      <a href="/announcement" class="link-dark" style="font-size: 0.8rem;">See All</a>
+                    </div>
+
+
+
+                    <p class=" mb-0 fw-bold"><i class="bi bi-megaphone me-2"></i>
+                      <%= announcement.title %>
+                    </p>
+
+                    <p class="small">
+                      <%= announcement.message %>
+                    </p>
+                    <small class="text-muted">
+                      Date:
+                      <%= new Date(announcement.date ).toLocaleDateString('en-US', { month: 'long' , day: 'numeric' ,
+                        year: 'numeric' }) %>
+                    </small>
+                    <br>
+                    <small class="text-muted">By: Administrator </small>
+
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+      <!-- End #main -->
+      <%-include ("../Includes/Client/script.ejs")%>
+        <script>
+          function taskDone(taskId, clientId) {
+            Swal.fire({
+              title: "Task Done",
+              text: `Have you completed your assigned task?`,
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonText: "Done", // Set the text for the confirmation button
+              cancelButtonText: "Cancel",  // Set the text for the cancel button
+            }).then((result) => {
+              if (result.isConfirmed) {
+                fetch("/done_task", {
+                  method: "POST",
+                  body: JSON.stringify({ taskId, clientId }),
+                  headers: { "Content-Type": "application/json" },
+                })
+                  .then((res) => res.json())
+                  .then((response) => {
+                    if (response.status === "success") {
+                      Swal.fire(
+                        'Success!',
+                        `${response.message}`,
+                        'success'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                    if (response.status === "error") {
+                      Swal.fire(
+                        'Error',
+                        `${response.message}`,
+                        'error'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                  });
+              } else if (result.isDismissed) {
+                // User clicked the "Cancel" button or outside the dialog
+                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+              }
+            });
+          }
+
+
+          function taskCancel(taskId, clientId) {
+            Swal.fire({
+              title: "Task Cancel",
+              text: `Are you sure you want to cancel this task? This action cannot be undone.`,
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Confirm", // Set the text for the confirmation button
+              cancelButtonText: "Cancel",  // Set the text for the cancel button
+            }).then((result) => {
+              if (result.isConfirmed) {
+                fetch("/cancel_task", {
+                  method: "POST",
+                  body: JSON.stringify({ taskId, clientId }),
+                  headers: { "Content-Type": "application/json" },
+                })
+                  .then((res) => res.json())
+                  .then((response) => {
+                    if (response.status === "success") {
+                      Swal.fire(
+                        'Success!',
+                        `${response.message}`,
+                        'success'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                    if (response.status === "error") {
+                      Swal.fire(
+                        'Error',
+                        `${response.message}`,
+                        'error'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                  });
+              } else if (result.isDismissed) {
+                // User clicked the "Cancel" button or outside the dialog
+                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+              }
+            });
+          }
+
+        </script>
+  </body>
+
+  </html>

@@ -1,0 +1,305 @@
+<%-include ("../Includes/Client/head.ejs")%>
+
+  <body>
+    <%-include ("../Includes/Client/header.ejs")%>
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/dashboard">
+              <i class="bi bi-grid-fill"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+
+          <li class="nav-item">
+            <a class="nav-link " href="/task">
+              <i class="bi bi-list-task"></i>
+              <span>Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/attendance">
+              <i class="bi bi-table"></i>
+              <span>Attendance</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/announcement">
+              <i class="bi bi-megaphone"></i>
+              <span>Announcement</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/profile">
+              <i class="bi bi-person-lines-fill"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End Sidebar-->
+      <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Task</h1>
+          <nav style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Task</li>
+            </ol>
+          </nav>
+        </div>
+        <section class="section profile">
+
+          <div class="row">
+            <!-- <div class="col-lg-4">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mb-2">Add Task</h5>
+                  <form class="needs-validation" novalidate method="post" action="/task">
+                    <div class="mb-3">
+                      <%-include ("../Includes/message.ejs")%>
+                        <label for="taskInput" class="form-label">Task Name</label>
+                        <input type="text" class="form-control" id="taskInput" placeholder="Enter task name" required
+                          name="description">
+                        <div class="invalid-feedback">
+                          Please provide a task.
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                      <button class="btn btn-dark" type="submit" id="addTaskBtn">Add Task</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-lg-12">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mb-4">Today's Tasks</h5>
+                  <div class="table-responsive-md">
+                    <table class="table-sm table " id="taskTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="todoList">
+                        <% current_tasks.forEach((task,index)=> { %>
+                          <tr>
+                            <th scope="row">
+                              <%= index + 1 %>
+                            </th>
+                            <td>
+                              <%= task.date %>
+                              <br>
+                              <%= task.time %>
+                            </td>
+                            <td>
+                              <%= task.description %>
+                            </td>
+                            <td>
+                              <span class="badge border-warning border-1 text-warning">
+                                <%= task.status %>
+                              </span>
+                            </td>
+                            <td>
+                              <!-- Add your action button or link here -->
+                              <div class="text-center">
+                                <div class="dropdown"> <a class="text-secondary" href="#" data-bs-toggle="dropdown"
+                                    aria-expanded="false"> <i class="bi bi-three-dots"></i> </a>
+                                  <ul class="dropdown-menu">
+                                    <li> <button class="dropdown-item"
+                                        onclick="taskDone('<%=task.task_id%>','<%=task.client_id%>')"><i
+                                          class="bi bi-check2-circle"></i> Done</button></li>
+                                    <li> <button class="dropdown-item text-danger"
+                                        onclick="taskCancel('<%=task.task_id%>','<%=task.client_id%>')"><i
+                                          class="bi bi-x-circle"></i> Cancel</button>
+                                    </li>
+                                  </ul>
+                                </div>
+
+                            </td>
+                          </tr>
+                          <% }); %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-lg-12">
+              <div class="card ">
+                <div class="card-body">
+                  <h5 class="card-title mb-4">Recent Tasks/History</h5>
+                  <div class="table-responsive-md">
+                    <table class="table table-bordered" id="historyTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Modified Date</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Status</th>
+
+                        </tr>
+                      </thead>
+                      <tbody id="historyList">
+                        <% history_tasks.forEach((task, index)=> { %>
+                          <tr>
+                            <th scope="row">
+                              <%= index + 1 %>
+                            </th>
+                            <td>
+                              
+                              <%= task.date %>
+                              <br>
+                              <%= task.time %>
+                            </td>
+                            <td>
+                              
+                              <%= task.log_date %>
+                              <br>
+                              <%= task.log_time %>
+                            </td>
+                            <td>
+                              <%= task.description %>
+                            </td>
+                            <td>
+                              <span
+                                class="badge border-1 <%= task.status === 'Done' ? 'border-success text-success' : 'border-danger text-danger' %>">
+                                <%= task.status %>
+                              </span>
+
+                            </td>
+
+                          </tr>
+                          <% }); %>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+      <!-- End #main -->
+      <%-include ("../Includes/Client/script.ejs")%>
+        <script>
+          $(document).ready(function () {
+            $('#taskTable').DataTable({
+              "lengthMenu": [5, 10, 25, 50],
+              "pageLength": 5
+            });
+          });
+
+          $(document).ready(function () {
+            $('#historyTable').DataTable();
+          });
+        </script>
+        <script>
+          function taskDone(taskId, clientId) {
+            Swal.fire({
+              title: "Task Done",
+              text: `Have you completed your assigned task?`,
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonText: "Done", // Set the text for the confirmation button
+              cancelButtonText: "Cancel",  // Set the text for the cancel button
+            }).then((result) => {
+              if (result.isConfirmed) {
+                fetch("/done_task", {
+                  method: "POST",
+                  body: JSON.stringify({ taskId, clientId }),
+                  headers: { "Content-Type": "application/json" },
+                })
+                  .then((res) => res.json())
+                  .then((response) => {
+                    if (response.status === "success") {
+                      Swal.fire(
+                        'Success!',
+                        `${response.message}`,
+                        'success'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                    if (response.status === "error") {
+                      Swal.fire(
+                        'Error',
+                        `${response.message}`,
+                        'error'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                  });
+              } else if (result.isDismissed) {
+                // User clicked the "Cancel" button or outside the dialog
+                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+              }
+            });
+          }
+
+
+          function taskCancel(taskId, clientId) {
+            Swal.fire({
+              title: "Task Cancel",
+              text: `Are you sure you want to cancel this task? This action cannot be undone.`,
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Confirm", // Set the text for the confirmation button
+              cancelButtonText: "Cancel",  // Set the text for the cancel button
+            }).then((result) => {
+              if (result.isConfirmed) {
+                fetch("/cancel_task", {
+                  method: "POST",
+                  body: JSON.stringify({ taskId, clientId }),
+                  headers: { "Content-Type": "application/json" },
+                })
+                  .then((res) => res.json())
+                  .then((response) => {
+                    if (response.status === "success") {
+                      Swal.fire(
+                        'Success!',
+                        `${response.message}`,
+                        'success'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                    if (response.status === "error") {
+                      Swal.fire(
+                        'Error',
+                        `${response.message}`,
+                        'error'
+                      ).then(function () {
+                        window.location.href = '/task';
+                      });
+                    }
+                  });
+              } else if (result.isDismissed) {
+                // User clicked the "Cancel" button or outside the dialog
+                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+              }
+            });
+          }
+
+        </script>
+  </body>
+
+  </html>

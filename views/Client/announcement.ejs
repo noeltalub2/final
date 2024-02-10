@@ -1,0 +1,98 @@
+<%-include ("../Includes/Client/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Client/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/task">
+                            <i class="bi bi-list-task"></i>
+                            <span>Task</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/attendance">
+                            <i class="bi bi-table"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="/announcement">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Announcement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>All Announcement</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Announcement</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Announcements</h5>
+                                <div class="row g-3">
+                                    <% announcements.forEach(announcement=> { %>
+                                        <div class="col-lg-6">
+                                            <div class="list-group">
+
+                                                <div href="#" class="list-group-item list-group-item-action"
+                                                    aria-current="true">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1 fw-bold">
+                                                            <%= announcement.title %>
+                                                        </h6>
+                                                        <small>
+                                                            <%= new Date(announcement.date ).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+                                                        </small>
+                                                    </div>
+                                                    <p class="mb-1 small">
+                                                        <%= announcement.message %>
+                                                    </p>
+                                                    <small class="text-muted">By: Administrator</small>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Client/script.ejs")%>
+
+    </body>
+
+    </html>
