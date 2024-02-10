@@ -1,0 +1,180 @@
+<%-include ("../Includes/Admin/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Admin/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/task">
+                            <i class="bi bi-list-task"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Dashboard</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <div class="card ">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">All Clients</h5>
+                                <div class="table-responsive-md">
+                                    <table class="table table-bordered" id="clientTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+
+                                                <th scope="col">Username</th>
+                                                <th scope="col">Fullname</th>
+                                                <th scope="col">Phone Number</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col" class="text-center">Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% clientData.forEach(function(client,index) { %>
+                                                <tr>
+                                                    <th scope="row">
+                                                        <%= index + 1 %>
+                                                    </th>
+                                                    <td>
+                                                        @<%= client.username %>
+                                                    </td>
+                                                    <td>
+                                                        <%= client.fullname %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= client.phonenumber %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= client.email %>
+                                                    </td>
+
+                                                    <td class="text-center">
+
+                                                        <div class="text-center">
+                                                            <div class="dropdown"> <a class="text-secondary" href="#"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false"> <i
+                                                                        class="bi bi-three-dots"></i> </a>
+                                                                <ul class="dropdown-menu ">
+                                                                    <li> <a class="dropdown-item"
+                                                                            href="/admin/client/<%= client.username %>"><i
+                                                                                class="bi bi-pencil-square me-1"></i>
+                                                                            Edit</a></li>
+                                                                    <li> <button class="dropdown-item text-danger"
+                                                                            onclick="deleteUser('<%=client.username%>')"><i
+                                                                                class="bi bi-x-circle"></i>
+                                                                            Delete</button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Admin/script.ejs")%>
+                <script>
+
+                    $(document).ready(function () {
+                        $('#clientTable').DataTable();
+                    });
+
+                    function deleteUser(userId) {
+                        Swal.fire({
+                            title: "Delete Client",
+                            text: `Are you sure you want to delete client ${userId}? This action cannot be undone.`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Confirm", // Set the text for the confirmation button
+                            cancelButtonText: "Cancel",  // Set the text for the cancel button
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch("/admin/del_client", {
+                                    method: "POST",
+                                    body: JSON.stringify({ userId }),
+                                    headers: { "Content-Type": "application/json" },
+                                })
+                                    .then((res) => res.json())
+                                    .then((response) => {
+                                        if (response.status === "success") {
+                                            Swal.fire(
+                                                'Success!',
+                                                `${response.message}`,
+                                                'success'
+                                            ).then(function () {
+                                                window.location.href = '/admin/client';
+                                            });
+                                        }
+                                        if (response.status === "error") {
+                                            Swal.fire(
+                                                'Error',
+                                                `${response.message}`,
+                                                'error'
+                                            ).then(function () {
+                                                window.location.href = '/admin/client';
+                                            });
+                                        }
+                                    });
+                            } else if (result.isDismissed) {
+                                // User clicked the "Cancel" button or outside the dialog
+                                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+                            }
+                        });
+                    }
+
+                </script>
+    </body>
+
+    </html>

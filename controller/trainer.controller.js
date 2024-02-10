@@ -126,14 +126,11 @@ const getClient = async (req, res) => {
 const getClientView = async (req, res) => {
 	const client_username = req.params.username;
 	const trainer_id = res.locals.id;
-	const tasks = (
-		await queryParam(
-			`SELECT task.task_id, membership.membership_service, membership.membership_plan, membership.join_date, task.description, task.status, client.fullname AS client_name FROM membership INNER JOIN trainer ON membership.trainer_id = trainer.trainer_id LEFT JOIN task ON task.client_id = membership.client_id LEFT JOIN client ON client.id = membership.client_id WHERE client.username = '${client_username}' AND trainer.trainer_id = ? AND membership.membership_status = 'Activated' AND membership.payment_status = 'Paid' ORDER BY task.task_id DESC;`,
-			[trainer_id]
-)
+	const tasks = await queryParam(
+		`SELECT task.task_id, membership.membership_service, membership.membership_plan, membership.join_date, task.description, task.status, client.fullname AS client_name FROM membership INNER JOIN trainer ON membership.trainer_id = trainer.trainer_id LEFT JOIN task ON task.client_id = membership.client_id LEFT JOIN client ON client.id = membership.client_id WHERE client.username = '${client_username}' AND trainer.trainer_id = ? AND membership.membership_status = 'Activated' AND membership.payment_status = 'Paid' ORDER BY task.task_id DESC;`,
+		[trainer_id]
 	);
 
-	
 	const profileData = (
 		await queryParam("SELECT * FROM client WHERE username = ?", [
 			client_username,
@@ -164,7 +161,7 @@ const getClientView = async (req, res) => {
 		progress,
 		done,
 		cancelled,
-		tasks
+		tasks,
 	});
 };
 const getTask = async (req, res) => {

@@ -67,7 +67,17 @@ const getDashboard = async (req, res) => {
 
 	res.render("Admin/dashboard", {
 		title: "Admin Dashboard",
-	
+	});
+};
+
+const getClient = async (req, res) => {
+	const clientData = await zeroParam(
+		"SELECT * FROM client ORDER BY `client`.`id` DESC;"
+	);
+
+	res.render("Admin/client", {
+		title: "Admin - Manage Client",
+		clientData,
 	});
 };
 
@@ -79,6 +89,6 @@ module.exports = {
 	getLogin,
 	postLogin,
 	getDashboard,
-
+	getClient,
 	getLogout,
 };

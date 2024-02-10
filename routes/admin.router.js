@@ -9,6 +9,7 @@ router.post("/signin", adminController.postLogin);
 
 router.get("/dashboard", adminController.getDashboard);
 
+router.get("/client", adminController.getClient);
 // router.get("/client", requireAuth, adminController.getClient);
 // router.get("/client/:username", requireAuth, adminController.getClientView);
 
