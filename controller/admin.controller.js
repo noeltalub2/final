@@ -164,32 +164,22 @@ const updateProfile = (req, res) => {
 const deleteClient = async (req, res) => {
 	const username = req.body.userId;
 	const id = (
-		await queryParam("SELECT id FROM client WHERE username = ?", [
-			username,
-		])
+		await queryParam("SELECT id FROM client WHERE username = ?", [username])
 	)[0].id;
 	try {
 		const attendance = (
-			await queryParam("DELETE FROM attendance WHERE client_id = ?", [
-				id,
-			])
+			await queryParam("DELETE FROM attendance WHERE client_id = ?", [id])
 		)[0];
 
 		const task = (
-			await queryParam("DELETE FROM task WHERE client_id = ?", [
-				id,
-			])
+			await queryParam("DELETE FROM task WHERE client_id = ?", [id])
 		)[0];
 		const membership = (
-			await queryParam("DELETE FROM membership WHERE client_id = ?", [
-				id,
-			])
+			await queryParam("DELETE FROM membership WHERE client_id = ?", [id])
 		)[0];
 
 		const profile = (
-			await queryParam("DELETE FROM client WHERE id = ?", [
-				id,
-			])
+			await queryParam("DELETE FROM client WHERE id = ?", [id])
 		)[0];
 		res.status(200).json({
 			status: "success",
@@ -199,6 +189,38 @@ const deleteClient = async (req, res) => {
 		res.status(200).json({
 			status: "error",
 			message: "There was an error deleting the client",
+		});
+	}
+};
+
+const getEquipment = async (req, res) => {
+	const equipment = await zeroParam(
+		"SELECT * FROM equipment ORDER BY id DESC"
+	);
+
+	res.render("Admin/equipment", {
+		title: "Admin - Equipment Details",
+		equipment,
+	});
+};
+
+const deleteEquipment = async (req, res) => {
+	const equipmentId = req.body.equipmentId;
+
+	try {
+		const equipment = (
+			await queryParam("DELETE FROM equipment WHERE id = ?", [
+				equipmentId,
+			])
+		)[0];
+		res.status(200).json({
+			status: "success",
+			message: "Equipment Deleted Successfully",
+		});
+	} catch (err) {
+		res.status(200).json({
+			status: "error",
+			message: "There was an error deleting the equipment",
 		});
 	}
 };
@@ -214,5 +236,7 @@ module.exports = {
 	getClientView,
 	updateProfile,
 	deleteClient,
+	getEquipment,
+	deleteEquipment,
 	getLogout,
 };
