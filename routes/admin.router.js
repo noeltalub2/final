@@ -11,8 +11,9 @@ router.get("/dashboard", adminController.getDashboard);
 
 router.get("/client", adminController.getClient);
 // router.get("/client", requireAuth, adminController.getClient);
-// router.get("/client/:username", requireAuth, adminController.getClientView);
-
+router.get("/client/:username", adminController.getClientView);
+router.post("/client", adminController.updateProfile);
+router.post("/del_client", adminController.deleteClient);
 // router.get("/task", requireAuth, adminController.getTask);
 // router.get("/add_task", requireAuth, adminController.addTask);
 // router.post("/add_task", requireAuth, adminController.postAddTask);

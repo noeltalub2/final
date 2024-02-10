@@ -1,0 +1,222 @@
+<%-include ("../Includes/Admin/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Admin/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/equipment">
+                            <i class="bi bi-list-task"></i>
+                            <span>Manage Equipment</span>
+                        </a>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Edit Client</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Edit Profile Details</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <%-include ("../Includes/message.ejs")%>
+                        <div class="profile-overview" id="profile-overview">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row profile-edit">
+
+
+                                        <div class="col-lg-6">
+                                            <h5 class="card-title">Edit Profile Details</h5>
+
+                                            <form method="post" action="/admin/client" class="needs-validation" novalidate>
+
+                                                <input type="hidden" name="username" value="<%=profileData.username%>">
+                                                <div class="row mb-3">
+                                                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full
+                                                        Name</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <input name="fullName" type="text" class="form-control"
+                                                            id="fullName" value="<%=profileData.fullname%>" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <label for="ageInput"
+                                                        class="col-md-4 col-lg-3 col-form-label">Age</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <input name="age" type="number" class="form-control"
+                                                            id="ageInput" value="<%=profileData.age%>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="genderInput"
+                                                        class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <select name="gender" id="genderInput" class="form-control"
+                                                            required>
+                                                            <option value="" disabled <%=profileData.gender===""
+                                                                ? 'selected' : '' %>>Select Gender</option>
+                                                            <option value="Male" <%=profileData.gender==="Male"
+                                                                ? 'selected' : '' %>>Male</option>
+                                                            <option value="Female" <%=profileData.gender==="Female"
+                                                                ? 'selected' : '' %>>Female</option>
+                                                            <option value="Other" <%=profileData.gender==="Other"
+                                                                ? 'selected' : '' %>>Other</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row mb-3">
+                                                    <label for="emailInput"
+                                                        class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <input name="email" type="email" class="form-control"
+                                                            id="compaemailInputy" value="<%=profileData.email%>"
+                                                            required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <label for="inputPhonenumber"
+                                                        class="col-md-4 col-lg-3 col-form-label">Phone
+                                                        Number</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <input name="phonenumber" type="tel" class="form-control"
+                                                            minlength="11" maxlength="11" id="inputPhonenumber"
+                                                            value="<%=profileData.phonenumber%>" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <label for="inputAddress"
+                                                        class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                                    <div class="col-md-8 col-lg-9">
+                                                        <input name="address" type="text" class="form-control"
+                                                            id="inputAddress" value="<%=profileData.address%>" required>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <div class="text-center">
+                                                    <button type="submit" class="btn btn-dark me-1">Save
+                                                        Changes</button>
+
+                                                    <a href="/admin/client" class="btn btn-outline-dark">Cancel</a>
+                                                </div>
+                                            </form><!-- End Profile Edit Form -->
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h5 class="card-title">Task Details</h5>
+                                            <div id="donutChart" style="min-height: 400px;" class="echarts"></div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Admin/script.ejs")%>
+                <script>
+
+                    document.addEventListener("DOMContentLoaded", () => {
+                        echarts.init(document.querySelector("#donutChart")).setOption({
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                top: '5%',
+                                left: 'center'
+                            },
+                            series: [{
+                                name: 'Access From',
+                                type: 'pie',
+                                radius: ['40%', '70%'],
+                                avoidLabelOverlap: false,
+                                label: {
+                                    show: false,
+                                    position: 'center'
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true,
+                                        fontSize: '18',
+                                        fontWeight: 'bold'
+                                    }
+                                },
+                                labelLine: {
+                                    show: false
+                                },
+                                data: [{
+                                    value: '<%= JSON.stringify(progress) %>',
+                                    name: 'In Progress',
+                                    itemStyle: {
+                                        color: '#6abf69' // Custom color for 'In Progress'
+                                    }
+                                },
+                                {
+                                    value: '<%= JSON.stringify(done) %>',
+                                    name: 'Done',
+                                    itemStyle: {
+                                        color: '#4169e1' // Custom color for 'Done'
+                                    }
+                                },
+                                {
+                                    value: '<%= JSON.stringify(cancelled) %>',
+                                    name: 'Cancelled',
+                                    itemStyle: {
+                                        color: '#ff6347' // Custom color for 'Cancelled'
+                                    }
+                                }
+                                ]
+                            }]
+                        });
+                    });
+
+                </script>
+    </body>
+
+    </html>
