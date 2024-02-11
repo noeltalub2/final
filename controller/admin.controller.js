@@ -321,7 +321,6 @@ const getAttendance = async (req, res) => {
 		"SELECT client.id, client.fullname, client.phonenumber, membership.membership_service, membership.membership_plan, attendance.time_in, attendance.time_out, attendance.date FROM membership INNER JOIN client ON client.id = membership.client_id LEFT JOIN attendance ON attendance.client_id = client.id AND attendance.date = ? WHERE membership.membership_status = 'Activated' AND membership.payment_status = 'Paid'",
 		[date()]
 	);
-	console.log(clients);
 	res.render("Admin/attendance", {
 		title: "Manage Attendance",
 		clients,
@@ -370,6 +369,16 @@ const postTimeOut = (req, res) => {
 	);
 };
 
+const getHistoryAttendance = async (req, res) => {
+	const attendanceData = await zeroParam(
+		"SELECT attendance.*, client.fullname FROM attendance INNER JOIN client ON attendance.client_id = client.id ORDER BY `attendance`.`attendance_id` DESC"
+	);
+	res.render("Admin/attendance_history", {
+		title: "History Attendance",
+		attendanceData
+	});
+};
+
 const getLogout = (req, res) => {
 	res.clearCookie("token_admin");
 	res.redirect("/admin/signin");
@@ -391,5 +400,6 @@ module.exports = {
 	getAttendance,
 	postTimeIn,
 	postTimeOut,
+	getHistoryAttendance,
 	getLogout,
 };

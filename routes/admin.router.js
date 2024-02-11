@@ -28,6 +28,8 @@ router.get("/attendance", adminController.getAttendance);
 router.get("/time-in/:id", adminController.postTimeIn);
 router.get("/time-out/:id", adminController.postTimeOut);
 
+router.get("/attendance/history", adminController.getHistoryAttendance);
+
 // router.get("/task", requireAuth, adminController.getTask);
 // router.get("/add_task", requireAuth, adminController.addTask);
 // router.post("/add_task", requireAuth, adminController.postAddTask);

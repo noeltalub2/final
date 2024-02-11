@@ -45,11 +45,11 @@
             <!-- End Sidebar-->
             <main id="main" class="main">
                 <div class="pagetitle">
-                    <h1>Manage Attendance</h1>
+                    <h1>History Attendance</h1>
                     <nav style="--bs-breadcrumb-divider: '>';">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active">Manage Attendance</li>
+                            <li class="breadcrumb-item active">History Attendance</li>
                         </ol>
                     </nav>
                 </div>
@@ -58,66 +58,59 @@
                         <%-include ("../Includes/message.ejs")%>
                             <div class="card ">
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="">
-                                            <h5 class="card-title mb-4">Attendance List</h5>
-                                        </div>
-                                        <div class="">
-                                            <a href="/admin/attendance/history" class="btn btn-dark btn-sm">
-                                                Attendance History
-                                            </a>
-                                        </div>
-                                    </div>
-
-
+                                    <h5 class="card-title mb-4">History Attendance</h5>
                                     <div class="table-responsive-md">
                                         <table class="table table-bordered" id="clientTable">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Fullname</th>
-                                                    <th scope="col">Phone Number</th>
-                                                    <th scope="col">Service</th>
-                                                    <th scope="col">Plan</th>
-                                                    <th scope="col" class="text-center">Action</th>
+                                                    <th scope="col">Date</th> 
+                                                    <th scope="col">Client Name</th>
+                                                    <th scope="col">Time In</th>
+                                                    <th scope="col">Time Out</th>
+                                                    <th scope="col">Time Spent</th>
+                                          
+                                                
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% clients.forEach(function(client, index) { %>
+                                                <% attendanceData.forEach((attendance, index) => { %>
                                                     <tr>
-                                                        <th scope="row">
-                                                            <%= index + 1 %>
-                                                        </th>
+                                                        <td><%= index + 1 %></td>
+                                                        <td> <%= new Date(attendance.date).toLocaleDateString('en-US', { month: 'long'
+                                                        , day: 'numeric' , year: 'numeric' }) %></td>
+                                                       
+                                                        <td><%= attendance.fullname %></td>
+                                                        <td><%= attendance.time_in %></td>
+                                                        <td><%= attendance.time_out %></td>
                                                         <td>
-                                                            <%= client.fullname %>
-                                                        </td>
-                                                        <td>
-                                                            <%= client.phonenumber %>
-                                                        </td>
-                                                        <td>
-                                                            <%= client.membership_service %>
-                                                        </td>
-                                                        <td>
-                                                            <%= client.membership_plan %> month/s
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <% if (client.time_in !== null && client.time_out !== null) { %>
-                                                                Attendance Recorded
-                                                            <% } else if (client.time_in === null || client.status === null) { %>
-                                                                <a href="/admin/time-in/<%= client.id %>" class="btn btn-dark btn-sm">Check In</a>
-                                                            <% } else if (client.time_in !== null) { %>
-                                                                <a href="/admin/time-out/<%= client.id %>" class="btn btn-outline-danger btn-sm">Time Out</a>
-                                                            <% } %>
+                                                            <%= (() => {
+                                                                if (attendance && attendance.date && attendance.time_in && attendance.time_out) {
+                                                                    const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
+                                                                    const timeOutDate = new Date(`${attendance.date} ${attendance.time_out}`);
+                                                                    const timeDiffMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
                                                             
+                                                                    if (isNaN(timeDiffMinutes)) {
+                                                                        return '0 minutes';
+                                                                    } else {
+                                                                        const hours = Math.floor(timeDiffMinutes / 60);
+                                                                        const minutes = timeDiffMinutes % 60;
+                                                                        return timeDiffMinutes >= 60 ? `${hours} hours ${minutes} minutes` : `${timeDiffMinutes} minutes`;
+                                                                    }
+                                                                } else {
+                                                                    return 'N/A'; // Return 'N/A' if attendance or its properties are undefined
+                                                                }
+                                                            })() %>
                                                         </td>
+                                          
+                                                   
                                                     </tr>
-                                                    <% }); %>
+                                                <% }); %>
                                             </tbody>
                                         </table>
-
-
                                     </div>
                                 </div>
+                                
                             </div>
                     </div>
                     </div>
