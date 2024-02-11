@@ -317,10 +317,11 @@ const deleteEquipment = async (req, res) => {
 };
 
 const getAttendance = async (req, res) => {
-	const clients = await zeroParam(
-		"SELECT client.id, client.fullname, client.phonenumber, membership.membership_service, membership.membership_plan, attendance.time_in, attendance.time_out, attendance.date, attendance.status, attendance.logs FROM membership INNER JOIN client ON client.id = membership.client_id LEFT JOIN attendance ON attendance.client_id = client.id WHERE membership.membership_status = 'Activated' AND membership.payment_status = 'Paid';"
+	const clients = await queryParam(
+		"SELECT client.id, client.fullname, client.phonenumber, membership.membership_service, membership.membership_plan, attendance.time_in, attendance.time_out, attendance.date FROM membership INNER JOIN client ON client.id = membership.client_id LEFT JOIN attendance ON attendance.client_id = client.id AND attendance.date = ? WHERE membership.membership_status = 'Activated' AND membership.payment_status = 'Paid'",
+		[date()]
 	);
-
+	console.log(clients);
 	res.render("Admin/attendance", {
 		title: "Manage Attendance",
 		clients,

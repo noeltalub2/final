@@ -58,7 +58,16 @@
                         <%-include ("../Includes/message.ejs")%>
                             <div class="card ">
                                 <div class="card-body">
-                                    <h5 class="card-title ">Attendance List</h5>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="">
+                                            <h5 class="card-title mb-4">Attendance List</h5>
+                                        </div>
+                                        <div class="">
+                                            <a href="/admin/attendance/history" class="btn btn-dark btn-sm">
+                                                Attendance History
+                                            </a>
+                                        </div>
+                                    </div>
 
 
                                     <div class="table-responsive-md">
@@ -92,18 +101,14 @@
                                                             <%= client.membership_plan %> month/s
                                                         </td>
                                                         <td class="text-center">
-                                                            <% if (client.time_in===null || client.status===null) { %>
-
-
-                                                                <a href="/admin/time-in/<%= client.id%>"
-                                                                    class="btn btn-dark btn-sm">Check
-                                                                    In</a>
-
-                                                                <% } else if (client.time_in !==null) { %>
-                                                                    <a href="/admin/time-out/<%= client.id%>"
-                                                                        class="btn btn-outline-danger btn-sm">Time
-                                                                        Out</a>
-                                                                    <% } %>
+                                                            <% if (client.time_in !== null && client.time_out !== null) { %>
+                                                                Attendance Recorded
+                                                            <% } else if (client.time_in === null || client.status === null) { %>
+                                                                <a href="/admin/time-in/<%= client.id %>" class="btn btn-dark btn-sm">Check In</a>
+                                                            <% } else if (client.time_in !== null) { %>
+                                                                <a href="/admin/time-out/<%= client.id %>" class="btn btn-outline-danger btn-sm">Time Out</a>
+                                                            <% } %>
+                                                            
                                                         </td>
                                                     </tr>
                                                     <% }); %>
