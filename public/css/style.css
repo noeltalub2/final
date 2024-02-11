@@ -762,7 +762,7 @@ a:hover {
 }
 
 .dashboard .info-card h6 {
-	font-size: 28px;
+	font-size: 22px;
 	color: #1e1e1e;
 	font-weight: 700;
 	margin: 0;
@@ -770,12 +770,33 @@ a:hover {
 }
 
 .dashboard .card-icon {
-	font-size: 32px;
+	font-size: 23px;
 	line-height: 0;
-	width: 64px;
-	height: 64px;
+	width: 44px;
+	height: 44px;
 	flex-shrink: 0;
 	flex-grow: 0;
+}
+
+.dashboard .green-card .card-icon {
+    color: #2eca6a;
+    background: #e0f8e9;
+}
+
+.dashboard .blue-card .card-icon {
+    color: #2e4bca;
+    background: #e0e8f8;
+}
+
+
+.dashboard .red-card .card-icon {
+    color: #ca2e2e;
+    background: #f8e0e0;
+}
+
+.dashboard .yellow-card .card-icon {
+    color: #ffc107;
+    background: #f8eae0;
 }
 
 .dashboard .active-user-card .card-icon {
