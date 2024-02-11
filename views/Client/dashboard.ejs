@@ -67,20 +67,24 @@
                         <h5> <i class="bi bi-clock-history me-2"></i>
                           <td>
                           <td>
-                            <%= (()=> {
-                              const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
-                              const timeOutDate = attendance.time_out ? new Date(`${attendance.date}
-                              ${attendance.time_out}`) : new Date();
-                              const timeDiffMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
-                              if (isNaN(timeDiffMinutes)) {
-                              return '0 minutes'; // Return zero if timeDiffMinutes is NaN
+                            <%= (() => {
+                              if (attendance && attendance.date && attendance.time_in && attendance.time_out) {
+                                  const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
+                                  const timeOutDate = new Date(`${attendance.date} ${attendance.time_out}`);
+                                  const timeDiffMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
+                          
+                                  if (isNaN(timeDiffMinutes)) {
+                                      return '0 minutes';
+                                  } else {
+                                      const hours = Math.floor(timeDiffMinutes / 60);
+                                      const minutes = timeDiffMinutes % 60;
+                                      return timeDiffMinutes >= 60 ? `${hours} hours ${minutes} minutes` : `${timeDiffMinutes} minutes`;
+                                  }
                               } else {
-                              const hours = Math.floor(timeDiffMinutes / 60);
-                              const minutes = timeDiffMinutes % 60;
-                              return timeDiffMinutes >= 60 ? `${hours} hours ${minutes} minutes` : `${timeDiffMinutes}
-                              minutes`;
+                                  return 'N/A'; // Return 'N/A' if attendance or its properties are undefined
                               }
-                              })() %>
+                          })() %>
+                          
 
                           </td>
 

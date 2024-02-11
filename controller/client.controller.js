@@ -151,6 +151,8 @@ const getDashboard = async (req, res) => {
 			[client_id]
 		)
 	)[0];
+
+
 	const client_info = (
 		await queryParam(`SELECT height, weight FROM client WHERE id = ?`, [
 			client_id,
