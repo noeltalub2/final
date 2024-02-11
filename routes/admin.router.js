@@ -40,6 +40,15 @@ router.post("/cancel_membership", adminController.cancelMembership);
 
 router.get("/announcement", adminController.getAnnouncement);
 router.post("/announcement", adminController.postAnnouncement);
+router.post("/announcement/edit", adminController.editAnnouncement);
+router.post("/announcement/delete", adminController.deleteAnnouncement);
+
+router.get("/trainer", adminController.getTrainer);
+router.get("/trainer/add", adminController.addTrainer);
+router.post("/trainer/add", adminController.postTrainer);
+router.get("/trainer/edit/:id", adminController.getEditTrainer);
+router.post("/trainer/edit/", adminController.editPostTrainer);
+router.post("/del_trainer", adminController.deleteTrainer);
 
 router.get("/logout", adminController.getLogout);
 

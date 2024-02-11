@@ -90,7 +90,7 @@ const postRegister = async (req, res) => {
 		errors.push({ msg: "Phonenumber is already registered" });
 	}
 	if (username_count > 0) {
-		errors.push({ msg: "Student number is already registered" });
+		errors.push({ msg: "Username is already registered" });
 	}
 
 	//To encrypt the password using hash

@@ -530,6 +530,240 @@ const postAnnouncement = (req, res) => {
 	});
 };
 
+const editAnnouncement = (req, res) => {
+	const { announcementId, title, message } = req.body;
+
+	const data = {
+		title,
+		message,
+	};
+
+	db.query(
+		"UPDATE announcement SET ? WHERE announcement_id = ?",
+		[data, announcementId],
+		(err, result) => {
+			if (err) {
+				console.log(err);
+				req.flash("error", "Error updating announcement");
+				res.redirect("/admin/announcement");
+			} else {
+				req.flash("success_msg", "Announcement updated successfully");
+				res.redirect("/admin/announcement");
+			}
+		}
+	);
+};
+
+const deleteAnnouncement = (req, res) => {
+	const announcementId = req.body.id;
+
+	db.query(
+		"DELETE FROM announcement WHERE announcement_id = ?",
+		announcementId,
+		(err, result) => {
+			if (err) {
+				console.log(err);
+				return res.status(500).json({
+					status: "error",
+					message: "Error deleting announcement",
+				});
+			}
+
+			if (result.affectedRows === 0) {
+				return res.status(404).json({
+					status: "error",
+					message: "Announcement not found",
+				});
+			}
+
+			return res.status(200).json({
+				status: "success",
+				message: "Announcement deleted successfully",
+			});
+		}
+	);
+};
+
+const getTrainer = async (req, res) => {
+	const trainerData = await zeroParam(
+		"SELECT * FROM trainer ORDER BY trainer_id DESC"
+	);
+
+	res.render("Admin/trainer", { title: "Manage Trainer", trainerData });
+};
+
+const addTrainer = (req, res) => {
+	res.render("Admin/add_trainer", { title: "Add Trainer" });
+};
+
+const postTrainer = async (req, res) => {
+	//Data from the form ../register
+	const {
+		fullname,
+		confirmPassword,
+		email,
+		phonenumber,
+		username,
+		age,
+		address,
+		gender,
+	} = req.body;
+	let errors = [];
+	//Sql statement if there is duplciate in database
+	var username_exist =
+		"Select count(*) as `count` from trainer where username = ?";
+	var email_exist = "Select count(*) as `count` from trainer where email = ?";
+	var phone_exist =
+		"Select count(*) as `count` from trainer where phonenumber = ?";
+	//Query statement
+	const username_count = (await queryParam(username_exist, [username]))[0]
+		.count;
+	const email_count = (await queryParam(email_exist, [email]))[0].count;
+	const phone_count = (await queryParam(phone_exist, [phonenumber]))[0].count;
+
+	//Check if there is duplicate
+
+	if (email_count > 0) {
+		errors.push({ msg: "Email is already registered" });
+	}
+	if (phone_count > 0) {
+		errors.push({ msg: "Phonenumber is already registered" });
+	}
+	if (username_count > 0) {
+		errors.push({ msg: "Username is already registered" });
+	}
+
+	//To encrypt the password using hash
+	const salt = bcrypt.genSaltSync(15);
+	const hash = bcrypt.hashSync(confirmPassword, salt);
+	//Data to insert in sql
+	var data = {
+		fullname,
+		email,
+		username,
+		phonenumber,
+		age,
+		address,
+		password: hash,
+		join_date: date_time(),
+	};
+	//Add account to database
+	var sql = "INSERT INTO trainer SET ?";
+	db.query(sql, data, (err, rset) => {
+		if (err) {
+			console.log(err);
+			res.render("Adnin/add_trainer", {
+				errors,
+			});
+		} else {
+			req.flash("success_msg", "Account created successfully");
+			res.redirect("/admin/trainer/add");
+		}
+	});
+};
+
+const getEditTrainer = async (req, res) => {
+	const id = req.params.id;
+	const trainer = (
+		await queryParam("SELECT * FROM trainer WHERE trainer_id = ?", [id])
+	)[0];
+
+	res.render("Admin/edit_trainer", { title: "Edit Trainer", trainer });
+};
+
+const editPostTrainer = async (req, res) => {
+    // Data from the form ../register
+    const {
+		id,
+        fullname,
+        email,
+        phonenumber,
+        username,
+        age,
+        address,
+        gender
+    } = req.body;
+    let errors = [];
+    console.log(req.params.id)
+    // Sql statement if there is duplicate in database
+    const usernameExistQuery = "SELECT COUNT(*) AS count FROM trainer WHERE username = ?";
+    const emailExistQuery = "SELECT COUNT(*) AS count FROM trainer WHERE email = ?";
+    const phoneExistQuery = "SELECT COUNT(*) AS count FROM trainer WHERE phonenumber = ?";
+    
+    // Query for checking duplicate entries
+    const usernameCount = (await queryParam(usernameExistQuery, [username]))[0].count;
+    const emailCount = (await queryParam(emailExistQuery, [email]))[0].count;
+    const phoneCount = (await queryParam(phoneExistQuery, [phonenumber]))[0].count;
+
+    // Check if there are duplicates
+    if (emailCount > 0) {
+        errors.push({ msg: "Email is already registered" });
+    }
+    if (phoneCount > 0) {
+        errors.push({ msg: "Phonenumber is already registered" });
+    }
+    if (usernameCount > 0) {
+        errors.push({ msg: "Username is already registered" });
+    }
+
+    // Data to update in the database
+    const data = {
+        fullname,
+        email,
+        username,
+        phonenumber,
+        age,
+        address,
+        gender
+    };
+    
+    // SQL statement to update trainer information
+    const sql = "UPDATE trainer SET ? WHERE trainer_id = ?";
+
+    // Update the trainer information
+    db.query(sql, [data, id], (err, result) => {
+        if (err) {
+			req.flash("error_msg", "The provided Username, Phone Number, or Email is already registered.");
+			res.redirect("/admin/trainer/edit/" + id);
+			
+        } else {
+            req.flash("success_msg", "Trainer information updated successfully");
+            res.redirect("/admin/trainer/edit/" + id);
+        }
+    });
+};
+
+const deleteTrainer = async (req, res) => {
+	const username = req.body.userId;
+	const id = (
+		await queryParam("SELECT trainer_id FROM trainer WHERE username = ?", [username])
+	)[0].trainer_id;
+	try {
+		
+		const task = (
+			await queryParam("DELETE FROM task WHERE trainer_id = ?", [id])
+		)[0];
+		const membership = (
+			await queryParam("DELETE FROM membership WHERE trainer_id = ?", [id])
+		)[0];
+
+		const profile = (
+			await queryParam("DELETE FROM trainer WHERE trainer_id = ?", [id])
+		)[0];
+	
+		res.status(200).json({
+			status: "success",
+			message: "Trainer Deleted Successfully",
+		});
+	} catch (err) {
+		console.log(err)
+		res.status(200).json({
+			status: "error",
+			message: "There was an error deleting the trainer",
+		});
+	}
+};
+
 const getLogout = (req, res) => {
 	res.clearCookie("token_admin");
 	res.redirect("/admin/signin");
@@ -560,5 +794,13 @@ module.exports = {
 	cancelMembership,
 	getAnnouncement,
 	postAnnouncement,
+	editAnnouncement,
+	deleteAnnouncement,
+	getTrainer,
+	addTrainer,
+	postTrainer,
+	getEditTrainer,
+	editPostTrainer,
+	deleteTrainer,
 	getLogout,
 };

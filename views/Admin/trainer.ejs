@@ -15,7 +15,7 @@
                     <!-- End Dashboard Nav -->
                     </li><!-- End Components Nav -->
                     <li class="nav-item">
-                        <a class="nav-link " href="/admin/client">
+                        <a class="nav-link collapsed" href="/admin/client">
                             <i class="bi bi-people-fill"></i>
                             <span>Manage Clients</span>
                         </a>
@@ -26,8 +26,6 @@
                             <span>Manage Equipment</span>
                         </a>
                     </li>
-
-
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="/admin/attendance">
                             <i class="bi bi-calendar-check"></i>
@@ -48,7 +46,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="/admin/trainer">
+                        <a class="nav-link " href="/admin/trainer">
                             <i class="bi bi-person-bounding-box"></i>
                             <span>Manage Trainer</span>
                         </a>
@@ -64,83 +62,95 @@
             <!-- End Sidebar-->
             <main id="main" class="main">
                 <div class="pagetitle">
-                    <h1>Manage Client</h1>
+                    <h1>Manage Trainer</h1>
                     <nav style="--bs-breadcrumb-divider: '>';">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active">Manage Client</li>
+                            <li class="breadcrumb-item active">Manage Trainer</li>
                         </ol>
                     </nav>
                 </div>
                 <section class="section profile">
                     <div class="row">
-                        <div class="card ">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">All Clients</h5>
-                                <div class="table-responsive-md">
-                                    <table class="table table-bordered" id="clientTable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
+                        <%-include ("../Includes/message.ejs")%>
+                            <div class="card ">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="">
+                                            <h5 class="card-title mb-4">Trainer List</h5>
+                                        </div>
+                                        <div class="">
+                                            <a href="/admin/trainer/add" class="btn btn-dark btn-sm">Add Trainer</a>
+                                        </div>
+                                    </div>
 
-                                                <th scope="col">Username</th>
-                                                <th scope="col">Fullname</th>
-                                                <th scope="col">Phone Number</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col" class="text-center">Action</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% clientData.forEach(function(client,index) { %>
+                                    <div class="table-responsive-md">
+                                        <table class="table table-bordered" id="clientTable">
+                                            <thead>
                                                 <tr>
-                                                    <th scope="row">
-                                                        <%= index + 1 %>
-                                                    </th>
-                                                    <td>
-                                                        @<%= client.username %>
-                                                    </td>
-                                                    <td>
-                                                        <%= client.fullname %>
-                                                    </td>
+                                                    <th scope="col">#</th>
 
-                                                    <td>
-                                                        <%= client.phonenumber %>
-                                                    </td>
-
-                                                    <td>
-                                                        <%= client.email %>
-                                                    </td>
-
-                                                    <td class="text-center">
-
-                                                        <div class="text-center">
-                                                            <div class="dropdown"> <a class="text-secondary" href="#"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false"> <i
-                                                                        class="bi bi-three-dots"></i> </a>
-                                                                <ul class="dropdown-menu ">
-                                                                    <li> <a class="dropdown-item"
-                                                                            href="/admin/client/<%= client.username %>"><i
-                                                                                class="bi bi-pencil-square me-1"></i>
-                                                                            Edit</a></li>
-                                                                    <li> <button class="dropdown-item text-danger"
-                                                                            onclick="deleteUser('<%=client.username%>')"><i
-                                                                                class="bi bi-x-circle"></i>
-                                                                            Delete</button>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                    </td>
+                                                    <th scope="col">Username</th>
+                                                    <th scope="col">Fullname</th>
+                                                    <th scope="col">Phone Number</th>
+                                                    <th scope="col">Email</th>
+                                                    <th scope="col" class="text-center">Action</th>
 
                                                 </tr>
-                                                <% }); %>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <% trainerData.forEach(function(trainer,index) { %>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <%= index + 1 %>
+                                                        </th>
+                                                        <td>
+                                                            @<%= trainer.username %>
+                                                        </td>
+                                                        <td>
+                                                            <%= trainer.fullname %>
+                                                        </td>
+
+                                                        <td>
+                                                            <%= trainer.phonenumber %>
+                                                        </td>
+
+                                                        <td>
+                                                            <%= trainer.email %>
+                                                        </td>
+
+                                                        <td class="text-center">
+
+                                                            <div class="text-center">
+                                                                <div class="dropdown"> <a class="text-secondary"
+                                                                        href="#" data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"> <i
+                                                                            class="bi bi-three-dots"></i> </a>
+                                                                    <ul class="dropdown-menu ">
+                                                                        <li> <a class="dropdown-item"
+                                                                                href="/admin/trainer/edit/<%= trainer.trainer_id %>"><i
+                                                                                    class="bi bi-pencil-square me-1"></i>
+                                                                                Edit</a></li>
+                                                                        <li> <button class="dropdown-item text-danger"
+                                                                                onclick="deleteUser('<%=trainer.username%>')"><i
+                                                                                    class="bi bi-x-circle"></i>
+                                                                                Delete</button>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
                                 </div>
                             </div>
-                        </div>
                     </div>
 
                 </section>
@@ -157,15 +167,15 @@
 
                     function deleteUser(userId) {
                         Swal.fire({
-                            title: "Delete Client",
-                            text: `Are you sure you want to delete client ${userId}? This action cannot be undone.`,
+                            title: "Delete Trainer",
+                            text: `Are you sure you want to delete trainer ${userId}? This action cannot be undone.`,
                             icon: "warning",
                             showCancelButton: true,
                             confirmButtonText: "Confirm", // Set the text for the confirmation button
                             cancelButtonText: "Cancel",  // Set the text for the cancel button
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                fetch("/admin/del_client", {
+                                fetch("/admin/del_trainer", {
                                     method: "POST",
                                     body: JSON.stringify({ userId }),
                                     headers: { "Content-Type": "application/json" },
@@ -178,7 +188,7 @@
                                                 `${response.message}`,
                                                 'success'
                                             ).then(function () {
-                                                window.location.href = '/admin/client';
+                                                window.location.href = '/admin/trainer';
                                             });
                                         }
                                         if (response.status === "error") {
@@ -187,7 +197,7 @@
                                                 `${response.message}`,
                                                 'error'
                                             ).then(function () {
-                                                window.location.href = '/admin/client';
+                                                window.location.href = '/admin/trainer';
                                             });
                                         }
                                     });
@@ -197,6 +207,7 @@
                             }
                         });
                     }
+
 
                 </script>
     </body>
