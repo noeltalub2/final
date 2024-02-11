@@ -30,22 +30,16 @@ router.get("/time-out/:id", adminController.postTimeOut);
 
 router.get("/attendance/history", adminController.getHistoryAttendance);
 
-// router.get("/task", requireAuth, adminController.getTask);
-// router.get("/add_task", requireAuth, adminController.addTask);
-// router.post("/add_task", requireAuth, adminController.postAddTask);
+router.get("/membership", adminController.getMembership);
 
-// router.get("/edit_task/:task_id", requireAuth, adminController.getEditTask);
-// router.post("/edit_task/", requireAuth, adminController.postEditTask);
+router.get("/membership/upcoming", adminController.getUpcomingMembership);
+router.get("/membership/upcoming/:id", adminController.getPaymentMembership);
+router.post("/confirm_payment", adminController.confirmPayment);
+router.post("/alert_payment", adminController.alertPayment);
+router.post("/cancel_membership", adminController.cancelMembership);
 
-// router.post("/del_task/", requireAuth, adminController.deleteTask);
-
-// router.get("/profile", requireAuth, requireAuth, adminController.getProfile);
-// router.post(
-// 	"/profile",
-// 	requireAuth,
-// 	requireAuth,
-// 	adminController.updateProfile
-// );
+router.get("/announcement", adminController.getAnnouncement);
+router.post("/announcement", adminController.postAnnouncement);
 
 router.get("/logout", adminController.getLogout);
 

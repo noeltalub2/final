@@ -1,0 +1,245 @@
+<%-include ("../Includes/Admin/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Admin/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/equipment">
+                            <i class="bi bi-gear"></i>
+                            <span>Manage Equipment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/attendance">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Manage Attendance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/membership">
+                            <i class="bi bi-card-checklist"></i>
+                            <span>Manage Membership</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/announcement">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Announcement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Upcoming Membership</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Upcoming Membership</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <%-include ("../Includes/message.ejs")%>
+                            <div class="card ">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Upcoming Membership List</h5>
+                                    <div class="table-responsive-md">
+                                        <table class="table table-bordered" id="clientTable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Fullname</th>
+                                                    <th scope="col">Trainer</th>
+                                                    <th scope="col">Service</th>
+                                                    <th scope="col">Plan</th>
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col" class="text-center">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% membership.forEach((member, index)=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <%= index + 1 %>
+                                                        </td>
+                                                        <td>
+                                                            <%= member.client_name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= member.trainer_name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= member.membership_service %>
+                                                        </td>
+                                                        <td>
+                                                            <%= member.membership_plan %> month/s
+                                                        </td>
+                                                        <td>
+                                                            PHP <%= member.total_amount %>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="text-center">
+                                                                <div class="dropdown"> <a class="text-secondary"
+                                                                        href="#" data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"> <i
+                                                                            class="bi bi-three-dots"></i> </a>
+                                                                    <ul class="dropdown-menu ">
+                                                                        <li> <a class="dropdown-item"
+                                                                                href="/admin/membership/upcoming/<%= member.membership_id%>"><i
+                                                                                    class="bi bi-credit-card-fill"></i>
+                                                                                Make Payment</a></li>
+                                                                        <li>
+                                                                            <button class="dropdown-item"
+                                                                                onclick="alertClient('<%=member.client_id%>','<%=member.membership_service%>')"><i
+                                                                                    class="bi bi-exclamation-square"></i>
+                                                                                Alert Payment</button>
+                                                                        </li>
+                                                                        <li>
+                                                                            <button class="dropdown-item text-danger"
+                                                                                onclick="cancelClient('<%=member.membership_id%>')"><i
+                                                                                    class="bi bi-x-circle"></i>
+                                                                                Cancel</button>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                    </div>
+
+                </section>
+
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Admin/script.ejs")%>
+                <script>
+
+                    $(document).ready(function () {
+                        $('#clientTable').DataTable();
+                    });
+
+                    function alertClient(id, plan) {
+                        Swal.fire({
+                            title: "Alert Client for Payment",
+                            text: "Are you sure you want to alert the client for payment? This action cannot be undone.",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Alert Client",
+                            cancelButtonText: "Cancel",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch("/admin/alert_payment", {
+                                    method: "POST",
+                                    body: JSON.stringify({ id, plan }),
+                                    headers: { "Content-Type": "application/json" },
+                                })
+                                    .then((res) => res.json())
+                                    .then((response) => {
+                                        if (response.status === "success") {
+                                            Swal.fire(
+                                                'Success!',
+                                                `${response.message}`,
+                                                'success'
+                                            ).then(function () {
+                                                window.location.href = '/admin/membership/upcoming';
+                                            });
+                                        }
+                                        if (response.status === "error") {
+                                            Swal.fire(
+                                                'Error',
+                                                `${response.message}`,
+                                                'error'
+                                            ).then(function () {
+                                                window.location.href = '/admin/membership/upcoming';
+                                            });
+                                        }
+                                    });
+                            } else if (result.isDismissed) {
+                                // Handle the case where the user clicks the "Cancel" button or dismisses the dialog
+                            }
+                        });
+                    }
+
+                    function cancelClient(id) {
+                        Swal.fire({
+                            title: "Cancel Client Membership",
+                            text: "Are you sure you want to cancel this client's membership? This action cannot be undone.",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Confirm",
+                            cancelButtonText: "Cancel",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch("/admin/cancel_membership", {
+                                    method: "POST",
+                                    body: JSON.stringify({ id }),
+                                    headers: { "Content-Type": "application/json" },
+                                })
+                                    .then((res) => res.json())
+                                    .then((response) => {
+                                        if (response.status === "success") {
+                                            Swal.fire(
+                                                'Success!',
+                                                `${response.message}`,
+                                                'success'
+                                            ).then(function () {
+                                                window.location.href = '/admin/membership/upcoming';
+                                            });
+                                        }
+                                        if (response.status === "error") {
+                                            Swal.fire(
+                                                'Error',
+                                                `${response.message}`,
+                                                'error'
+                                            ).then(function () {
+                                                window.location.href = '/admin/membership/upcoming';
+                                            });
+                                        }
+                                    });
+                            } else if (result.isDismissed) {
+                                // Handle the case where the user clicks the "Cancel" button or dismisses the dialog
+                            }
+                        });
+                    }
+
+
+                </script>
+    </body>
+
+    </html>

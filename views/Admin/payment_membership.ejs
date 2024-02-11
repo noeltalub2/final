@@ -15,7 +15,7 @@
                     <!-- End Dashboard Nav -->
                     </li><!-- End Components Nav -->
                     <li class="nav-item">
-                        <a class="nav-link " href="/admin/client">
+                        <a class="nav-link collapsed" href="/admin/client">
                             <i class="bi bi-people-fill"></i>
                             <span>Manage Clients</span>
                         </a>
@@ -26,17 +26,14 @@
                             <span>Manage Equipment</span>
                         </a>
                     </li>
-
-
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="/admin/attendance">
                             <i class="bi bi-calendar-check"></i>
                             <span>Manage Attendance</span>
                         </a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="/admin/membership">
+                        <a class="nav-link " href="/admin/membership">
                             <i class="bi bi-card-checklist"></i>
                             <span>Manage Membership</span>
                         </a>
@@ -58,84 +55,75 @@
             <!-- End Sidebar-->
             <main id="main" class="main">
                 <div class="pagetitle">
-                    <h1>Manage Client</h1>
+                    <h1>Payment Form</h1>
                     <nav style="--bs-breadcrumb-divider: '>';">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active">Manage Client</li>
+                            <li class="breadcrumb-item active">Payment Form</li>
                         </ol>
                     </nav>
                 </div>
                 <section class="section profile">
-                    <div class="row">
+
+                    <%-include ("../Includes/message.ejs")%>
+
                         <div class="card ">
+                            <div class="card-header bg-dark text-white">Payment Confirmation </div>
                             <div class="card-body">
-                                <h5 class="card-title mb-4">All Clients</h5>
-                                <div class="table-responsive-md">
-                                    <table class="table table-bordered" id="clientTable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
+                                <div class="mt-4">
 
-                                                <th scope="col">Username</th>
-                                                <th scope="col">Fullname</th>
-                                                <th scope="col">Phone Number</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col" class="text-center">Action</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% clientData.forEach(function(client,index) { %>
-                                                <tr>
-                                                    <th scope="row">
-                                                        <%= index + 1 %>
-                                                    </th>
-                                                    <td>
-                                                        @<%= client.username %>
-                                                    </td>
-                                                    <td>
-                                                        <%= client.fullname %>
-                                                    </td>
-
-                                                    <td>
-                                                        <%= client.phonenumber %>
-                                                    </td>
-
-                                                    <td>
-                                                        <%= client.email %>
-                                                    </td>
-
-                                                    <td class="text-center">
-
-                                                        <div class="text-center">
-                                                            <div class="dropdown"> <a class="text-secondary" href="#"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false"> <i
-                                                                        class="bi bi-three-dots"></i> </a>
-                                                                <ul class="dropdown-menu ">
-                                                                    <li> <a class="dropdown-item"
-                                                                            href="/admin/client/<%= client.username %>"><i
-                                                                                class="bi bi-pencil-square me-1"></i>
-                                                                            Edit</a></li>
-                                                                    <li> <button class="dropdown-item text-danger"
-                                                                            onclick="deleteUser('<%=client.username%>')"><i
-                                                                                class="bi bi-x-circle"></i>
-                                                                            Delete</button>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                    </td>
-
-                                                </tr>
-                                                <% }); %>
-                                        </tbody>
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 30%;">Full Name</th>
+                                            <td>
+                                                <%= membership.fullname %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone Number</th>
+                                            <td>
+                                                <%= membership.phonenumber %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Membership Service</th>
+                                            <td>
+                                                <%= membership.membership_service %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Membership Plan</th>
+                                            <td>
+                                                <%= membership.membership_plan %> month/s
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Amount</th>
+                                            <td>PHP <%= membership.total_amount %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Payment Status</th>
+                                            <td>
+                                                <%= membership.membership_status %>
+                                            </td>
+                                        </tr>
                                     </table>
+
+
+                                    <button
+                                        onclick="confirmPayment('<%=membership.membership_id%>', '<%=membership.membership_plan%>')"
+                                        class="btn btn-dark btn-sm me-1">Confirm</button>
+                                    <a href="/admin/membership/upcoming/" class="btn btn-outline-dark btn-sm">Go
+                                        Back</a>
+
+
+
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+
 
                 </section>
 
@@ -149,19 +137,21 @@
                         $('#clientTable').DataTable();
                     });
 
-                    function deleteUser(userId) {
+
+
+                    function confirmPayment(id, plan) {
                         Swal.fire({
-                            title: "Delete Client",
-                            text: `Are you sure you want to delete client ${userId}? This action cannot be undone.`,
+                            title: "Confirm Payment",
+                            text: "Are you sure you want to confirm this payment? This action cannot be undone.",
                             icon: "warning",
                             showCancelButton: true,
                             confirmButtonText: "Confirm", // Set the text for the confirmation button
                             cancelButtonText: "Cancel",  // Set the text for the cancel button
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                fetch("/admin/del_client", {
+                                fetch("/admin/confirm_payment", {
                                     method: "POST",
-                                    body: JSON.stringify({ userId }),
+                                    body: JSON.stringify({ id, plan }),
                                     headers: { "Content-Type": "application/json" },
                                 })
                                     .then((res) => res.json())
@@ -172,7 +162,7 @@
                                                 `${response.message}`,
                                                 'success'
                                             ).then(function () {
-                                                window.location.href = '/admin/client';
+                                                window.location.href = '/admin/membership';
                                             });
                                         }
                                         if (response.status === "error") {
@@ -181,7 +171,7 @@
                                                 `${response.message}`,
                                                 'error'
                                             ).then(function () {
-                                                window.location.href = '/admin/client';
+                                                window.location.href = '/admin/membership';
                                             });
                                         }
                                     });
@@ -191,6 +181,7 @@
                             }
                         });
                     }
+
 
                 </script>
     </body>

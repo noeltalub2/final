@@ -8,4 +8,14 @@ const date = () => {
 	return today.toLocaleDateString();
 };
 
-module.exports = {date_time,date}
+const expiration_date = (month) => {
+    let today = new Date();
+    // Get the current month
+    let currentMonth = today.getMonth();
+    // Add 2 months
+    today.setMonth(currentMonth + month);
+    // Return the new date
+    return today.toLocaleString();
+};
+
+module.exports = {date_time,date,expiration_date}

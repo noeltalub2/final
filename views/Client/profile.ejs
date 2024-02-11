@@ -83,16 +83,16 @@
                                                 <button class="nav-link active" data-bs-toggle="tab"
                                                     data-bs-target="#profile-overview">Overview</button>
                                             </li>
-
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab"
+                                                    data-bs-target="#profile-membership">Membership</button>
+                                            </li>
                                             <li class="nav-item">
                                                 <button class="nav-link" data-bs-toggle="tab"
                                                     data-bs-target="#profile-edit">Edit Profile</button>
                                             </li>
 
-                                            <li class="nav-item">
-                                                <button class="nav-link" data-bs-toggle="tab"
-                                                    data-bs-target="#profile-membership">Membership</button>
-                                            </li>
+                                           
 
 
                                         </ul>
@@ -247,7 +247,7 @@
                                                     </div>
 
                                                     <div class="text-center">
-                                                        <button type="submit" class="btn btn-primary">Save
+                                                        <button type="submit" class="btn btn-dark btn-sm">Save
                                                             Changes</button>
                                                     </div>
                                                 </form><!-- End Profile Edit Form -->
@@ -402,86 +402,86 @@
                                                                         </div>
 
                                                                         <% } %>
-                                                                            <hr>
-                                                                            <h5 class="card-title">Membership History
-                                                                            </h5>
-                                                                            <div class="table-responsive-md">
-                                                                                <table class="table table-bordered"
-                                                                                    id="membershipHistoryData">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th scope="col">#</th>
-                                                                                            <th scope="col">Date</th>
-                                                                                            <th scope="col">Service/Plan
-                                                                                            </th>
-                                                                                            <th scope="col">Trainer</th>
-                                                                                            <th scope="col">Amount
-                                                                                            </th>
-                                                                                            <th scope="col">Status</th>
-
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-
-                                                                                        <%
-                                                                                            membershipHistoryData.forEach((membership,index)=>
-                                                                                            { %>
-                                                                                            <tr>
-                                                                                                <td>
-                                                                                                    <%=index + 1%>
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    <%=membership.join_date%>
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    <%=membership.membership_service%>
-                                                                                                        for
-                                                                                                        <%=membership.membership_plan%>
-                                                                                                            months
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    
-                                                                                                    <%=membership.trainer_name%>
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    PHP
-                                                                                                    <%=membership.total_amount%>
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    <% if
-                                                                                                        (membership.membership_status==='Cancelled'
-                                                                                                        ) { %>
-                                                                                                        <span
-                                                                                                            class="text-danger">
-                                                                                                            <%= membership.membership_status
-                                                                                                                %>
-                                                                                                        </span>
-                                                                                                        <% } else if
-                                                                                                            (membership.membership_status==='Expired'
-                                                                                                            ) { %>
-                                                                                                            <span
-                                                                                                                class="text-success">
-                                                                                                                <%= membership.membership_status
-                                                                                                                    %>
-                                                                                                            </span>
-                                                                                                            <% } else {
-                                                                                                                %>
-                                                                                                                <%= membership.membership_status
-                                                                                                                    %>
-                                                                                                                    <% }
-                                                                                                                        %>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                            <% }); %>
-
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
+                                                                           
 
                                                             </div>
                                                         </div>
                                                         <%}%>
+                                                        <hr>
+                                                        <h5 class="card-title">Membership History
+                                                        </h5>
+                                                        <div class="table-responsive-md">
+                                                            <table class="table table-bordered"
+                                                                id="membershipHistoryData">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">#</th>
+                                                                        <th scope="col">Date</th>
+                                                                        <th scope="col">Service/Plan
+                                                                        </th>
+                                                                        <th scope="col">Trainer</th>
+                                                                        <th scope="col">Amount
+                                                                        </th>
+                                                                        <th scope="col">Status</th>
 
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    <%
+                                                                        membershipHistoryData.forEach((membership,index)=>
+                                                                        { %>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <%=index + 1%>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%=membership.join_date%>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%=membership.membership_service%>
+                                                                                    for
+                                                                                    <%=membership.membership_plan%>
+                                                                                        months
+                                                                            </td>
+                                                                            <td>
+                                                                                
+                                                                                <%=membership.trainer_name%>
+                                                                            </td>
+                                                                            <td>
+                                                                                PHP
+                                                                                <%=membership.total_amount%>
+                                                                            </td>
+                                                                            <td>
+                                                                                <% if
+                                                                                    (membership.membership_status==='Cancelled'
+                                                                                    ) { %>
+                                                                                    <span
+                                                                                        class="text-danger">
+                                                                                        <%= membership.membership_status
+                                                                                            %>
+                                                                                    </span>
+                                                                                    <% } else if
+                                                                                        (membership.membership_status==='Expired'
+                                                                                        ) { %>
+                                                                                        <span
+                                                                                            class="text-danger">
+                                                                                            <%= membership.membership_status
+                                                                                                %>
+                                                                                        </span>
+                                                                                        <% } else {
+                                                                                            %>
+                                                                                            <%= membership.membership_status
+                                                                                                %>
+                                                                                                <% }
+                                                                                                    %>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% }); %>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
 
                                             </div>
                                         </div>

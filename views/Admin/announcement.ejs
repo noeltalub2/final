@@ -1,0 +1,234 @@
+<%-include ("../Includes/Admin/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Admin/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/equipment">
+                            <i class="bi bi-gear"></i>
+                            <span>Manage Equipment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/attendance">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Manage Attendance</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/membership">
+                            <i class="bi bi-card-checklist"></i>
+                            <span>Manage Membership</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/announcement">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Announcement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Announcement</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Announcement</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <%-include ("../Includes/message.ejs")%>
+                            <div class="card ">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="">
+                                            <h5 class="card-title mb-4">Announcement List</h5>
+                                        </div>
+                                        <div class="">
+                                            <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                                Insert Announcement
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive-md">
+                                        <table class="table table-bordered" id="clientTable">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Message</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% announcement.forEach((item, index)=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <%= index + 1 %>
+                                                        </td>
+                                                        <td>
+                                                            <%= item.date %>
+                                                        </td>
+                                                        <td>
+                                                            <%= item.title %>
+                                                        </td>
+                                                        <td>
+                                                            <%= item.message %>
+                                                        </td>
+                                                        <td>
+                                                            <div class="text-center">
+                                                                <div class="dropdown"> <a class="text-secondary"
+                                                                        href="#" data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"> <i
+                                                                            class="bi bi-three-dots"></i> </a>
+                                                                    <ul class="dropdown-menu ">
+                                                                        <li> <a class="dropdown-item"
+                                                                                href="/admin/announcement/<%= item.announcement_id %>"><i
+                                                                                    class="bi bi-pencil-square me-1"></i>
+                                                                                Edit</a></li>
+                                                                        <li> <button class="dropdown-item text-danger"
+                                                                                onclick="deleteAnnouncement('<%=item.announcement_id%>')"><i
+                                                                                    class="bi bi-x-circle"></i>
+                                                                                Delete</button>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" action="/admin/announcement" class="needs-validation" novalidate>
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Make Announcement</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input type="text" class="form-control" id="title" name="title"
+                                                placeholder="Enter title" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">Message</label>
+                                            <textarea class="form-control" id="message" name="message" rows="4"
+                                                placeholder="Enter message" required></textarea>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-dark btn-sm"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-dark btn-sm">Publish</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Admin/script.ejs")%>
+                <script>
+
+                    $(document).ready(function () {
+                        $('#clientTable').DataTable();
+                    });
+
+
+
+                    function deleteAnnouncement(id) {
+                        Swal.fire({
+                            title: "Delete Announcement",
+                            text: `Are you sure you want to delete announcement? This action cannot be undone.`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Confirm", // Set the text for the confirmation button
+                            cancelButtonText: "Cancel",  // Set the text for the cancel button
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch("/admin/del_announcement", {
+                                    method: "POST",
+                                    body: JSON.stringify({ id }),
+                                    headers: { "Content-Type": "application/json" },
+                                })
+                                    .then((res) => res.json())
+                                    .then((response) => {
+                                        if (response.status === "success") {
+                                            Swal.fire(
+                                                'Success!',
+                                                `${response.message}`,
+                                                'success'
+                                            ).then(function () {
+                                                window.location.href = '/admin/announcement';
+                                            });
+                                        }
+                                        if (response.status === "error") {
+                                            Swal.fire(
+                                                'Error',
+                                                `${response.message}`,
+                                                'error'
+                                            ).then(function () {
+                                                window.location.href = '/admin/announcement';
+                                            });
+                                        }
+                                    });
+                            } else if (result.isDismissed) {
+                                // User clicked the "Cancel" button or outside the dialog
+                                // You can add code for what should happen when the cancel button is clicked or the dialog is dismissed
+                            }
+                        });
+                    }
+
+
+                </script>
+    </body>
+
+    </html>

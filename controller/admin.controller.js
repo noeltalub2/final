@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const { createTokenClient, createTokenTrainer } = require("../utils/token");
-const { date, date_time } = require("../utils/date");
+const { date, date_time, expiration_date } = require("../utils/date");
 const { time, convertDate } = require("../utils/timestamp");
 
 const db = require("../database/db");
@@ -318,7 +318,7 @@ const deleteEquipment = async (req, res) => {
 
 const getAttendance = async (req, res) => {
 	const clients = await queryParam(
-		"SELECT client.id, client.fullname, client.phonenumber, membership.membership_service, membership.membership_plan, attendance.time_in, attendance.time_out, attendance.date FROM membership INNER JOIN client ON client.id = membership.client_id LEFT JOIN attendance ON attendance.client_id = client.id AND attendance.date = ? WHERE membership.membership_status = 'Activated' AND membership.payment_status = 'Paid'",
+		"SELECT client.id, client.fullname, client.phonenumber, membership.membership_service, membership.membership_plan, attendance.time_in, attendance.time_out, attendance.date FROM membership INNER JOIN client ON client.id = membership.client_id LEFT JOIN attendance ON attendance.client_id = client.id AND attendance.date = ? WHERE membership.membership_status = 'Activated' AND membership.payment_status = 'Paid' ORDER BY client.id DESC",
 		[date()]
 	);
 	res.render("Admin/attendance", {
@@ -375,7 +375,158 @@ const getHistoryAttendance = async (req, res) => {
 	);
 	res.render("Admin/attendance_history", {
 		title: "History Attendance",
-		attendanceData
+		attendanceData,
+	});
+};
+
+const getMembership = async (req, res) => {
+	const membership = await zeroParam(
+		"SELECT membership.*, client.fullname AS client_fullname, client.phonenumber, trainer.fullname AS trainer_fullname FROM membership INNER JOIN client ON membership.client_id = client.id INNER JOIN trainer ON membership.trainer_id = trainer.trainer_id WHERE membership.membership_status IN ('Activated', 'Expired') AND membership.payment_status = 'Paid' ORDER BY membership.status_change_date DESC;"
+	);
+
+	res.render("Admin/membership", { title: "Manage Membership", membership });
+};
+
+const getUpcomingMembership = async (req, res) => {
+	const membership = await zeroParam(
+		"SELECT membership.*, client.fullname AS client_name, client.id AS client_id, client.phonenumber, trainer.fullname AS trainer_name FROM membership INNER JOIN client ON membership.client_id = client.id LEFT JOIN trainer ON membership.trainer_id = trainer.trainer_id WHERE membership.membership_status = 'Waiting for Activation' AND membership.payment_status = 'Pending' ORDER BY membership.membership_id DESC;"
+	);
+
+	res.render("Admin/upcoming_membership", {
+		title: "Upcoming Membership",
+		membership,
+	});
+};
+
+const getPaymentMembership = async (req, res) => {
+	const membership_id = req.params.id;
+	const membership = (
+		await queryParam(
+			"SELECT membership.*, client.fullname, client.phonenumber FROM membership INNER JOIN client ON membership.client_id = client.id WHERE membership.membership_id = ?",
+			[membership_id]
+		)
+	)[0];
+
+	res.render("Admin/payment_membership", {
+		title: "Payment Membership",
+		membership,
+	});
+};
+
+const confirmPayment = (req, res) => {
+	const membership_id = req.body.id;
+	const membership_plan = req.body.plan;
+
+	const data = {
+		membership_status: "Activated",
+		payment_status: "Paid",
+		status_change_date: date_time(),
+		date_expiration: expiration_date(+membership_plan),
+	};
+
+	db.query(
+		"UPDATE membership SET ? WHERE membership_id = ?",
+		[data, membership_id],
+		(err, result) => {
+			if (err) {
+				console.error("Error updating membership:", err);
+				res.status(500).json({
+					status: "error",
+					message:
+						"Failed to update membership. Please try again later.",
+				});
+			} else {
+				res.status(200).json({
+					status: "success",
+					message: "Payment confirmation completed.",
+				});
+			}
+		}
+	);
+};
+
+const alertPayment = (req, res) => {
+	const id = req.body.id;
+	const plan = req.body.plan;
+
+	const announcement = {
+		client_id: id,
+		title: "Payment Alert",
+		message: `Please be informed that your payment for the ${plan} membership is due. Kindly settle the payment as soon as possible to avoid any inconvenience. Thank you.`,
+		date: date_time(), // Get the current date in YYYY-MM-DD format
+	};
+
+	db.query("INSERT INTO announcement SET ?", announcement, (err, result) => {
+		if (err) {
+			console.error("Error inserting announcement:", err);
+			return res.status(500).json({
+				status: "error",
+				message: "Failed to send payment alert",
+			});
+		}
+
+		return res.status(200).json({
+			status: "success",
+			message: "Payment alert sent successfully",
+		});
+	});
+};
+const cancelMembership = (req, res) => {
+	const id = req.body.id;
+	const data = {
+		membership_status: "Cancelled",
+		payment_status: "Cancelled",
+	};
+
+	db.query(
+		"UPDATE membership SET ? WHERE membership_id = ?",
+		[data, id],
+		(err, result) => {
+			if (err) {
+				console.error("Error cancelling membership:", err);
+				res.status(500).json({
+					status: "error",
+					message: "Error cancelling membership",
+				});
+			} else {
+				res.status(200).json({
+					status: "success",
+					message: "Membership successfully cancelled",
+				});
+			}
+		}
+	);
+};
+
+const getAnnouncement = async (req, res) => {
+	const announcement = await zeroParam(
+		"SELECT * FROM announcement ORDER BY announcement_id DESC"
+	);
+
+	res.render("Admin/announcement", {
+		title: "Announcement",
+		announcement,
+	});
+};
+
+const postAnnouncement = (req, res) => {
+	const { title, message } = req.body;
+
+	const data = {
+		title,
+		message,
+		date: date_time(),
+	};
+
+	db.query("INSERT INTO announcement SET ?", data, (err, result) => {
+		if (err) {
+			console.log(err);
+			req.flash("error", "Error inserting announcement");
+			res.redirect("/admin/announcement");
+		} else {
+			req.flash("success_msg", "Successfully added announcement");
+			res.redirect("/admin/announcement");
+		}
 	});
 };
 
@@ -401,5 +552,13 @@ module.exports = {
 	postTimeIn,
 	postTimeOut,
 	getHistoryAttendance,
+	getMembership,
+	getUpcomingMembership,
+	getPaymentMembership,
+	confirmPayment,
+	alertPayment,
+	cancelMembership,
+	getAnnouncement,
+	postAnnouncement,
 	getLogout,
 };

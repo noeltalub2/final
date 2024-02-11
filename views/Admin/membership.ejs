@@ -27,14 +27,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="/admin/attendance">
+                        <a class="nav-link collapsed" href="/admin/attendance">
                             <i class="bi bi-calendar-check"></i>
                             <span>Manage Attendance</span>
                         </a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="/admin/membership">
+                        <a class="nav-link " href="/admin/membership">
                             <i class="bi bi-card-checklist"></i>
                             <span>Manage Membership</span>
                         </a>
@@ -56,11 +55,11 @@
             <!-- End Sidebar-->
             <main id="main" class="main">
                 <div class="pagetitle">
-                    <h1>History Attendance</h1>
+                    <h1>Manage Membership</h1>
                     <nav style="--bs-breadcrumb-divider: '>';">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active">History Attendance</li>
+                            <li class="breadcrumb-item active">Manage Membership</li>
                         </ol>
                     </nav>
                 </div>
@@ -69,59 +68,65 @@
                         <%-include ("../Includes/message.ejs")%>
                             <div class="card ">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-4">History Attendance</h5>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="">
+                                            <h5 class="card-title mb-4">Membership List</h5>
+                                        </div>
+                                        <div class="">
+                                            <a href="/admin/membership/upcoming" class="btn btn-dark btn-sm">
+                                                Show Upcoming Members
+                                            </a>
+                                        </div>
+                                    </div>
+
+
                                     <div class="table-responsive-md">
                                         <table class="table table-bordered" id="clientTable">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Date</th> 
-                                                    <th scope="col">Client Name</th>
-                                                    <th scope="col">Time In</th>
-                                                    <th scope="col">Time Out</th>
-                                                    <th scope="col">Time Spent</th>
-                                          
-                                                
+                                                    <th scope="col">Fullname</th>
+                                             
+                                                    <th scope="col">Trainer</th>
+                                                    <th scope="col">Service</th>
+                                                    <th scope="col">Plan</th>
+                                                    <th scope="col">Start Date</th>
+                                                    <th scope="col">Expiration Date</th>
+                                                    <th scope="col" class="text-center">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% attendanceData.forEach((attendance, index) => { %>
-                                                    <tr>
-                                                        <td><%= index + 1 %></td>
-                                                        <td> <%= new Date(attendance.date).toLocaleDateString('en-US', { month: 'long'
+                                                <% membership.forEach((member, index) => { %>
+                                                <tr>
+                                                    <td><%= index + 1 %></td>
+                                                    <td><%= member.client_fullname %></td>
+                                                 
+                                                    <td><%= member.trainer_fullname %></td>
+                                                    <td><%= member.membership_service %></td>
+                                                    <td><%= member.membership_plan %> month/s</td>
+                                             
+                                                    <td> <%= new Date(member.status_change_date).toLocaleDateString('en-US', { month: 'long'
                                                         , day: 'numeric' , year: 'numeric' }) %></td>
-                                                       
-                                                        <td><%= attendance.fullname %></td>
-                                                        <td><%= attendance.time_in %></td>
-                                                        <td><%= attendance.time_out %></td>
-                                                        <td>
-                                                            <%= (() => {
-                                                                if (attendance && attendance.date && attendance.time_in && attendance.time_out) {
-                                                                    const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
-                                                                    const timeOutDate = new Date(`${attendance.date} ${attendance.time_out}`);
-                                                                    const timeDiffMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
-                                                            
-                                                                    if (isNaN(timeDiffMinutes)) {
-                                                                        return '0 minutes';
-                                                                    } else {
-                                                                        const hours = Math.floor(timeDiffMinutes / 60);
-                                                                        const minutes = timeDiffMinutes % 60;
-                                                                        return timeDiffMinutes >= 60 ? `${hours} hours ${minutes} minutes` : `${timeDiffMinutes} minutes`;
-                                                                    }
-                                                                } else {
-                                                                    return 'N/A'; // Return 'N/A' if attendance or its properties are undefined
-                                                                }
-                                                            })() %>
+                                                 
+                                                    <td> <%= new Date(member.date_expiration).toLocaleDateString('en-US', { month: 'long'
+                                                        , day: 'numeric' , year: 'numeric' }) %></td>
+                                                        <td class="text-center">
+                                                            <% if (member.membership_status === 'Activated') { %>
+                                                                <span class="badge bg-success">Activated</span>
+                                                            <% } else if (member.membership_status === 'Expired') { %>
+                                                                <span class="badge bg-danger">Expired</span>
+                                                            <% } else { %>
+                                                                <!-- Handle other statuses here if needed -->
+                                                            <% } %>
                                                         </td>
-                                          
-                                                   
-                                                    </tr>
+                                                        
+                                                </tr>
                                                 <% }); %>
                                             </tbody>
                                         </table>
                                     </div>
+                                    
                                 </div>
-                                
                             </div>
                     </div>
                     </div>

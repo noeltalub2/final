@@ -65,30 +65,20 @@
                       <div class="d-flex align-items-center">
 
                         <h5> <i class="bi bi-clock-history me-2"></i>
-                          <td>
-                          <td>
-                            <%= (() => {
-                              if (attendance && attendance.date && attendance.time_in && attendance.time_out) {
-                                  const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
-                                  const timeOutDate = new Date(`${attendance.date} ${attendance.time_out}`);
-                                  const timeDiffMinutes = Math.floor((timeOutDate - timeInDate) / (1000 * 60));
                           
-                                  if (isNaN(timeDiffMinutes)) {
-                                      return '0 minutes';
-                                  } else {
-                                      const hours = Math.floor(timeDiffMinutes / 60);
-                                      const minutes = timeDiffMinutes % 60;
-                                      return timeDiffMinutes >= 60 ? `${hours} hours ${minutes} minutes` : `${timeDiffMinutes} minutes`;
-                                  }
-                              } else {
-                                  return 'N/A'; // Return 'N/A' if attendance or its properties are undefined
-                              }
-                          })() %>
-                          
-
-                          </td>
-
-                          </td>
+                          <%= function() {
+                            if (attendance && attendance.date && attendance.time_in) {
+                                const timeInDate = new Date(`${attendance.date} ${attendance.time_in}`);
+                                const currentTime = new Date(); // Current time
+                                const timeDiffMilliseconds = currentTime - timeInDate; // Difference in milliseconds
+                                const timeDiffMinutes = Math.floor(timeDiffMilliseconds / (1000 * 60)); // Convert milliseconds to minutes
+                        
+                                return isNaN(timeDiffMinutes) ? '0 minutes' : `${timeDiffMinutes} minutes`;
+                            } else {
+                                return 'N/A'; // Return 'N/A' if attendance or its properties are undefined
+                            }
+                        }() %>
+                        
                         </h5>
 
 
@@ -124,9 +114,12 @@
 
                       <div class="d-flex align-items-center">
 
-                        <h5><i class="bi bi-rulers me-2"></i>
-                          <%=client_info.height%> cm | 56 kl
+                        <h5>
+                          <i class="bi bi-rulers me-2"></i>
+                          <%= client_info.height && client_info.weight ? `${client_info.height} cm |
+                            ${client_info.weight} kg` : "No data" %>
                         </h5>
+
 
 
                       </div>
