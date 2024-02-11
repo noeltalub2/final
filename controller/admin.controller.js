@@ -369,7 +369,6 @@ const postTimeOut = (req, res) => {
 	);
 };
 
-
 const getLogout = (req, res) => {
 	res.clearCookie("token_admin");
 	res.redirect("/admin/signin");
