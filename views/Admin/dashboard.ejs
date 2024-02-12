@@ -53,9 +53,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/profile">
-              <i class="bi bi-person-lines-fill"></i>
-              <span>Profile</span>
+            <a class="nav-link collapsed" href="/admin/report">
+              <i class="bi bi-file-earmark-bar-graph"></i>
+              <span>Report</span>
             </a>
           </li>
         </ul>
@@ -75,7 +75,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="row">
-                <div class="col-xxl-3 col-md-3">
+                <div class="col-xxl-4 col-md-4">
                   <div class="card info-card blue-card">
 
                     <div class="card-body">
@@ -86,7 +86,9 @@
                           <i class="bi bi-person-fill-check"></i>
                         </div>
                         <div class="ps-3">
-                          <h6>145</h6>
+                          <h6>
+                            <%=count_active%>
+                          </h6>
 
 
                         </div>
@@ -96,7 +98,7 @@
                   </div>
                 </div>
 
-                <div class="col-xxl-3 col-md-3">
+                <div class="col-xxl-4 col-md-4">
                   <div class="card info-card red-card">
 
                     <div class="card-body">
@@ -107,7 +109,9 @@
                           <i class="bi bi-people-fill"></i>
                         </div>
                         <div class="ps-3">
-                          <h6>145</h6>
+                          <h6>
+                            <%=count_member%>
+                          </h6>
 
 
                         </div>
@@ -116,18 +120,20 @@
 
                   </div>
                 </div>
-                <div class="col-xxl-3 col-md-3">
+                <div class="col-xxl-4 col-md-4">
                   <div class="card info-card green-card">
 
                     <div class="card-body">
-                      <h5 class="card-title">Current Earnings <span>| Total</span></h5>
+                      <h5 class="card-title">Earnings <span>| Total</span></h5>
 
                       <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                           ₱
                         </div>
                         <div class="ps-3">
-                          <h6>145</h6>
+                          <h6>
+                            <%=total_earnings%>
+                          </h6>
 
 
                         </div>
@@ -136,7 +142,7 @@
 
                   </div>
                 </div>
-                <div class="col-xxl-3 col-md-3">
+                <div class="col-xxl-4 col-md-4">
                   <div class="card info-card yellow-card">
 
                     <div class="card-body">
@@ -147,7 +153,53 @@
                           <i class="bi bi-person-bounding-box"></i>
                         </div>
                         <div class="ps-3">
-                          <h6>145</h6>
+                          <h6>
+                            <%=count_trainer%>
+                          </h6>
+
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card blue-card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">Equipment <span>| Total</span></h5>
+
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="bi bi-nut"></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6>
+                            <%=count_equipment%>
+                          </h6>
+
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-xxl-4 col-md-4">
+                  <div class="card info-card red-card">
+
+                    <div class="card-body">
+                      <h5 class="card-title">Attendance <span>| Today</span></h5>
+
+                      <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                          <i class="bi bi-person-vcard"></i>
+                        </div>
+                        <div class="ps-3">
+                          <h6>
+                            <%=count_attendance%>
+                          </h6>
 
 
                         </div>
@@ -168,21 +220,33 @@
 
                   <script>
                     document.addEventListener("DOMContentLoaded", () => {
+                      const today = new Date();
+                      const daysOfWeek = [];
+
+                      for (let i = 6; i >= 0; i--) {
+                        const currentDate = new Date(today);
+                        currentDate.setDate(today.getDate() - i);
+                        const shortDayName = currentDate.toLocaleDateString('en-US', { weekday: 'short' });
+                        daysOfWeek.push(shortDayName);
+                      }
+
                       echarts.init(document.querySelector("#lineChart")).setOption({
                         xAxis: {
                           type: 'category',
-                          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                          data: daysOfWeek
                         },
                         yAxis: {
                           type: 'value'
                         },
                         series: [{
-                          data: [150, 230, 224, 218, 135, 147, 260],
+                          data: ['<%=attendance7%>', '<%=attendance6%>', '<%=attendance5%>', '<%=attendance4%>', '<%=attendance3%>', '<%=attendance2%>', '<%=attendance1%>',
+                          ],
                           type: 'line',
                           smooth: true
                         }]
                       });
                     });
+
                   </script>
                 </div>
               </div>
@@ -212,15 +276,15 @@
                           type: 'pie',
                           radius: '50%',
                           data: [{
-                            value: 1048,
+                            value: '<%=membership_body%>',
                             name: 'Body Building'
                           },
                           {
-                            value: 735,
+                            value: '<%=membership_cardio%>',
                             name: 'Cardio'
                           },
                           {
-                            value: 580,
+                            value: '<%=membership_power%>',
                             name: 'Powerlifting'
                           },
 
@@ -240,121 +304,203 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <div class="row">
-                <div class="col-lg-12">
-                  <div class="card">
-                    <div class="card-body">
+                <div class="col-lg-6 order-2 order-lg-1">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="card">
+                        <div class="card-body">
 
-                      <h5 class="card-title">Financial Report</h5>
+                          <h5 class="card-title">Financial Report</h5>
 
-                      <div id="verticalBarChart" style="min-height: 120px;" class="echart"></div>
+                          <div id="verticalBarChart" style="min-height: 120px;" class="echart"></div>
 
-                      <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                          echarts.init(document.querySelector("#verticalBarChart")).setOption({
+                          <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                              echarts.init(document.querySelector("#verticalBarChart")).setOption({
 
-                            tooltip: {
-                              trigger: 'axis',
-                              axisPointer: {
-                                type: 'shadow'
-                              }
-                            },
-                            legend: {},
-                            grid: {
-                              left: '3%',
-                              right: '4%',
-                              bottom: '3%',
-                              containLabel: true
-                            },
-                            xAxis: {
-                              type: 'value',
-                              boundaryGap: [0, 1.1]
-                            },
-                            yAxis: {
-                              type: 'category',
-                              data: ['Terms']
-                            },
-                            series: [{
-                              name: 'Expenses',
-                              type: 'bar',
-                              data: [10000]
-                            },
-                            {
-                              name: 'Earning',
-                              type: 'bar',
-                              data: [10000]
-                            }
-                            ]
-                          });
-                        });
-                      </script>
+                                tooltip: {
+                                  trigger: 'axis',
+                                  axisPointer: {
+                                    type: 'shadow'
+                                  }
+                                },
+                                legend: {},
+                                grid: {
+                                  left: '3%',
+                                  right: '4%',
+                                  bottom: '3%',
+                                  containLabel: true
+                                },
+                                xAxis: {
+                                  type: 'value',
+                                  boundaryGap: [0, 1.1]
+                                },
+                                yAxis: {
+                                  type: 'category',
+                                  data: ['PHP']
+                                },
+                                series: [{
+                                  name: 'Expenses',
+                                  type: 'bar',
+                                  data: ['<%=total_expenses%>']
+                                },
+                                {
+                                  name: 'Earning',
+                                  type: 'bar',
+                                  data: ['<%=total_earnings%>']
+                                }
+                                ]
+                              });
+                            });
+                          </script>
 
 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Transaction History</h5>
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Service/Plan</th>
+                                <th scope="col">Amount</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% membership_history.forEach(function(membership) { %>
+                                <tr>
+                                  <td>
+                                    <%= new Date(membership.status_change_date).toLocaleDateString('en-US', {
+                                      month: 'long' , day: 'numeric' , year: 'numeric' }) %>
+                                  </td>
+                                  <td>
+                                    <%= membership.fullname %>
+                                  </td>
+                                  <td>
+                                    <%= membership.membership_service %> for <%= membership.membership_plan %> month/s
+                                  </td>
+                                  <td>PHP <%= membership.total_amount %>
+                                  </td>
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title">Transaction History</h5>
-                      <table class="table table-hover">
-                        <thead>
-                          <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Service/Plan</th>
-                            <th scope="col">Amount</th>
-                         
-                          </tr>
-                        </thead>
-                        <tbody>
 
-                        <tr>
-                          <td>Jan 3, 2024</td>
-                          <td>Noely Michelle</td>
-                          <td>Powerlifting 3 month/s</td>
-                          <td>PHP 3000</td>
-                        </tr>
-                        <tr>
-                          <td>Jan 3, 2024</td>
-                          <td>Noely Michelle</td>
-                          <td>Powerlifting 3 month/s</td>
-                          <td>PHP 3000</td>
-                        </tr>
-                        <tr>
-                          <td>Jan 3, 2024</td>
-                          <td>Noely Michelle</td>
-                          <td>Powerlifting 3 month/s</td>
-                          <td>PHP 3000</td>
-                        </tr>
-                        <tr>
-                          <td>Jan 3, 2024</td>
-                          <td>Noely Michelle</td>
-                          <td>Powerlifting 3 month/s</td>
-                          <td>PHP 3000</td>
-                        </tr>
-                        <tr>
-                          <td>Jan 3, 2024</td>
-                          <td>Noely Michelle</td>
-                          <td>Powerlifting 3 month/s</td>
-                          <td>PHP 3000</td>
-                        </tr>
-                        </tbody>
-                      </table>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Task Created All Time</h5>
+                          <div id="halfDonutChart" style="min-height: 220px;" class="echart"></div>
+                          <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                              echarts.init(document.querySelector("#halfDonutChart")).setOption({
+
+                                tooltip: {
+                                  trigger: 'item'
+                                },
+                                legend: {
+                                  top: '5%',
+                                  left: 'center'
+                                },
+                                series: [
+                                  {
+                                    name: 'Access From',
+                                    type: 'pie',
+                                    radius: ['40%', '70%'],
+                                    avoidLabelOverlap: false,
+                                    label: {
+                                      show: false,
+                                      position: 'center'
+                                    },
+                                    emphasis: {
+                                      label: {
+                                        show: true,
+                                        fontSize: 40,
+                                        fontWeight: 'bold'
+                                      }
+                                    },
+                                    labelLine: {
+                                      show: false
+                                    },
+                                    data: [
+                                      { value: '<%=count_progress%>', name: 'In Progress' },
+                                      { value: '<%=count_done%>', name: 'Done' },
+                                      { value: '<%=count_cancelled%>', name: 'Cancelled' },
+
+
+                                    ]
+                                  }
+                                ]
+                              });
+                            });
+                          </script>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Task History</h5>
+
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Status</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% task_history.forEach(function(task) { %>
+                                <tr>
+                                  <td>
+                                    <%= new Date(task.date).toLocaleDateString('en-US', { month: 'long' , day: 'numeric'
+                                      , year: 'numeric' }) %>
+                                  </td>
+                                  <td>
+                                    <%= task.fullname %>
+                                  </td>
+                                  <td>
+                                    <%= task.description %>
+                                  </td>
+                                  <td>
+                                    <span
+                                      class="badge <%= task.status === 'Done' ? 'bg-success' : (task.status === 'In Progress' ? 'bg-warning' : 'bg-danger') %>">
+                                      <%= task.status %>
+                                    </span>
+                                  </td>
+
+                                </tr>
+                                <% }); %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
                 </div>
               </div>
+            </div>
 
-            </div>
-           <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">HEllo</h5>
-              </div>
-            </div>
-           </div>
+
           </div>
 
         </section>

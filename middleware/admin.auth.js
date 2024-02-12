@@ -37,7 +37,7 @@ const forwardAuth = async (req, res, next) => {
 				0 === (await queryId(rset.id)).length
 					? next()
 					: ((res.locals.id = rset.id),
-					  res.redirect("/dashboard"));
+					  res.redirect("/admin/dashboard"));
 			}
 		});
 	} else next();

@@ -1,0 +1,261 @@
+<%-include ("../Includes/Admin/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Admin/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Manage Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/equipment">
+                            <i class="bi bi-gear"></i>
+                            <span>Manage Equipment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/attendance">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Manage Attendance</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/membership">
+                            <i class="bi bi-card-checklist"></i>
+                            <span>Manage Membership</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/announcement">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Announcement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/admin/trainer">
+                            <i class="bi bi-person-bounding-box"></i>
+                            <span>Manage Trainer</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/report">
+                            <i class="bi bi-file-earmark-bar-graph"></i>
+                            <span>Report</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Reports</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Reports</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <%-include ("../Includes/message.ejs")%>
+                            <div class="col-lg-12">
+                                <div class="card ">
+                                    <div class="card-body">
+
+                                        <h5 class="card-title mb-4">Client List Report</h5>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="clientTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Username</th>
+                                                        <th scope="col">Fullname</th>
+                                                        <th scope="col">Phone number</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Address</th>
+                                                        <th scope="col">Age</th>
+                                                        <th scope="col">Gender</th>
+                                                        <th scope="col">Height (cm)</th>
+                                                        <th scope="col">Weight (kl)</th>
+                                                        <th scope="col">Join Date</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% clientData.forEach(function(client, index) { %>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <%= index + 1 %>
+                                                            </th>
+                                                            <td>
+                                                                <%= client.username %>
+                                                            </td>
+                                                            <td>
+                                                                <%= client.fullname %>
+                                                            </td>
+                                                            <td>
+                                                                <%= client.phonenumber %>
+                                                            </td>
+                                                            <td>
+                                                                <%= client.email %>
+                                                            </td>
+                                                            <td>
+                                                                <%= client.address %>
+                                                            </td>
+
+                                                            <td>
+                                                                <%= client.age %>
+                                                            </td>
+                                                            <td>
+                                                                <%= client.gender %>
+                                                            </td>
+                                                            <td>
+                                                                <%= client.height %>
+                                                            </td>
+                                                            <td>
+                                                                <%= client.weight %>
+                                                            </td>
+
+                                                            <td>
+                                                                <%= client.join_date %>
+                                                            </td>
+                                                        </tr>
+                                                        <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="card ">
+                                    <div class="card-body">
+
+                                        <h5 class="card-title mb-4">Trainer List Report</h5>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="trainerTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Username</th>
+                                                        <th scope="col">Fullname</th>
+                                                        <th scope="col">Phone number</th>
+                                                        <th scope="col">Email</th>
+                                                        <th scope="col">Address</th>
+                                                        <th scope="col">Age</th>
+                                                        <th scope="col">Gender</th>
+                                                        <th scope="col">Join Date</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% trainerData.forEach(function(trainer, index) { %>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <%= index + 1 %>
+                                                            </th>
+                                                            <td>
+                                                                <%= trainer.username %>
+                                                            </td>
+                                                            <td>
+                                                                <%= trainer.fullname %>
+                                                            </td>
+                                                            <td>
+                                                                <%= trainer.phonenumber %>
+                                                            </td>
+                                                            <td>
+                                                                <%= trainer.email %>
+                                                            </td>
+                                                            <td>
+                                                                <%= trainer.address %>
+                                                            </td>
+
+                                                            <td>
+                                                                <%= trainer.age %>
+                                                            </td>
+                                                            <td>
+                                                                <%= trainer.gender %>
+                                                            </td>
+                                                            <td>
+                                                                <%= trainer.join_date %>
+                                                            </td>
+
+                                                        </tr>
+                                                        <% }); %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+
+                </section>
+
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Admin/script.ejs")%>
+                <script>
+                    $(document).ready(function () {
+                        $('#clientTable').DataTable({
+                            dom: 'Bfrtip',
+                            buttons: [
+                                {
+                                    extend: 'excel',
+                                    title: `King's Gym Clients`,
+                                    text: 'Download', className: "btn btn-dark btn-sm", exportOptions: {
+                                        modifier: {
+                                            page: 'current'
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+                    });
+
+
+                    $(document).ready(function () {
+                        $('#trainerTable').DataTable({
+                            dom: 'Bfrtip',
+                            buttons: [
+                                {
+                                    extend: 'excel',
+                                    title: `King's Gym Trainer`,
+                                    text: 'Download', className: "btn btn-dark btn-sm", exportOptions: {
+                                        modifier: {
+                                            page: 'current'
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+                    });
+                </script>
+    </body>
+
+    </html>

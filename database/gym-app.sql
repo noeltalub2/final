@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2024 at 08:12 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Feb 12, 2024 at 09:51 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE `admin` (
   `username` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
   `join_date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin`
@@ -54,15 +54,14 @@ CREATE TABLE `announcement` (
   `title` varchar(60) NOT NULL,
   `message` text NOT NULL,
   `date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `announcement`
 --
 
 INSERT INTO `announcement` (`announcement_id`, `client_id`, `title`, `message`, `date`) VALUES
-(1, NULL, ' Welcome to King\'s Gym!', 'Get ready to achieve your fitness goals with us! We\'re thrilled to have you join our community. Let\'s work together to reach new heights!', '2/4/2024, 3:30:21 PM'),
-(2, 26, 'Payment Alert', 'Please be informed that your payment for the Body Building membership is due. Kindly settle the payment as soon as possible to avoid any inconvenience. Thank you.', '2/11/2024, 11:29:47 PM');
+(1, NULL, ' Welcome to King\'s Gym!', 'Get ready to achieve your fitness goals with us! We\'re thrilled to have you join our community. Let\'s work together to reach new heights!', '2/4/2024, 3:30:21 PM');
 
 -- --------------------------------------------------------
 
@@ -78,18 +77,7 @@ CREATE TABLE `attendance` (
   `date` varchar(15) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `logs` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `attendance`
---
-
-INSERT INTO `attendance` (`attendance_id`, `client_id`, `time_in`, `time_out`, `date`, `status`, `logs`) VALUES
-(13, 24, '7:37:09 PM', '7:37:58 PM', '2/11/2024', 2, ''),
-(14, 25, '7:38:27 PM', '7:38:31 PM', '2/11/2024', 2, ''),
-(15, 26, '11:55:21 PM', '11:58:31 PM', '2/11/2024', 2, ''),
-(16, 24, '12:01:08 AM', NULL, '2/12/2024', 1, ''),
-(17, 26, '12:01:09 AM', '12:06:54 AM', '2/12/2024', 2, '');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -110,16 +98,7 @@ CREATE TABLE `client` (
   `phonenumber` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
   `join_date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `client`
---
-
-INSERT INTO `client` (`id`, `fullname`, `address`, `age`, `gender`, `height`, `weight`, `username`, `email`, `phonenumber`, `password`, `join_date`) VALUES
-(24, 'asdas', NULL, NULL, NULL, NULL, NULL, 'noeltalub2', 'asda@gmail.com', '12312123123', '$2b$15$N4qm28frYTKUV1OPXwjtw.dkA2yQ0I7QvFRpbgxJQDLY3hLvZMTDG', '2/10/2024, 1:59:24 PM'),
-(25, 'qweqweq', NULL, NULL, NULL, NULL, NULL, 'noeltalub3', 'weqweq@gmai.com', '12312371273', '$2b$15$K4FuYWrpp8.bpohhUjy/Kue.ppvNih5gBmwyqbJG8dnNsRTsqg99q', '2/11/2024, 6:26:46 PM'),
-(26, 'Jasdj', NULL, NULL, NULL, NULL, NULL, 'noeltalub', 'noeals@gmail.com', '12385858858', '$2b$15$nTsVqI7pbJ76dbI1OVCb3u5SfezFLf.1V/3OKoR4p0FgyvvcUfO1C', '2/11/2024, 10:53:40 PM');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -137,14 +116,7 @@ CREATE TABLE `equipment` (
   `address` varchar(60) NOT NULL,
   `phonenumber` varchar(60) NOT NULL,
   `date` varchar(60) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `equipment`
---
-
-INSERT INTO `equipment` (`id`, `name`, `amount`, `quantity`, `vendor`, `description`, `address`, `phonenumber`, `date`) VALUES
-(2, '1231312', '50000', '5', 'SS Industries', 'asdasd', '7 Cedarstone Drive', '0912741723', '2019-03-07');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -164,7 +136,7 @@ CREATE TABLE `membership` (
   `total_amount` varchar(45) NOT NULL,
   `status_change_date` varchar(45) NOT NULL,
   `date_expiration` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -182,7 +154,7 @@ CREATE TABLE `task` (
   `time` varchar(45) NOT NULL,
   `log_date` varchar(45) DEFAULT NULL,
   `log_time` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -201,14 +173,7 @@ CREATE TABLE `trainer` (
   `phonenumber` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
   `join_date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `trainer`
---
-
-INSERT INTO `trainer` (`trainer_id`, `fullname`, `address`, `age`, `gender`, `username`, `email`, `phonenumber`, `password`, `join_date`) VALUES
-(7, 'Noel', 'Nadj', 22, '', 'noeltalub', 'asdj@gmail.com', '91283182381', '$2b$15$GYJjfKSJggMq2DIK8/4/ZunzKwHavu5.gY58a90r8KqpuygUKUWWW', '2/12/2024, 3:10:43 AM');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -292,37 +257,37 @@ ALTER TABLE `announcement`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `equipment`
 --
 ALTER TABLE `equipment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `membership`
 --
 ALTER TABLE `membership`
-  MODIFY `membership_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `membership_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `task`
 --
 ALTER TABLE `task`
-  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `trainer`
 --
 ALTER TABLE `trainer`
-  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

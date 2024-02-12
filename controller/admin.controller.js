@@ -63,10 +63,140 @@ const postLogin = (req, res) => {
 };
 
 const getDashboard = async (req, res) => {
-	const admin_id = res.locals.id;
+	const count_active = (
+		await zeroParam(
+			"SELECT COUNT(*) as count FROM membership WHERE payment_status = 'Paid' AND membership_status = 'Activated';"
+		)
+	)[0].count;
+
+	const count_member = (
+		await zeroParam("SELECT COUNT(*) as 'count' FROM `client`")
+	)[0].count;
+	const total_earnings = (
+		await zeroParam(
+			"SELECT SUM(total_amount) AS 'total' FROM membership WHERE (membership_status = 'Activated' OR membership_status = 'Expired') AND payment_status = 'Paid';"
+		)
+	)[0].total;
+	const total_expenses = (
+		await zeroParam("SELECT SUM(amount) as 'total' FROM `equipment`;")
+	)[0].total;
+	const count_trainer = (
+		await zeroParam("SELECT COUNT(*) AS 'count' FROM `trainer`;")
+	)[0].count;
+	const count_equipment = (
+		await zeroParam("SELECT COUNT(*) AS 'count' FROM `equipment`;")
+	)[0].count;
+
+	const count_attendance = (
+		await queryParam(
+			"SELECT COUNT(*) AS 'count' FROM `attendance` WHERE date = ?",
+			[date()]
+		)
+	)[0].count;
+
+	const membership_cardio = (
+		await zeroParam(
+			"SELECT COUNT(*) AS count FROM membership WHERE (membership_status = 'Activated' OR membership_status = 'Expired') AND payment_status = 'Paid' AND membership_service = 'Cardio';"
+		)
+	)[0].count;
+
+	const membership_power = (
+		await zeroParam(
+			"SELECT COUNT(*) AS count FROM membership WHERE (membership_status = 'Activated' OR membership_status = 'Expired') AND payment_status = 'Paid' AND membership_service = 'Powerlifting';"
+		)
+	)[0].count;
+
+	const membership_body = (
+		await zeroParam(
+			"SELECT COUNT(*) AS count FROM membership WHERE (membership_status = 'Activated' OR membership_status = 'Expired') AND payment_status = 'Paid' AND membership_service = 'Body Building';"
+		)
+	)[0].count;
+
+	const count_cancelled = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM `task` WHERE status = 'Cancelled'"
+		)
+	)[0].count;
+
+	const count_progress = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM `task` WHERE status = 'In Progress'"
+		)
+	)[0].count;
+	const count_done = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM `task` WHERE status = 'Done'"
+		)
+	)[0].count;
+
+	const membership_history = await zeroParam(
+		"SELECT membership.*, client.fullname FROM `membership` INNER JOIN client ON client.id = membership.client_id WHERE membership_status = 'Activated' AND payment_status = 'Paid' ORDER BY `membership`.`status_change_date` DESC LIMIT 5;"
+	);
+
+	const task_history = await zeroParam(
+		"SELECT task.*, client.fullname FROM `task` INNER JOIN client ON client.id = task.client_id ORDER BY `task`.`task_id` DESC;"
+	);
+
+	const attendance1 = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM attendance WHERE STR_TO_DATE(date, '%m/%d/%Y') = CURDATE() - INTERVAL 1 DAY;"
+		)
+	)[0].count;
+	const attendance2 = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM attendance WHERE STR_TO_DATE(date, '%m/%d/%Y') = CURDATE() - INTERVAL 2 DAY;"
+		)
+	)[0].count;
+	const attendance3 = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM attendance WHERE STR_TO_DATE(date, '%m/%d/%Y') = CURDATE() - INTERVAL 3 DAY;"
+		)
+	)[0].count;
+	const attendance4 = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM attendance WHERE STR_TO_DATE(date, '%m/%d/%Y') = CURDATE() - INTERVAL 4 DAY;"
+		)
+	)[0].count;
+	const attendance5 = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM attendance WHERE STR_TO_DATE(date, '%m/%d/%Y') = CURDATE() - INTERVAL 5 DAY;"
+		)
+	)[0].count;
+	const attendance6 = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM attendance WHERE STR_TO_DATE(date, '%m/%d/%Y') = CURDATE() - INTERVAL 6 DAY;"
+		)
+	)[0].count;
+	const attendance7 = (
+		await zeroParam(
+			"SELECT COUNT(*) AS 'count' FROM attendance WHERE STR_TO_DATE(date, '%m/%d/%Y') = CURDATE() - INTERVAL 7 DAY;"
+		)
+	)[0].count;
 
 	res.render("Admin/dashboard", {
 		title: "Admin Dashboard",
+		count_active,
+		count_member,
+		total_earnings,
+		total_expenses,
+		count_trainer,
+		count_equipment,
+		count_attendance,
+		membership_cardio,
+		membership_body,
+		membership_power,
+		count_cancelled,
+		count_done,
+		count_progress,
+		membership_history,
+		task_history,
+		attendance1,
+		attendance2,
+		attendance3,
+		attendance4,
+		attendance5,
+		attendance6,
+		attendance7,
 	});
 };
 
@@ -83,11 +213,6 @@ const getClient = async (req, res) => {
 
 const getClientView = async (req, res) => {
 	const client_username = req.params.username;
-	// const trainer_id = res.locals.id;
-	// const tasks = await queryParam(
-	// 	`SELECT task.task_id, membership.membership_service, membership.membership_plan, membership.join_date, task.description, task.status, client.fullname AS client_name FROM membership INNER JOIN trainer ON membership.trainer_id = trainer.trainer_id LEFT JOIN task ON task.client_id = membership.client_id LEFT JOIN client ON client.id = membership.client_id WHERE client.username = '${client_username}' AND trainer.trainer_id = ? AND membership.membership_status = 'Activated' AND membership.payment_status = 'Paid' ORDER BY task.task_id DESC;`,
-	// 	[trainer_id]
-	// );
 
 	const profileData = (
 		await queryParam("SELECT * FROM client WHERE username = ?", [
@@ -113,12 +238,18 @@ const getClientView = async (req, res) => {
 		)
 	)[0].count;
 
+	const membership = await queryParam(
+		"SELECT membership.*, trainer.fullname FROM `membership` INNER JOIN client ON client.id = membership.client_id INNER JOIN trainer ON trainer.trainer_id = membership.trainer_id WHERE membership.client_id = (SELECT id FROM client WHERE username = ?) ORDER BY membership.status_change_date DESC;",
+		[client_username]
+	);
+
 	res.render("Admin/client_view", {
 		title: "Edit Client Profile",
 		profileData,
 		progress,
 		done,
 		cancelled,
+		membership,
 	});
 };
 
@@ -644,6 +775,7 @@ const postTrainer = async (req, res) => {
 		phonenumber,
 		age,
 		address,
+		gender,
 		password: hash,
 		join_date: date_time(),
 	};
@@ -672,96 +804,113 @@ const getEditTrainer = async (req, res) => {
 };
 
 const editPostTrainer = async (req, res) => {
-    // Data from the form ../register
-    const {
-		id,
-        fullname,
-        email,
-        phonenumber,
-        username,
-        age,
-        address,
-        gender
-    } = req.body;
-    let errors = [];
-    console.log(req.params.id)
-    // Sql statement if there is duplicate in database
-    const usernameExistQuery = "SELECT COUNT(*) AS count FROM trainer WHERE username = ?";
-    const emailExistQuery = "SELECT COUNT(*) AS count FROM trainer WHERE email = ?";
-    const phoneExistQuery = "SELECT COUNT(*) AS count FROM trainer WHERE phonenumber = ?";
-    
-    // Query for checking duplicate entries
-    const usernameCount = (await queryParam(usernameExistQuery, [username]))[0].count;
-    const emailCount = (await queryParam(emailExistQuery, [email]))[0].count;
-    const phoneCount = (await queryParam(phoneExistQuery, [phonenumber]))[0].count;
+	// Data from the form ../register
+	const { id, fullname, email, phonenumber, username, age, address, gender } =
+		req.body;
+	let errors = [];
+	console.log(req.params.id);
+	// Sql statement if there is duplicate in database
+	const usernameExistQuery =
+		"SELECT COUNT(*) AS count FROM trainer WHERE username = ?";
+	const emailExistQuery =
+		"SELECT COUNT(*) AS count FROM trainer WHERE email = ?";
+	const phoneExistQuery =
+		"SELECT COUNT(*) AS count FROM trainer WHERE phonenumber = ?";
 
-    // Check if there are duplicates
-    if (emailCount > 0) {
-        errors.push({ msg: "Email is already registered" });
-    }
-    if (phoneCount > 0) {
-        errors.push({ msg: "Phonenumber is already registered" });
-    }
-    if (usernameCount > 0) {
-        errors.push({ msg: "Username is already registered" });
-    }
+	// Query for checking duplicate entries
+	const usernameCount = (await queryParam(usernameExistQuery, [username]))[0]
+		.count;
+	const emailCount = (await queryParam(emailExistQuery, [email]))[0].count;
+	const phoneCount = (await queryParam(phoneExistQuery, [phonenumber]))[0]
+		.count;
 
-    // Data to update in the database
-    const data = {
-        fullname,
-        email,
-        username,
-        phonenumber,
-        age,
-        address,
-        gender
-    };
-    
-    // SQL statement to update trainer information
-    const sql = "UPDATE trainer SET ? WHERE trainer_id = ?";
+	// Check if there are duplicates
+	if (emailCount > 0) {
+		errors.push({ msg: "Email is already registered" });
+	}
+	if (phoneCount > 0) {
+		errors.push({ msg: "Phonenumber is already registered" });
+	}
+	if (usernameCount > 0) {
+		errors.push({ msg: "Username is already registered" });
+	}
 
-    // Update the trainer information
-    db.query(sql, [data, id], (err, result) => {
-        if (err) {
-			req.flash("error_msg", "The provided Username, Phone Number, or Email is already registered.");
+	// Data to update in the database
+	const data = {
+		fullname,
+		email,
+		username,
+		phonenumber,
+		age,
+		address,
+		gender,
+	};
+
+	// SQL statement to update trainer information
+	const sql = "UPDATE trainer SET ? WHERE trainer_id = ?";
+
+	// Update the trainer information
+	db.query(sql, [data, id], (err, result) => {
+		if (err) {
+			req.flash(
+				"error_msg",
+				"The provided Username, Phone Number, or Email is already registered."
+			);
 			res.redirect("/admin/trainer/edit/" + id);
-			
-        } else {
-            req.flash("success_msg", "Trainer information updated successfully");
-            res.redirect("/admin/trainer/edit/" + id);
-        }
-    });
+		} else {
+			req.flash(
+				"success_msg",
+				"Trainer information updated successfully"
+			);
+			res.redirect("/admin/trainer/edit/" + id);
+		}
+	});
 };
 
 const deleteTrainer = async (req, res) => {
 	const username = req.body.userId;
 	const id = (
-		await queryParam("SELECT trainer_id FROM trainer WHERE username = ?", [username])
+		await queryParam("SELECT trainer_id FROM trainer WHERE username = ?", [
+			username,
+		])
 	)[0].trainer_id;
 	try {
-		
 		const task = (
 			await queryParam("DELETE FROM task WHERE trainer_id = ?", [id])
 		)[0];
 		const membership = (
-			await queryParam("DELETE FROM membership WHERE trainer_id = ?", [id])
+			await queryParam("DELETE FROM membership WHERE trainer_id = ?", [
+				id,
+			])
 		)[0];
 
 		const profile = (
 			await queryParam("DELETE FROM trainer WHERE trainer_id = ?", [id])
 		)[0];
-	
+
 		res.status(200).json({
 			status: "success",
 			message: "Trainer Deleted Successfully",
 		});
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 		res.status(200).json({
 			status: "error",
 			message: "There was an error deleting the trainer",
 		});
 	}
+};
+
+const getReport = async (req, res) => {
+	const clientData = await zeroParam("SELECT * FROM client ORDER BY id DESC");
+	const trainerData = await zeroParam(
+		"SELECT * FROM trainer ORDER BY trainer_id DESC"
+	);
+	res.render("Admin/report", {
+		title: "Generate Report",
+		clientData,
+		trainerData,
+	});
 };
 
 const getLogout = (req, res) => {
@@ -802,5 +951,6 @@ module.exports = {
 	getEditTrainer,
 	editPostTrainer,
 	deleteTrainer,
+	getReport,
 	getLogout,
 };
