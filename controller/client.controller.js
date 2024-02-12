@@ -226,8 +226,7 @@ const getTask = async (req, res) => {
 const postTaskDone = async (req, res) => {
 	const taskId = req.body.taskId;
 	const clientId = req.body.clientId;
-	console.log(taskId);
-	console.log(clientId);
+	
 	// Assuming you have a 'tasks' table
 	const updateQuery =
 		"UPDATE task SET status = ?, log_time = ?, log_date = ? WHERE task_id = ? AND client_id = ?";
@@ -304,7 +303,7 @@ const getAttendance = async (req, res) => {
 		"SELECT attendance.attendance_id, attendance.client_id, attendance.time_in, attendance.time_out, attendance.date, COUNT(task.status) AS 'task_count' FROM attendance LEFT JOIN task ON task.client_id = attendance.client_id AND task.status = 'Done' AND attendance.date = task.date WHERE attendance.client_id = ? GROUP BY attendance.attendance_id, attendance.client_id, attendance.time_in, attendance.time_out, attendance.date;;",
 		[client_id]
 	);
-	console.log(attendanceData);
+	
 	res.render("Client/attendance", {
 		title: "Client Attendance",
 		attendanceData,

@@ -27,7 +27,12 @@
                         </a>
                     </li>
 
-
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/announcement">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Announcement</span>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="/trainer/profile">
@@ -106,57 +111,56 @@
 
                                         </div>
                                     </div>
+                                    <h5 class="card-title">Task History</h5>
                                     <div class="table-responsive-md">
                                         <table class="table table-bordered" id="taskTable">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
                                                     <th scope="col">Date</th>
-                                                    <th scope="col">Fullname</th>
-                                                    <th scope="col">Task</th>
+                                                    <th scope="col">Task Description</th>
                                                     <th scope="col">Status</th>
                                                 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% tasks.forEach(function(task, index) { %>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <%= index + 1 %>
-                                                        </th>
-                                                        <td>
-                                                            <%= new Date(task.join_date ).toLocaleDateString('en-US', {
-                                                                month: 'long' , day: 'numeric' , year: 'numeric' }) %>
-                                                        </td>
-                                                        <td>
-                                                            <%= task.client_name %>
-                                                        </td>
-                                                        <td>
-                                                            <%= task.description %>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <% if (task.status==='Cancelled' ) { %>
-                                                                <span class="badge bg-danger ">
-                                                                    <%= task.status %>
-                                                                </span>
-                                                                <% } else if (task.status==='Done' ) { %>
+                                                    <% if (task.task_id !== null && task.description !== null && task.status !== null) { %>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <%= index + 1 %>
+                                                            </th>
+                                                            <td>
+                                                                <%= new Date(task.join_date).toLocaleDateString('en-US', {
+                                                                    month: 'long', day: 'numeric', year: 'numeric'
+                                                                }) %>
+                                                            </td>
+                                                            <td>
+                                                                <%= task.description %>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <% if (task.status === 'Cancelled') { %>
+                                                                    <span class="badge bg-danger">
+                                                                        <%= task.status %>
+                                                                    </span>
+                                                                <% } else if (task.status === 'Done') { %>
                                                                     <span class="badge bg-success">
                                                                         <%= task.status %>
                                                                     </span>
-                                                                    <% } else if (task.status==='In Progress' ) { %>
-                                                                        <span class="badge bg-warning text-dark">
-                                                                            <%= task.status %>
-                                                                        </span>
-                                                                        <% } else { %>
-                                                                            <span class="badge bg-secondary">
-                                                                                <%= task.status %>
-                                                                            </span>
-                                                                            <% } %>
-                                                        </td>
-
-                                                   
-                                                    </tr>
-                                                    <% }); %>
+                                                                <% } else if (task.status === 'In Progress') { %>
+                                                                    <span class="badge bg-warning text-dark">
+                                                                        <%= task.status %>
+                                                                    </span>
+                                                                <% } else { %>
+                                                                    <span class="badge bg-secondary">
+                                                                        <%= task.status %>
+                                                                    </span>
+                                                                <% } %>
+                                                            </td>
+                                                        </tr>
+                                                    <% } %>
+                                                <% }); %>
+                                                
 
                                             </tbody>
                                         </table>

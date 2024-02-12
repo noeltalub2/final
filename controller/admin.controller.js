@@ -808,7 +808,7 @@ const editPostTrainer = async (req, res) => {
 	const { id, fullname, email, phonenumber, username, age, address, gender } =
 		req.body;
 	let errors = [];
-	console.log(req.params.id);
+	
 	// Sql statement if there is duplicate in database
 	const usernameExistQuery =
 		"SELECT COUNT(*) AS count FROM trainer WHERE username = ?";

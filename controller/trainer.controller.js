@@ -96,7 +96,7 @@ const getDashboard = async (req, res) => {
 		[trainer_id]
 	);
 
-	console.log(clients);
+
 	const rate = Number(completion_rate).toFixed(2);
 
 	res.render("Trainer/dashboard", {
@@ -127,7 +127,7 @@ const getClientView = async (req, res) => {
 	const client_username = req.params.username;
 	const trainer_id = res.locals.id;
 	const tasks = await queryParam(
-		`SELECT task.task_id, membership.membership_service, membership.membership_plan, membership.join_date, task.description, task.status, client.fullname AS client_name FROM membership INNER JOIN trainer ON membership.trainer_id = trainer.trainer_id LEFT JOIN task ON task.client_id = membership.client_id LEFT JOIN client ON client.id = membership.client_id WHERE client.username = '${client_username}' AND trainer.trainer_id = ? AND membership.membership_status = 'Activated' AND membership.payment_status = 'Paid' ORDER BY task.task_id DESC;`,
+		`SELECT task.task_id, task.description, task.status  FROM membership INNER JOIN trainer ON membership.trainer_id = trainer.trainer_id LEFT JOIN task ON task.client_id = membership.client_id LEFT JOIN client ON client.id = membership.client_id WHERE client.username = '${client_username}' AND trainer.trainer_id = ? AND membership.membership_status = 'Activated' AND membership.payment_status = 'Paid' ORDER BY task.task_id DESC;`,
 		[trainer_id]
 	);
 
@@ -154,6 +154,8 @@ const getClientView = async (req, res) => {
 			[client_username]
 		)
 	)[0].count;
+
+	
 
 	res.render("Trainer/client_view", {
 		title: "View Client Profile",
@@ -293,6 +295,7 @@ const deleteTask = async (req, res) => {
 		});
 	});
 };
+
 
 const getProfile = async (req, res) => {
 	const trainer_id = res.locals.id;
