@@ -1,0 +1,108 @@
+<%-include ("../Includes/Trainer/head.ejs")%>
+
+    <body>
+        <%-include ("../Includes/Trainer/header.ejs")%>
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/dashboard">
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/client">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/task">
+                            <i class="bi bi-list-task"></i>
+                            <span>Tasks</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="/trainer/announcement">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Announcement</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/trainer/profile">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- End Sidebar-->
+            <main id="main" class="main">
+                <div class="pagetitle">
+                    <h1>Announcement</h1>
+                    <nav style="--bs-breadcrumb-divider: '>';">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/trainer/dashboard">Home</a></li>
+                            <li class="breadcrumb-item active">Announcement</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section class="section profile">
+                    <div class="row">
+                        <%-include ("../Includes/message.ejs")%>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Announcements</h5>
+                                <div class="row g-3">
+                                    <% announcements.forEach(announcement=> { %>
+                                        <div class="col-lg-6">
+                                            <div class="list-group">
+
+                                                <div href="#" class="list-group-item list-group-item-action"
+                                                    aria-current="true">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1 fw-bold">
+                                                            <%= announcement.title %>
+                                                        </h6>
+                                                        <small>
+                                                            <%= new Date(announcement.date ).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+                                                        </small>
+                                                    </div>
+                                                    <p class="mb-1 small">
+                                                        <%= announcement.message %>
+                                                    </p>
+                                                    <small class="text-muted">By: Administrator</small>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 
+
+
+                </section>
+
+            </main>
+            <!-- End #main -->
+            <%-include ("../Includes/Trainer/script.ejs")%>
+                <script>
+                    
+                    $(document).ready(function () {
+                        $('#clientTable').DataTable();
+                    });
+
+
+                </script>
+    </body>
+
+    </html>

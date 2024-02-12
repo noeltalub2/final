@@ -21,10 +21,12 @@ router.post("/edit_task/", requireAuth, trainerController.postEditTask);
 
 router.post("/del_task/", requireAuth, trainerController.deleteTask);
 
-router.get("/profile", requireAuth, requireAuth, trainerController.getProfile);
+router.get("/announcement", requireAuth, trainerController.getAnnouncement);
+
+router.get("/profile", requireAuth, trainerController.getProfile);
 router.post(
 	"/profile",
-	requireAuth,
+
 	requireAuth,
 	trainerController.updateProfile
 );

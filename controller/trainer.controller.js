@@ -296,6 +296,16 @@ const deleteTask = async (req, res) => {
 	});
 };
 
+const getAnnouncement = async (req,res) => {
+	const announcements = (
+		await zeroParam(
+			"SELECT * FROM announcement WHERE client_id IS NULL ORDER BY `announcement`.`announcement_id` DESC",
+		)
+	);
+
+	
+	res.render("Trainer/announcement", {title: "Announcement List",announcements})
+}
 
 const getProfile = async (req, res) => {
 	const trainer_id = res.locals.id;
@@ -356,6 +366,7 @@ module.exports = {
 	getEditTask,
 	postEditTask,
 	deleteTask,
+	getAnnouncement,
 	getProfile,
 	updateProfile,
 	getLogout,
