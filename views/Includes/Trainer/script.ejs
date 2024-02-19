@@ -21,3 +21,41 @@
 <script src="/js/main.js"></script>
 <script src="/js/validator.js"></script>
 
+<script>
+    $(function () {
+        "use strict";
+
+        $(".preloader").fadeOut();
+
+
+    });
+</script>
+<script>
+    const avatarElement = document.getElementById("avatarProfile")
+    const nameElement = document.getElementById("fullNameClient")
+    // Fetch data from a URL
+    fetch('/trainer/avatar')
+        .then(response => {
+            // Check if the request was successful (status code 200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Parse the response as JSON
+            return response.json();
+        })
+        .then(avatar => {
+            if (avatar.avatar.profile_picture !== 'avatar.png') {
+                avatarElement.src = `/img/avatar/${avatar.avatar.profile_picture}`
+            } else {
+                avatarElement.src = '/img/avatar/avatar.png'
+            }
+
+            nameElement.innerText = avatar.avatar.fullname
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        });
+
+</script>

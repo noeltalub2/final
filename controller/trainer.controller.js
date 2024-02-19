@@ -321,9 +321,21 @@ const getProfile = async (req, res) => {
 	});
 };
 
+
 const updateProfile = (req, res) => {
 	const trainer_id = res.locals.id;
-	const { fullName, age, gender, email, phonenumber, address } = req.body;
+	const {
+		fullName,
+		age,
+		gender,
+		email,
+		phonenumber,
+		address,
+		
+		profile_picture,
+	} = req.body;
+
+	const avatar = req.file ? req.file.filename : null; // set avatar to null if req.file is empty
 
 	const data = {
 		fullName,
@@ -332,22 +344,74 @@ const updateProfile = (req, res) => {
 		email,
 		phonenumber,
 		address,
+		
 	};
 
 	db.query(
 		"UPDATE trainer SET ? WHERE trainer_id = ?",
 		[data, trainer_id],
-		(err, result) => {
+		(err, rset) => {
 			if (err) {
-				console.error("Error updating profile:", err);
-				req.flash("error", "Error updating profile");
-				res.redirect("/trainer/profile");
+				console.log(err);
+				req.flash(
+					"error_msg",
+					"Failed to update your profile phone number or email was already registered"
+				);
+				return res.redirect(`/trainer/profile`);
 			} else {
-				req.flash("success_msg", "Profile updated successfully");
-				res.redirect("/trainer/profile");
+				if (avatar) {
+					if (profile_picture !== "avatar.png") {
+						const avatarPath = `public/img/avatar/${profile_picture}`;
+						if (fs.existsSync(avatarPath)) {
+							fs.unlink(avatarPath, (err) => {
+								if (err) {
+									console.log(err);
+								}
+							});
+						}
+					}
+					db.query(
+						"UPDATE trainer SET profile_picture = ? WHERE trainer_id = ?",
+						[avatar, trainer_id],
+						(err, rset) => {
+							if (err) {
+								console.log(err);
+								req.flash(
+									"error_msg",
+									"Failed to update your profile"
+								);
+								return res.redirect(`/trainer/profile`);
+							} else {
+								req.flash(
+									"success_msg",
+									"Successfully updated your profile"
+								);
+								return res.redirect(`/trainer/profile`);
+							}
+						}
+					);
+				} else {
+					req.flash(
+						"success_msg",
+						"Successfully updated your profile"
+					);
+					return res.redirect(`/trainer/profile`);
+				}
 			}
 		}
 	);
+};
+
+const getAvatar = async (req, res) => {
+	const id = res.locals.id;
+	
+	const avatar = (
+		await queryParam("SELECT fullname, profile_picture FROM trainer WHERE trainer_id = ?", [
+			id,
+		])
+	)[0];
+
+	res.status(200).json({ avatar });
 };
 
 const getLogout = (req, res) => {
@@ -369,5 +433,6 @@ module.exports = {
 	getAnnouncement,
 	getProfile,
 	updateProfile,
+	getAvatar,
 	getLogout,
 };

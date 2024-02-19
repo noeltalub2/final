@@ -60,7 +60,7 @@
                             <div class="card">
                                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                                    <img src="/img/avatar.png" alt="Profile" class="rounded-circle">
+                                    <img src="/img/avatar/<%=profileData.profile_picture%>" alt="Profile" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" class="mx-auto">
                                     <h2 class="mb-2">
                                         <%=profileData.fullname%>
                                     </h2>
@@ -92,7 +92,7 @@
                                                     data-bs-target="#profile-edit">Edit Profile</button>
                                             </li>
 
-                                           
+
 
 
                                         </ul>
@@ -153,8 +153,23 @@
 
                                                 <h5 class="card-title">Edit Information Details</h5>
                                                 <!-- Profile Edit Form -->
-                                                <form method="post" class="needs-validation" novalidate>
-
+                                                <form method="post" class="needs-validation" novalidate
+                                                    enctype="multipart/form-data">
+                                                    <div class="row mb-3">
+                                                        <img src="/img/avatar/<%=profileData.profile_picture%>" alt="Profile" style="width: 150px; height: 100px; object-fit: cover; border-radius: 50%;" id="img-profile" class="mx-auto">
+                                                     </div>
+                                                    <div class="row mb-3">
+                                                        <label for="fullName"
+                                                            class="col-md-4 col-lg-3 col-form-label">Upload
+                                                            Avatar</label>
+                                                        <div class="col-md-8 col-lg-9">
+                                                            <input name="avatar" type="file" class="form-control"
+                                                                id="avatar" >
+                                                            <input class="form-control" type="hidden"
+                                                                id="profile_picture" name="profile_picture"
+                                                                value="<%=profileData.profile_picture%>">
+                                                        </div>
+                                                    </div>
 
                                                     <div class="row mb-3">
                                                         <label for="fullName"
@@ -334,10 +349,46 @@
                                                                                 for <%=membershipData.membership_plan%>
                                                                                     months
                                                                         </p>
-                                                                        <small class="text-muted">Kindly make the
-                                                                            payment
-                                                                            directly
-                                                                            to the administrator. Thank you.</small>
+                                                                        <p class="fw-bold">Kindly make the
+                                                                            payment:</p>
+
+                                                                        <ul>
+                                                                            <li>
+                                                                                <div class="mt-1">
+                                                                                    <p class="">Option 1: Directly pay
+                                                                                        to
+                                                                                        the Administrator</p>
+                                                                                    <!-- Include instructions or relevant information for direct payment -->
+
+                                                                                </div>
+                                                                            </li>
+                                                                            <li>
+
+                                                                                <!-- QR Code for Gcash payment -->
+                                                                                <div class="">
+                                                                                    <p class="mb-0">Option 2: Gcash
+                                                                                        Payment
+                                                                                        (Please pay exact amount only)
+                                                                                    </p>
+                                                                                    <div class="">
+                                                                                        <small
+                                                                                            class="text-muted fst-italic">Note:
+                                                                                            Save the receipt as proof of
+                                                                                            payment.</small>
+                                                                                    </div>
+
+                                                                                    <div class="img-block">
+                                                                                        <img src="img/qr.jpg"
+                                                                                            alt="Gcash QR Code"
+                                                                                            class="img-fluid"
+                                                                                            width="160">
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </li>
+                                                                        </ul>
+
+
 
                                                                         <div class="mt-3">
                                                                             <button class="btn btn-dark btn-sm me-2"
@@ -394,94 +445,93 @@
                                                                             </small>
 
                                                                             <div class="mt-3">
-                                                                                <button class="btn btn-dark btn-sm me-2"
+                                                                                <a href="/generatePdf/<%=membershipData.membership_id%>" class="btn btn-dark btn-sm me-1">Download</a>
+                                                                                <button class="btn btn-outline-dark btn-sm"
                                                                                     onclick="cancelMembership('<%=membershipData.membership_id%>','<%=membershipData.client_id%>')">Cancel
                                                                                     Membership</button>
+
+                                                            
                                                                             </div>
 
                                                                         </div>
 
                                                                         <% } %>
-                                                                           
+
 
                                                             </div>
                                                         </div>
                                                         <%}%>
-                                                        <hr>
-                                                        <h5 class="card-title">Membership History
-                                                        </h5>
-                                                        <div class="table-responsive-md">
-                                                            <table class="table table-bordered"
-                                                                id="membershipHistoryData">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th scope="col">#</th>
-                                                                        <th scope="col">Date</th>
-                                                                        <th scope="col">Service/Plan
-                                                                        </th>
-                                                                        <th scope="col">Trainer</th>
-                                                                        <th scope="col">Amount
-                                                                        </th>
-                                                                        <th scope="col">Status</th>
-
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-
-                                                                    <%
-                                                                        membershipHistoryData.forEach((membership,index)=>
-                                                                        { %>
+                                                            <hr>
+                                                            <h5 class="card-title">Membership History
+                                                            </h5>
+                                                            <div class="table-responsive-md">
+                                                                <table class="table table-bordered"
+                                                                    id="membershipHistoryData">
+                                                                    <thead>
                                                                         <tr>
-                                                                            <td>
-                                                                                <%=index + 1%>
-                                                                            </td>
-                                                                            <td>
-                                                                                <%=membership.join_date%>
-                                                                            </td>
-                                                                            <td>
-                                                                                <%=membership.membership_service%>
-                                                                                    for
-                                                                                    <%=membership.membership_plan%>
-                                                                                        months
-                                                                            </td>
-                                                                            <td>
-                                                                                
-                                                                                <%=membership.trainer_name%>
-                                                                            </td>
-                                                                            <td>
-                                                                                PHP
-                                                                                <%=membership.total_amount%>
-                                                                            </td>
-                                                                            <td>
-                                                                                <% if
-                                                                                    (membership.membership_status==='Cancelled'
-                                                                                    ) { %>
-                                                                                    <span
-                                                                                        class="text-danger">
-                                                                                        <%= membership.membership_status
-                                                                                            %>
-                                                                                    </span>
-                                                                                    <% } else if
-                                                                                        (membership.membership_status==='Expired'
+                                                                            <th scope="col">#</th>
+                                                                            <th scope="col">Date</th>
+                                                                            <th scope="col">Service/Plan
+                                                                            </th>
+                                                                            <th scope="col">Trainer</th>
+                                                                            <th scope="col">Amount
+                                                                            </th>
+                                                                            <th scope="col">Status</th>
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                        <%
+                                                                            membershipHistoryData.forEach((membership,index)=>
+                                                                            { %>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <%=index + 1%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%=membership.join_date%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <%=membership.membership_service%>
+                                                                                        for
+                                                                                        <%=membership.membership_plan%>
+                                                                                            months
+                                                                                </td>
+                                                                                <td>
+
+                                                                                    <%=membership.trainer_name%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    PHP
+                                                                                    <%=membership.total_amount%>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <% if
+                                                                                        (membership.membership_status==='Cancelled'
                                                                                         ) { %>
-                                                                                        <span
-                                                                                            class="text-danger">
+                                                                                        <span class="text-danger">
                                                                                             <%= membership.membership_status
                                                                                                 %>
                                                                                         </span>
-                                                                                        <% } else {
-                                                                                            %>
-                                                                                            <%= membership.membership_status
-                                                                                                %>
-                                                                                                <% }
+                                                                                        <% } else if
+                                                                                            (membership.membership_status==='Expired'
+                                                                                            ) { %>
+                                                                                            <span class="text-danger">
+                                                                                                <%= membership.membership_status
                                                                                                     %>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <% }); %>
+                                                                                            </span>
+                                                                                            <% } else { %>
+                                                                                                <%= membership.membership_status
+                                                                                                    %>
+                                                                                                    <% } %>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <% }); %>
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
 
                                             </div>
                                         </div>
@@ -508,7 +558,7 @@
 
 
                     function cancelMembership(membershipId, clientId) {
-                        console.log(membershipId)
+
                         Swal.fire({
                             title: "Cancel Membership",
                             text: `Do you want to cancel your membership?`,
@@ -552,6 +602,21 @@
                     }
 
 
+                </script>
+                <script>
+                    const avatarInput = document.getElementById('avatar');
+                    const profileImg = document.getElementById('img-profile');
+
+                    avatarInput.addEventListener('change', function (event) {
+                        const file = event.target.files[0];
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            profileImg.src = e.target.result;
+                        }
+
+                        reader.readAsDataURL(file);
+                    });
                 </script>
     </body>
 

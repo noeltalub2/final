@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const { imageUpload } = require("../middleware/imageUpload");
 const clientController = require("../controller/client.controller");
 const { requireAuth, forwardAuth } = require("../middleware/client.auth");
 
@@ -22,13 +22,21 @@ router.get("/attendance", requireAuth, clientController.getAttendance);
 router.get("/announcement", requireAuth, clientController.getAnnouncement);
 
 router.get("/profile", requireAuth, clientController.getProfile);
-router.post("/profile", requireAuth, clientController.updateProfile);
+router.post(
+	"/profile",
+	requireAuth,
+	imageUpload.single("avatar"),
+	clientController.updateProfile
+);
 router.post("/membership", requireAuth, clientController.postMembership);
 router.post(
 	"/cancel_membership",
 	requireAuth,
 	clientController.cancelMembership
 );
+
+router.get("/avatar", requireAuth, clientController.getAvatar)
+router.get("/generatePdf/:id", requireAuth, clientController.generatePdf)
 
 router.get("/logout", requireAuth, clientController.getLogout);
 

@@ -61,7 +61,7 @@
                             <div class="card">
                                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                                    <img src="/img/avatar.png" alt="Profile" class="rounded-circle">
+                                    <img src="/img/avatar/<%=profileData.profile_picture%>" alt="Profile" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;">
                                     <h2 class="mb-2">
                                         <%=profileData.fullname%>
                                     </h2>
@@ -148,87 +148,102 @@
                                             <div class="tab-pane fade profile-edit" id="profile-edit">
 
                                                 <h5 class="card-title">Edit Information Details</h5>
-                                                <!-- Profile Edit Form -->
-                                                <form method="post" class="needs-validation" novalidate>
+                                                 <!-- Profile Edit Form -->
+                                                 <form method="post" class="needs-validation" novalidate
+                                                 enctype="multipart/form-data">
+                                                 <div class="row mb-3">
+                                                    <img src="/img/avatar/<%=profileData.profile_picture%>" alt="Profile" style="width: 150px; height: 100px; object-fit: cover; border-radius: 50%;" id="img-profile" class="mx-auto">
+                                                 </div>
+                                                 <div class="row mb-3">
+                                                     <label for="fullName"
+                                                         class="col-md-4 col-lg-3 col-form-label">Upload
+                                                         Avatar</label>
+                                                     <div class="col-md-8 col-lg-9">
+                                                         <input name="avatar" type="file" class="form-control"
+                                                             id="avatar" >
+                                                         <input class="form-control" type="hidden"
+                                                             id="profile_picture" name="profile_picture"
+                                                             value="<%=profileData.profile_picture%>">
+                                                     </div>
+                                                 </div>
+
+                                                 <div class="row mb-3">
+                                                     <label for="fullName"
+                                                         class="col-md-4 col-lg-3 col-form-label">Full
+                                                         Name</label>
+                                                     <div class="col-md-8 col-lg-9">
+                                                         <input name="fullName" type="text" class="form-control"
+                                                             id="fullName" value="<%=profileData.fullname%>"
+                                                             required>
+                                                     </div>
+                                                 </div>
+
+                                                 <div class="row mb-3">
+                                                     <label for="ageInput"
+                                                         class="col-md-4 col-lg-3 col-form-label">Age</label>
+                                                     <div class="col-md-8 col-lg-9">
+                                                         <input name="age" type="number" class="form-control"
+                                                             id="ageInput" value="<%=profileData.age%>" required>
+                                                     </div>
+                                                 </div>
+                                                 <div class="row mb-3">
+                                                     <label for="genderInput"
+                                                         class="col-md-4 col-lg-3 col-form-label">Gender</label>
+                                                     <div class="col-md-8 col-lg-9">
+                                                         <select name="gender" id="genderInput" class="form-control"
+                                                             required>
+                                                             <option value="" disabled <%=profileData.gender===""
+                                                                 ? 'selected' : '' %>>Select Gender</option>
+                                                             <option value="Male" <%=profileData.gender==="Male"
+                                                                 ? 'selected' : '' %>>Male</option>
+                                                             <option value="Female" <%=profileData.gender==="Female"
+                                                                 ? 'selected' : '' %>>Female</option>
+                                                             <option value="Other" <%=profileData.gender==="Other"
+                                                                 ? 'selected' : '' %>>Other</option>
+                                                         </select>
+                                                     </div>
+                                                 </div>
 
 
-                                                    <div class="row mb-3">
-                                                        <label for="fullName"
-                                                            class="col-md-4 col-lg-3 col-form-label">Full
-                                                            Name</label>
-                                                        <div class="col-md-8 col-lg-9">
-                                                            <input name="fullName" type="text" class="form-control"
-                                                                id="fullName" value="<%=profileData.fullname%>"
-                                                                required>
-                                                        </div>
-                                                    </div>
+                                                 <div class="row mb-3">
+                                                     <label for="emailInput"
+                                                         class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                                     <div class="col-md-8 col-lg-9">
+                                                         <input name="email" type="email" class="form-control"
+                                                             id="compaemailInputy" value="<%=profileData.email%>"
+                                                             required>
+                                                     </div>
+                                                 </div>
 
-                                                    <div class="row mb-3">
-                                                        <label for="ageInput"
-                                                            class="col-md-4 col-lg-3 col-form-label">Age</label>
-                                                        <div class="col-md-8 col-lg-9">
-                                                            <input name="age" type="number" class="form-control"
-                                                                id="ageInput" value="<%=profileData.age%>" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <label for="genderInput"
-                                                            class="col-md-4 col-lg-3 col-form-label">Gender</label>
-                                                        <div class="col-md-8 col-lg-9">
-                                                            <select name="gender" id="genderInput" class="form-control"
-                                                                required>
-                                                                <option value="" disabled <%=profileData.gender===""
-                                                                    ? 'selected' : '' %>>Select Gender</option>
-                                                                <option value="Male" <%=profileData.gender==="Male"
-                                                                    ? 'selected' : '' %>>Male</option>
-                                                                <option value="Female" <%=profileData.gender==="Female"
-                                                                    ? 'selected' : '' %>>Female</option>
-                                                                <option value="Other" <%=profileData.gender==="Other"
-                                                                    ? 'selected' : '' %>>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                                                 <div class="row mb-3">
+                                                     <label for="inputPhonenumber"
+                                                         class="col-md-4 col-lg-3 col-form-label">Phone
+                                                         Number</label>
+                                                     <div class="col-md-8 col-lg-9">
+                                                         <input name="phonenumber" type="tel" class="form-control"
+                                                             minlength="11" maxlength="11" id="inputPhonenumber"
+                                                             value="<%=profileData.phonenumber%>" required>
+                                                     </div>
+                                                 </div>
+
+                                                 <div class="row mb-3">
+                                                     <label for="inputAddress"
+                                                         class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                                     <div class="col-md-8 col-lg-9">
+                                                         <input name="address" type="text" class="form-control"
+                                                             id="inputAddress" value="<%=profileData.address%>"
+                                                             required>
+                                                     </div>
+                                                 </div>
 
 
-                                                    <div class="row mb-3">
-                                                        <label for="emailInput"
-                                                            class="col-md-4 col-lg-3 col-form-label">Email</label>
-                                                        <div class="col-md-8 col-lg-9">
-                                                            <input name="email" type="email" class="form-control"
-                                                                id="compaemailInputy" value="<%=profileData.email%>"
-                                                                required>
-                                                        </div>
-                                                    </div>
+                                                
 
-                                                    <div class="row mb-3">
-                                                        <label for="inputPhonenumber"
-                                                            class="col-md-4 col-lg-3 col-form-label">Phone
-                                                            Number</label>
-                                                        <div class="col-md-8 col-lg-9">
-                                                            <input name="phonenumber" type="tel" class="form-control"
-                                                                minlength="11" maxlength="11" id="inputPhonenumber"
-                                                                value="<%=profileData.phonenumber%>" required>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mb-3">
-                                                        <label for="inputAddress"
-                                                            class="col-md-4 col-lg-3 col-form-label">Address</label>
-                                                        <div class="col-md-8 col-lg-9">
-                                                            <input name="address" type="text" class="form-control"
-                                                                id="inputAddress" value="<%=profileData.address%>"
-                                                                required>
-                                                        </div>
-                                                    </div>
-
-
-
-
-                                                    <div class="text-center">
-                                                        <button type="submit" class="btn btn-dark">Save
-                                                            Changes</button>
-                                                    </div>
-                                                </form><!-- End Profile Edit Form -->
+                                                 <div class="text-center">
+                                                     <button type="submit" class="btn btn-dark btn-sm">Save
+                                                         Changes</button>
+                                                 </div>
+                                             </form><!-- End Profile Edit Form -->
 
                                             </div>
 
@@ -252,9 +267,21 @@
             </main>
             <!-- End #main -->
             <%-include ("../Includes/Trainer/script.ejs")%>
-                <script>
+            <script>
+                const avatarInput = document.getElementById('avatar');
+                const profileImg = document.getElementById('img-profile');
 
-                </script>
+                avatarInput.addEventListener('change', function (event) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        profileImg.src = e.target.result;
+                    }
+
+                    reader.readAsDataURL(file);
+                });
+            </script>
     </body>
 
     </html>

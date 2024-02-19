@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const { imageUpload } = require("../middleware/imageUpload");
 const trainerController = require("../controller/trainer.controller");
 const { requireAuth, forwardAuth } = require("../middleware/trainer.auth");
 
@@ -26,11 +26,11 @@ router.get("/announcement", requireAuth, trainerController.getAnnouncement);
 router.get("/profile", requireAuth, trainerController.getProfile);
 router.post(
 	"/profile",
-
 	requireAuth,
+	imageUpload.single("avatar"),
 	trainerController.updateProfile
 );
-
+router.get("/avatar", requireAuth, trainerController.getAvatar)
 router.get("/logout", requireAuth, trainerController.getLogout);
 
 module.exports = router;
