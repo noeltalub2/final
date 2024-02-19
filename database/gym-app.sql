@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2024 at 09:51 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Feb 19, 2024 at 02:49 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE `admin` (
   `username` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
   `join_date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin`
@@ -54,7 +54,7 @@ CREATE TABLE `announcement` (
   `title` varchar(60) NOT NULL,
   `message` text NOT NULL,
   `date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `announcement`
@@ -77,7 +77,7 @@ CREATE TABLE `attendance` (
   `date` varchar(15) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `logs` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -97,8 +97,9 @@ CREATE TABLE `client` (
   `email` varchar(45) NOT NULL,
   `phonenumber` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
+  `profile_picture` varchar(60) NOT NULL,
   `join_date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -116,7 +117,7 @@ CREATE TABLE `equipment` (
   `address` varchar(60) NOT NULL,
   `phonenumber` varchar(60) NOT NULL,
   `date` varchar(60) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -136,7 +137,7 @@ CREATE TABLE `membership` (
   `total_amount` varchar(45) NOT NULL,
   `status_change_date` varchar(45) NOT NULL,
   `date_expiration` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -154,7 +155,7 @@ CREATE TABLE `task` (
   `time` varchar(45) NOT NULL,
   `log_date` varchar(45) DEFAULT NULL,
   `log_time` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -172,8 +173,9 @@ CREATE TABLE `trainer` (
   `email` varchar(45) NOT NULL,
   `phonenumber` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
+  `profile_picture` varchar(60) NOT NULL,
   `join_date` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
