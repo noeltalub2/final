@@ -778,6 +778,7 @@ const postTrainer = async (req, res) => {
 		gender,
 		password: hash,
 		join_date: date_time(),
+		profile_picture: "avatar.png"
 	};
 	//Add account to database
 	var sql = "INSERT INTO trainer SET ?";
